@@ -1,6 +1,7 @@
 package core.service;
 
 import core.model.Skill;
+import core.model.UniUser;
 import org.springframework.stereotype.Service;
 
 public interface ManageService {
@@ -9,5 +10,7 @@ public interface ManageService {
 
     void removeSkill(Long id);
 
+    void addUser(UniUser user);
 
+    void updateUser(UniUser user);
 }
