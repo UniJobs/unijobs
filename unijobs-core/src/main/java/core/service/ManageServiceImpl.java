@@ -1,8 +1,10 @@
 package core.service;
 
+import core.model.Job;
 import core.model.Skill;
 import core.model.UniUser;
 import core.repository.SkillRepository;
+import core.repository.UniJobRepository;
 import core.repository.UniUserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,11 +22,14 @@ public class ManageServiceImpl implements ManageService{
     private UniUserRepository uniUserRepository;
 
     @Autowired
-    SkillRepository skillRepository;
+    private SkillRepository skillRepository;
+
+    @Autowired
+    private UniJobRepository uniJobRepository;
 
     @Override
-    public Skill addSkill(Skill skill) {
-        return skillRepository.save(skill);
+    public void addSkill(Skill skill) {
+         skillRepository.save(skill);
     }
 
     @Override
@@ -50,6 +55,27 @@ public class ManageServiceImpl implements ManageService{
         uniUserRepository.save(user);
 
         log.trace("updateUser: user={}", user);
+    }
+
+    @Override
+    public void addJob(Job job) {
+        log.trace("addJob: job = {}", job);
+
+        uniJobRepository.save(job);
+
+        log.trace("addJob: job = {}", job);
+
+    }
+
+    @Override
+    public void updateJob(Job job) {
+
+        log.trace("updateJob: job = {}", job);
+
+        uniJobRepository.save(job);
+
+        log.trace("updateJob: job = {}", job);
+
     }
 
 }

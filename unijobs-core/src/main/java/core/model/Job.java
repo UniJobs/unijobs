@@ -24,6 +24,9 @@ public class Job {
     @Column
     private int id;
 
+    @Column
+    private String description;
+
     @ManyToOne
     @JoinColumn(name = "client_id", nullable = false)
     private Client client;
