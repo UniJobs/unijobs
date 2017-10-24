@@ -30,38 +30,21 @@ public class UniUserServiceImpl implements UniUserService{
 
     @Override
     @Transactional
-    public UniUser createUser(String username, String password, String email) {
-        log.trace("createUser: username={}, password={}, email={}", username, password, email);
-
-        UniUser user = UniUser.builder()
-                .username(username)
-                .password(password)
-                .email(email)
-                .build();
+    public void addUser(UniUser user) {
+        log.trace("createUser: user={}", user);
 
         user = userRepository.save(user);
 
         log.trace("createUser: user={}", user);
-
-        return user;
     }
 
     @Override
     @Transactional
-    public UniUser updateUser(Long userId, String password, String email, String firstName, String lastName, Date dob) {
-        log.trace("updateUser: userID={}, password={}, email={}, firstName={}, lastName={}, dob={}",
-                userId, password, email, firstName, lastName, dob);
-
-        log.trace("resultFindOne: ", userRepository.findOne(userId));
-        UniUser user = userRepository.findOne(userId);
-        user.setPassword(password);
-        user.setEmail(email);
-        user.setFirstname(firstName);
-        user.setLastname(lastName);
-        user.setDob(dob);
-
+    public void updateUser(UniUser user) {
         log.trace("updateUser: user={}", user);
 
-        return user;
+        userRepository.save(user);
+
+        log.trace("updateUser: user={}", user);
     }
 }
