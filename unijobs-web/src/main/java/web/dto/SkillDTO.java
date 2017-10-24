@@ -15,12 +15,6 @@ import java.util.List;
 @Builder
 public class SkillDTO {
 
-    public SkillDTO(Skill skill){
-        id = skill.getId();
-        description = skill.getDescription();
-        jobs = skill.getJobs();
-        providers = getProviders();
-    }
 
     public Integer id;
 
@@ -29,4 +23,12 @@ public class SkillDTO {
     public List<Job> jobs;
 
     public List<Provider> providers;
+
+    public SkillDTO(Skill skill){
+        id = skill.getId();
+        description = skill.getDescription();
+        jobs = skill.getJobs();
+        providers = getProviders();
+    }
+
 }

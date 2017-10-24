@@ -73,7 +73,6 @@ public class FetchServiceImpl implements FetchService {
 
 
     @Override
-    @Transactional
     public List<UniUser> getAllUsers() {
         log.trace("getAll");
 
