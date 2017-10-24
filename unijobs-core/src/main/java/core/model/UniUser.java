@@ -1,9 +1,6 @@
 package core.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -18,6 +15,7 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class UniUser {
@@ -50,9 +48,9 @@ public class UniUser {
     @OneToMany(mappedBy = "reviewed")
     private List<Review> reviewedReviews = new ArrayList<>();
 
+
     //TODO: picture representation ???
     //@Column
     //private String picture;
-
 
 }
