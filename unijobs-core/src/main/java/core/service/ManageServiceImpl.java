@@ -39,6 +39,19 @@ public class ManageServiceImpl implements ManageService{
 
     @Override
     @Transactional
+    public void updateSkill(Long skillId, Skill skill) {
+        log.trace("updateSkill: skill={}", skill);
+
+        Skill skillUpdated = skillRepository.findOne(skillId);
+        skillUpdated.setDescription(skill.getDescription());
+        skillUpdated.setJobs(skill.getJobs());
+        skillUpdated.setProviders(skill.getProviders());
+
+        log.trace("updatedSkill: skill={}", skillUpdated);
+    }
+
+    @Override
+    @Transactional
     public void addUser(UniUser user) {
         log.trace("createUser: user={}", user);
 
