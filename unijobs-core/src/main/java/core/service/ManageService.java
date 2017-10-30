@@ -13,7 +13,7 @@ public interface ManageService {
 
     void addUser(UniUser user);
 
-    void updateUser(UniUser user);
+    void updateUser(Long userId, UniUser user);
 
     void addJob(Job job);
 

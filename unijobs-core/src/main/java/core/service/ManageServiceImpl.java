@@ -49,12 +49,16 @@ public class ManageServiceImpl implements ManageService{
 
     @Override
     @Transactional
-    public void updateUser(UniUser user) {
+    public void updateUser(Long userId, UniUser user) {
         log.trace("updateUser: user={}", user);
 
-        uniUserRepository.save(user);
+        UniUser userUpdated = uniUserRepository.findOne(userId);
+        userUpdated.setDob(user.getDob());
+        userUpdated.setLastname(user.getLastname());
+        userUpdated.setFirstname(user.getFirstname());
+        userUpdated.setPassword(user.getPassword());
 
-        log.trace("updateUser: user={}", user);
+        log.trace("updatedUser: user={}", userUpdated);
     }
 
     @Override
