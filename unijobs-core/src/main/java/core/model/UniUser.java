@@ -2,8 +2,10 @@ package core.model;
 
 import lombok.*;
 
+import javax.enterprise.inject.Default;
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +20,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name="users")
 public class UniUser {
 
     @Id
@@ -29,6 +32,9 @@ public class UniUser {
 
     @Column
     private String password;
+
+    @Column
+    private Boolean enabled = true;
 
     @Column
     private String email;
@@ -48,6 +54,14 @@ public class UniUser {
     @OneToMany(mappedBy = "reviewed")
     private List<Review> reviewedReviews = new ArrayList<>();
 
+    @ManyToMany
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(
+                    name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "role_id", referencedColumnName = "id"))
+    private Collection<Role> roles;
 
     //TODO: picture representation ???
     //@Column

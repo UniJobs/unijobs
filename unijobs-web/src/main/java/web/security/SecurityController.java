@@ -3,11 +3,23 @@ package web.security;
 /**
  * Created by Ionut on 22/5/2017.
  */
+import core.model.TemporaryUser;
+import core.model.UniUser;
+import core.service.FetchService;
+import core.service.ManageService;
+import core.utils.MailUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+import java.util.List;
 
 @Controller
 public class SecurityController {
@@ -27,6 +39,12 @@ public class SecurityController {
         }
     }
 
+    @Autowired
+    FetchService fetchService;
+
+    @Autowired
+    ManageService manageService;
+
     @RequestMapping(value = "/api/username", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public Response currentUserName(Authentication authentication) {
@@ -37,5 +55,56 @@ public class SecurityController {
     @ResponseBody
     public Response currentRole(Authentication authentication) {
         return new Response(authentication.getAuthorities().toString());
+    }
+
+    @RequestMapping("/registerUser")
+    public String registerUser(TemporaryUser temporaryUser){
+
+        //Check for duplicates
+        List<UniUser> users = fetchService.getAllUsers();
+        UniUser u = null;
+        for (int i = 0; i < users.size(); i++) {
+            u = users.get(i);
+            if (u.getUsername().equals(temporaryUser.getUsername())) {
+                return "Something went wrong!";
+            }
+        }
+
+        //save user until validation
+        manageService.addTemporaryUser(temporaryUser);
+
+        //Send mail
+        String subject = "Unijobs Acount validation !\n";
+        String message = "Hello " + temporaryUser.getUsername() + "!\n Please click on the link below to activate your acount:\n";
+        try {
+            message += "http://localhost:8080/validate?token=" + encrypt(temporaryUser.getId());
+        } catch (UnsupportedEncodingException e) {
+            message += "http://wops.somehtingnotworking.com";
+        }
+        message += "\n\n Have a Great day,\nUnijobs Team.";
+        MailUtils.sendMail(subject, message, temporaryUser.getEmail());
+
+        return "confirmMail";
+    }
+
+    @RequestMapping("/validate")
+    public String validateUser(@RequestParam String token){
+        try{
+            TemporaryUser temporaryUser = fetchService.getTemporaryUserById((long) Integer.parseInt(decrypt(token)));
+            UniUser user = temporaryUser.toUser();
+            manageService.addUser(user);
+            manageService.removeTemporaryUser(temporaryUser);
+            return "You have registereded";
+        }catch (Exception ex){
+            return "Something went wrong when validating account!";
+        }
+    }
+
+    private String encrypt(Integer number) throws UnsupportedEncodingException {
+        return Base64.getUrlEncoder().encodeToString(number.toString().getBytes("utf-8"));
+    }
+
+    private String decrypt(String token){
+        return new String(Base64.getUrlDecoder().decode(token), StandardCharsets.UTF_8);
     }
 }

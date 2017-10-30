@@ -2,8 +2,10 @@ package core.service;
 
 import core.model.Job;
 import core.model.Skill;
+import core.model.TemporaryUser;
 import core.model.UniUser;
 import core.repository.SkillRepository;
+import core.repository.TemporaryUserRepository;
 import core.repository.UniJobRepository;
 import core.repository.UniUserRepository;
 import org.slf4j.Logger;
@@ -26,6 +28,9 @@ public class ManageServiceImpl implements ManageService{
 
     @Autowired
     private UniJobRepository uniJobRepository;
+
+    @Autowired
+    private TemporaryUserRepository temporaryUserRepository;
 
     @Override
     public void addSkill(Skill skill) {
@@ -80,6 +85,20 @@ public class ManageServiceImpl implements ManageService{
 
         log.trace("updateJob: job = {}", job);
 
+    }
+
+    @Override
+    public void addTemporaryUser(TemporaryUser temporaryUser){
+        log.trace("addTemporaryUser temporaryUser= {}", temporaryUser);
+
+        temporaryUserRepository.save(temporaryUser);
+
+        log.trace("addTemporaryUser: temporaryUser = {}", temporaryUser);
+    }
+
+    @Override
+    public void removeTemporaryUser(TemporaryUser temporaryUser){
+        temporaryUserRepository.delete(temporaryUser);
     }
 
 }

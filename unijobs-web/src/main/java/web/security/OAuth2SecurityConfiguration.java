@@ -18,6 +18,8 @@ import org.springframework.security.oauth2.provider.request.DefaultOAuth2Request
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 
+import javax.sql.DataSource;
+
 
 @Configuration
 @EnableWebSecurity
@@ -26,10 +28,13 @@ public class OAuth2SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private ClientDetailsService clientDetailsService;
 
     @Autowired
+    private DataSource dataSource;
+
+    @Autowired
     public void globalUserDetails(AuthenticationManagerBuilder auth) throws Exception {
         //Here are some dummy user accounts with different roles to check the functionality of OAuth2.0
         BCryptPasswordEncoder encoder = passwordEncoder();
-        auth.inMemoryAuthentication()
+        /*auth.inMemoryAuthentication()
                 .passwordEncoder(encoder)
                 .withUser("vac.gelu").password(encoder.encode("12345")).roles("teacher").and()
                 .withUser("forest").password(encoder.encode("12345")).roles("teacher").and()
@@ -39,7 +44,14 @@ public class OAuth2SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .withUser("dan.chiorean").password(encoder.encode("12345")).roles("teacher").and()
                 .withUser("mihoc.tudor").password(encoder.encode("12345")).roles("teacher").and()
                 .withUser("mmie1942").password(encoder.encode("12345")).roles("student").and()
-                .withUser("maie1949").password(encoder.encode("12345")).roles("student");
+                .withUser("maie1949").password(encoder.encode("12345")).roles("student");*/
+        auth.jdbcAuthentication().dataSource(dataSource).passwordEncoder(encoder)
+                .usersByUsernameQuery(
+                        "select username,password, enabled from users where username=?")
+                .authoritiesByUsernameQuery(
+                        "select username, role from user_roles where username=?");
+        auth.inMemoryAuthentication().passwordEncoder(encoder).withUser("admin").password(encoder.encode("admin")).roles("ADMIN");
+        String test = encoder.encode("1234");
     }
 
     @Override
@@ -47,6 +59,8 @@ public class OAuth2SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
+                .antMatchers("/jobs").permitAll()
+                .antMatchers("/skills").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and().httpBasic()
                 .and().csrf().disable();
