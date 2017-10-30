@@ -2,8 +2,10 @@ package core.service;
 
 import core.model.Job;
 import core.model.Skill;
+import core.model.TemporaryUser;
 import core.model.UniUser;
 import core.repository.SkillRepository;
+import core.repository.TemporaryUserRepository;
 import core.repository.UniJobRepository;
 import core.repository.UniUserRepository;
 import org.slf4j.Logger;
@@ -26,6 +28,10 @@ public class FetchServiceImpl implements FetchService {
 
     @Autowired
     UniJobRepository uniJobRepository;
+
+
+    @Autowired
+    TemporaryUserRepository temporaryUserRepository;
 
     @Override
     public List<Skill> getAllSkills() {
@@ -81,5 +87,20 @@ public class FetchServiceImpl implements FetchService {
         log.trace("getAll: users = {}", users);
 
         return users;
+    }
+
+    public List<TemporaryUser> getAllTemporaryUsers() {
+        log.trace("getAll");
+
+        List<TemporaryUser> tempUsers = temporaryUserRepository.findAll();
+
+        log.trace("getAll: users = {}", tempUsers);
+
+        return tempUsers;
+    }
+
+    @Override
+    public TemporaryUser getTemporaryUserById(Long id){
+        return temporaryUserRepository.findOne(id);
     }
 }

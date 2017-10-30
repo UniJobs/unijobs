@@ -2,6 +2,7 @@ package core.service;
 
 import core.model.Job;
 import core.model.Skill;
+import core.model.TemporaryUser;
 import core.model.UniUser;
 import org.springframework.stereotype.Service;
 
@@ -17,4 +18,8 @@ public interface FetchService {
     Job findJob(Long id);
 
     List<UniUser> getAllUsers();
+
+    List<TemporaryUser> getAllTemporaryUsers();
+
+    TemporaryUser getTemporaryUserById(Long id);
 }
