@@ -6,6 +6,7 @@ import core.model.Skill;
 import lombok.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Setter
 @Getter
@@ -20,15 +21,15 @@ public class SkillDTO {
 
     public String description;
 
-    public List<Job> jobs;
+    public List<Integer> jobIds;
 
-    public List<Provider> providers;
+    public List<Integer> providerIds;
 
     public SkillDTO(Skill skill){
         id = skill.getId();
         description = skill.getDescription();
-        jobs = skill.getJobs();
-        providers = getProviders();
+        jobIds = skill.getJobs().stream().map(j -> j.getId()).collect(Collectors.toList());
+        providerIds = skill.getProviders().stream().map(p -> p.getId()).collect(Collectors.toList());
     }
 
 }

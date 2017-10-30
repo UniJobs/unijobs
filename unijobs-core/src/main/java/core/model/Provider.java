@@ -24,6 +24,11 @@ public class Provider extends UniUser {
     @OneToMany(mappedBy = "provider", fetch = FetchType.LAZY)
     private List<Request> requests = new ArrayList<>();
 
-    @OneToMany(mappedBy = "provider", fetch = FetchType.LAZY)
-    private List<Recommandation> recommandations = new ArrayList<>();
+    public void addSkill(Skill skill){
+        this.skills.add(skill);
+    }
+
+    public void addRequest(Request request){
+        this.requests.add(request);
+    }
 }

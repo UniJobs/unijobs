@@ -8,12 +8,6 @@ import org.springframework.stereotype.Service;
 
 public interface ManageService {
 
-    void addSkill(Skill skill);
-
-    void updateSkill(Long skillId, Skill skill);
-
-    void removeSkill(Long id);
-
     void addUser(UniUser user);
 
     void updateUser(Long userId, UniUser user);

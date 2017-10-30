@@ -36,9 +36,7 @@ public class FetchServiceImpl implements FetchService {
     @Override
     public List<Skill> getAllSkills() {
         log.trace("getAllSkills()");
-
         List<Skill> skills = skillRepository.findAll();
-
         log.trace("getAllSkills: skills = {}", skills);
 
         return skills;
@@ -47,9 +45,7 @@ public class FetchServiceImpl implements FetchService {
     @Override
     public Skill findSkill(Long id) {
         log.trace("findSkill()");
-
         Skill skill = skillRepository.findOne(id);
-
         log.trace("findskill: skill = {}", skill);
 
         return skill;
@@ -58,9 +54,7 @@ public class FetchServiceImpl implements FetchService {
     @Override
     public List<Job> getAllJobs() {
         log.trace("getAllJobs()");
-
         List<Job> jobs = uniJobRepository.findAll();
-
         log.trace("getAllJobs: jobs = {}", jobs);
 
         return jobs;
@@ -69,9 +63,7 @@ public class FetchServiceImpl implements FetchService {
     @Override
     public Job findJob(Long id) {
         log.trace("findJob()");
-
         Job job = uniJobRepository.findOne(id);
-
         log.trace("findJob: job = {}", job);
 
         return job;
@@ -81,19 +73,14 @@ public class FetchServiceImpl implements FetchService {
     @Override
     public List<UniUser> getAllUsers() {
         log.trace("getAll");
-
         List<UniUser> users = uniUserRepository.findAll();
-
         log.trace("getAll: users = {}", users);
-
         return users;
     }
 
     public List<TemporaryUser> getAllTemporaryUsers() {
         log.trace("getAll");
-
         List<TemporaryUser> tempUsers = temporaryUserRepository.findAll();
-
         log.trace("getAll: users = {}", tempUsers);
 
         return tempUsers;

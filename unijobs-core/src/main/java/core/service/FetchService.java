@@ -10,16 +10,12 @@ import java.util.List;
 
 public interface FetchService {
     List<Skill> getAllSkills();
-
     Skill findSkill(Long id);
 
     List<Job> getAllJobs();
-
     Job findJob(Long id);
 
     List<UniUser> getAllUsers();
-
     List<TemporaryUser> getAllTemporaryUsers();
-
     TemporaryUser getTemporaryUserById(Long id);
 }

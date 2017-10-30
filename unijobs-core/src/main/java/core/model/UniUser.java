@@ -2,7 +2,6 @@ package core.model;
 
 import lombok.*;
 
-import javax.enterprise.inject.Default;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -48,10 +47,10 @@ public class UniUser {
     @Column
     private Date dob;
 
-    @OneToMany(mappedBy = "reviewer")
+    @OneToMany(mappedBy = "reviewer", fetch = FetchType.LAZY)
     private List<Review> reviewerReviews = new ArrayList<>();
 
-    @OneToMany(mappedBy = "reviewed")
+    @OneToMany(mappedBy = "reviewed", fetch = FetchType.LAZY)
     private List<Review> reviewedReviews = new ArrayList<>();
 
     @ManyToMany

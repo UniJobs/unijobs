@@ -33,29 +33,6 @@ public class ManageServiceImpl implements ManageService{
     private TemporaryUserRepository temporaryUserRepository;
 
     @Override
-    public void addSkill(Skill skill) {
-         skillRepository.save(skill);
-    }
-
-    @Override
-    public void removeSkill(Long id) {
-        skillRepository.delete(id);
-    }
-
-    @Override
-    @Transactional
-    public void updateSkill(Long skillId, Skill skill) {
-        log.trace("updateSkill: skill={}", skill);
-
-        Skill skillUpdated = skillRepository.findOne(skillId);
-        skillUpdated.setDescription(skill.getDescription());
-        skillUpdated.setJobs(skill.getJobs());
-        skillUpdated.setProviders(skill.getProviders());
-
-        log.trace("updatedSkill: skill={}", skillUpdated);
-    }
-
-    @Override
     @Transactional
     public void addUser(UniUser user) {
         log.trace("createUser: user={}", user);

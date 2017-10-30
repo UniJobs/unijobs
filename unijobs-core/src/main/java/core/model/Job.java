@@ -27,10 +27,17 @@ public class Job {
     @Column
     private String description;
 
+    @Column
+    private String location;
+
     @ManyToOne
     @JoinColumn(name = "client_id", nullable = false)
     private Client client;
 
     @ManyToMany(mappedBy = "jobs", fetch = FetchType.LAZY)
     private List<Skill> skills = new ArrayList<>();
+
+    public void addSkill(Skill skill){
+        this.skills.add(skill);
+    }
 }
