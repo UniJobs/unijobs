@@ -23,10 +23,10 @@ public class Client extends UniUser {
     private List<Request>  requests = new ArrayList<>();
 
     @OneToMany(mappedBy = "fromClient", fetch = FetchType.LAZY)
-    private List<Recommandation> sent = new ArrayList<>();
+    private List<Recommendation> sent = new ArrayList<>();
 
     @OneToMany(mappedBy = "toClient", fetch = FetchType.LAZY)
-    private List<Recommandation> received = new ArrayList<>();
+    private List<Recommendation> received = new ArrayList<>();
 
     @OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
     private List<Job> myJobs = new ArrayList<>();
@@ -35,12 +35,12 @@ public class Client extends UniUser {
         this.requests.add(request);
     }
 
-    public void receiveRecommandation(Recommandation recommandation){
-        this.received.add(recommandation);
+    public void receiveRecommandation(Recommendation recommendation){
+        this.received.add(recommendation);
     }
 
-    public void sendRecommandation(Recommandation recommandation) {
-        this.sent.add(recommandation);
+    public void sendRecommandation(Recommendation recommendation) {
+        this.sent.add(recommendation);
     }
 
     public void addJob(Job job){
