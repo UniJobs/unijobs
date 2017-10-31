@@ -53,15 +53,6 @@ public class UniUser {
     @OneToMany(mappedBy = "reviewed", fetch = FetchType.LAZY)
     private List<Review> reviewedReviews = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(
-            name = "user_roles",
-            joinColumns = @JoinColumn(
-                    name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(
-                    name = "role_id", referencedColumnName = "id"))
-    private Collection<Role> roles;
-
     public UniUser(String username, String password, String email, String firstname, String lastname, Date dob){
         this.username = username;
         this.password = password;

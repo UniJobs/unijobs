@@ -36,9 +36,7 @@ public class OAuth2SecurityConfiguration extends WebSecurityConfigurerAdapter {
         BCryptPasswordEncoder encoder = passwordEncoder();
         auth.jdbcAuthentication().dataSource(dataSource).passwordEncoder(encoder)
                 .usersByUsernameQuery(
-                        "select username,password, enabled from users where username=?")
-                .authoritiesByUsernameQuery(
-                        "select username, role from user_roles where username=?");
+                        "select username,password, enabled from users where username=?");
         auth.inMemoryAuthentication().passwordEncoder(encoder).withUser("admin").password(encoder.encode("admin")).roles("ADMIN");
         String test = encoder.encode("1234");
     }

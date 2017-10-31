@@ -19,6 +19,7 @@ public class MailUtils {
         final String password = "unicodersSUCK";
 
         Properties props = new Properties();
+        props.setProperty("mail.smtp.host", "localhost");
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", "smtp.gmail.com");

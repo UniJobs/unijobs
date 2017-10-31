@@ -7,13 +7,14 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-public class Role {
+@Table(name="authorities")
+public class Authority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private int id;
 
-    private String name;
-    @ManyToMany(mappedBy = "roles")
-    private Collection<UniUser> users;
+    private String username;
+
+    private String authority;
 }
