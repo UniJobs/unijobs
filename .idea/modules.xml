@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/unijobs.iml" filepath="$PROJECT_DIR$/.idea/modules/unijobs.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/unijobs-core/unijobs-core.iml" filepath="$PROJECT_DIR$/.idea/modules/unijobs-core/unijobs-core.iml" group="unijobs-core" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/unijobs-core/unijobs-core_main.iml" filepath="$PROJECT_DIR$/.idea/modules/unijobs-core/unijobs-core_main.iml" group="unijobs-core" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/unijobs-core/unijobs-core_test.iml" filepath="$PROJECT_DIR$/.idea/modules/unijobs-core/unijobs-core_test.iml" group="unijobs-core" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/unijobs-web/unijobs-web.iml" filepath="$PROJECT_DIR$/.idea/modules/unijobs-web/unijobs-web.iml" group="unijobs-web" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/unijobs-web/unijobs-web_main.iml" filepath="$PROJECT_DIR$/.idea/modules/unijobs-web/unijobs-web_main.iml" group="unijobs-web" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/unijobs-web/unijobs-web_test.iml" filepath="$PROJECT_DIR$/.idea/modules/unijobs-web/unijobs-web_test.iml" group="unijobs-web" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/unijobs_main.iml" filepath="$PROJECT_DIR$/.idea/modules/unijobs_main.iml" group="unijobs" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/unijobs_test.iml" filepath="$PROJECT_DIR$/.idea/modules/unijobs_test.iml" group="unijobs" />
+    </modules>
+  </component>
+</project>

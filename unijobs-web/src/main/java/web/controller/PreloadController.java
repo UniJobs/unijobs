@@ -1,20 +1,28 @@
 package web.controller;
 
-import core.model.Client;
-import core.model.Recommendation;
-import core.model.Skill;
+import core.model.*;
 import core.service.*;
 import javafx.util.Builder;
+import jdk.nashorn.internal.runtime.ParserException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import sun.security.x509.UniqueIdentity;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Alex on 10/31/2017.
@@ -22,6 +30,7 @@ import java.util.List;
 @RestController
 public class PreloadController {
 
+    private static final String dataPath = "D:\\ubb\\An 3Semestrul 1\\UnijobsBackend\\unijobs\\";
     @Autowired
     SkillService skillService;
 
@@ -46,59 +55,86 @@ public class PreloadController {
     @Autowired
     ReviewService reviewService;
 
+
     @RequestMapping(value = "doPreload")
     @Transactional
     public String preload()
     {
-        List<Skill> skills = makeSkills();
-        List<Client> clients = makeClients();
-
-        for (Skill s: skills){
-            skillService.insert(s);
-        }
-
-        for (Client c: clients){
-            clientService.insert(c);
-        }
+        addSkills();
+        addClients();
+        addProviders();
+        addAuthorities();
         return "Preload complete!";
     }
 
-    List<Skill> makeSkills(){
-        List<Skill> skills = new ArrayList<>();
-        skills.add(new Skill("C++"));
-        skills.add(new Skill("Python"));
-        skills.add(new Skill("C#"));
-        skills.add(new Skill("Java"));
-        skills.add(new Skill("Javascript"));
-        skills.add(new Skill("Reverse Engineering"));
-        skills.add(new Skill("Malware Analysis"));
-        skills.add(new Skill("AI"));
-        skills.add(new Skill("Prolog"));
-        skills.add(new Skill("Ocaml"));
-        skills.add(new Skill("Android"));
-        return skills;
+    @Transactional
+    private void addAuthorities(){
+        List<UniUser> allUsers = fetchService.getAllUsers();
+        for (UniUser u: allUsers){
+            Authority a = new Authority(u.getUsername(), "user");
+            manageService.addAuthority(a);
+        }
     }
 
-    List<Client> makeClients(){
-        List<Client> clients = new ArrayList<>();
-        String testDate = "29-Apr-2010,13:00:14 PM";
+    @Transactional
+    private void addSkills(){
+        List<Skill> skills = new ArrayList<>();
+        skills.add(new Skill("Energy"));
+        skills.add(new Skill("Attention"));
+        skills.add(new Skill("Agility"));
+        skills.add(new Skill("Stamina"));
+        skills.add(new Skill("Passion"));
+
+        skills.stream().forEach(s -> skillService.insert(s));
+    }
+
+    @Transactional
+    private void addProviders(){
+        String path = "D:\\ubb\\An 3 Semestrul 1\\UnijobsBackend\\unijobs\\preload_data\\Providers.csv";
+        String testDate = "01-Ian-1910,13:00:14 PM";
+        DateFormat formatter = new SimpleDateFormat("d-MMM-yyyy,HH:mm:ss aaa");
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        Date date = new Date();
+        try{
+            List<String> lines = Files.lines(Paths.get(path)).collect(Collectors.toList());
+            for (String l: lines){
+                String[] parts = l.split(",");
+                Provider p = new Provider(parts[0], encoder.encode(parts[1]), parts[2], parts[3], parts[4], date);
+                providerService.insert(p);
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Transactional
+    private void addClients() {
+        String path = "D:\\ubb\\An 3 Semestrul 1\\UnijobsBackend\\unijobs\\preload_data\\Clients.csv";
+        String testDate = "21-Apr-1900,13:00:14 PM";
         DateFormat formatter = new SimpleDateFormat("d-MMM-yyyy,HH:mm:ss aaa");
         Date date = new Date();
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         try {
-            date = formatter.parse(testDate);
+            List<String> lines = Files.lines(Paths.get(path)).collect(Collectors.toList());
+            for (String l : lines) {
+                String[] parts = l.split(",");
+                try {
+                    Client c = new Client(parts[0], encoder.encode(parts[1]), parts[2], parts[3], parts[4], date);
+                    clientService.insert(c);
+                    Integer nrJobs = Integer.parseInt(parts[6]);
+                    int count = 1;
+                    for (int i = 0; i < nrJobs; i++) {
+                        Job j = new Job(parts[count + 6], parts[count + 7], Integer.parseInt(parts[count + 8]), Integer.parseInt(parts[count+9]));
+                        j.setClient(c);
+                        manageService.addJob(j);
+                        count += 4;
+                    }
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        catch (Exception e){
-            return null;
-        }
-        clients.add(new Client("mfie1944", "admin", "mfie1994@scs.ubbcluj.ro", "Alex", "Matica", date));
-        clients.add(new Client("abcd1234", "admin", "abcd@scs.ubbcluj.ro", "Mihai", "Bobina", date));
-        clients.add(new Client("efgh5678", "admin", "efgh5678@scs.ubbcluj.ro", "Bait", "Beight", date));
-        clients.add(new Client("ijkl9999", "admin", "ijkl9999@scs.ubbcluj.ro", "Bob", "Bobby", date));
-        clients.add(new Client("asda4354", "admin", "asda4354@scs.ubbcluj.ro", "Andrei", "John", date));
-        clients.add(new Client("bsda1093", "admin", "bsda1093@scs.ubbcluj.ro", "Bill", "Clinton", date));
-        clients.add(new Client("gggg0000", "admin", "gggg0000@scs.ubbcluj.ro", "Martin", "Freeman", date));
-        clients.add(new Client("xxxx6666", "admin", "xxxx6666@scs.ubbcluj.ro", "Elisei", "Dragoslav", date));
-        clients.add(new Client("maie1949", "admin", "maie1949@scs.ubbcluj.ro", "Aris", "Miuta", date));
-        return clients;
     }
 }

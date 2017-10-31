@@ -29,6 +29,12 @@ public class Job {
     @Column
     private String location;
 
+    @Column
+    private int hoursPerWeek;
+
+    @Column
+    private int cost;
+
     @ManyToOne
     @JoinColumn(name = "client_id", nullable = false)
     private Client client;
@@ -38,5 +44,12 @@ public class Job {
 
     public void addSkill(Skill skill){
         this.skills.add(skill);
+    }
+
+    public Job(String description ,String location, int hoursPerWeek, int cost){
+        this.description = description;
+        this.location = location;
+        this.hoursPerWeek = hoursPerWeek;
+        this.cost = cost;
     }
 }

@@ -1,13 +1,7 @@
 package core.service;
 
-import core.model.Job;
-import core.model.Skill;
-import core.model.TemporaryUser;
-import core.model.UniUser;
-import core.repository.SkillRepository;
-import core.repository.TemporaryUserRepository;
-import core.repository.UniJobRepository;
-import core.repository.UniUserRepository;
+import core.model.*;
+import core.repository.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +18,13 @@ public class ManageServiceImpl implements ManageService{
     private UniUserRepository uniUserRepository;
 
     @Autowired
-    private SkillRepository skillRepository;
-
-    @Autowired
     private UniJobRepository uniJobRepository;
 
     @Autowired
     private TemporaryUserRepository temporaryUserRepository;
+
+    @Autowired
+    private AuthorityRepository authorityRepository;
 
     @Override
     @Transactional
@@ -89,6 +83,11 @@ public class ManageServiceImpl implements ManageService{
     @Override
     public void removeTemporaryUser(TemporaryUser temporaryUser){
         temporaryUserRepository.delete(temporaryUser);
+    }
+
+    @Override
+    public void addAuthority(Authority a){
+        authorityRepository.save(a);
     }
 
 }
