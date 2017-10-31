@@ -18,7 +18,6 @@ import javax.persistence.*;
 public class Review {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
     private int id;
 
     @ManyToOne

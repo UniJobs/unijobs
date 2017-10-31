@@ -34,17 +34,6 @@ public class OAuth2SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void globalUserDetails(AuthenticationManagerBuilder auth) throws Exception {
         //Here are some dummy user accounts with different roles to check the functionality of OAuth2.0
         BCryptPasswordEncoder encoder = passwordEncoder();
-        /*auth.inMemoryAuthentication()
-                .passwordEncoder(encoder)
-                .withUser("vac.gelu").password(encoder.encode("12345")).roles("teacher").and()
-                .withUser("forest").password(encoder.encode("12345")).roles("teacher").and()
-                .withUser("ela.valimareanu").password(encoder.encode("12345")).roles("teacher").and()
-                .withUser("mihis.andreea").password(encoder.encode("12345")).roles("teacher").and()
-                .withUser("radu.gaceanu").password(encoder.encode("12345")).roles("teacher").and()
-                .withUser("dan.chiorean").password(encoder.encode("12345")).roles("teacher").and()
-                .withUser("mihoc.tudor").password(encoder.encode("12345")).roles("teacher").and()
-                .withUser("mmie1942").password(encoder.encode("12345")).roles("student").and()
-                .withUser("maie1949").password(encoder.encode("12345")).roles("student");*/
         auth.jdbcAuthentication().dataSource(dataSource).passwordEncoder(encoder)
                 .usersByUsernameQuery(
                         "select username,password, enabled from users where username=?")
@@ -61,7 +50,11 @@ public class OAuth2SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .antMatchers("/jobs").permitAll()
                 .antMatchers("/skills").hasRole("ADMIN")
+                .antMatchers("/doPreload").permitAll()
                 .anyRequest().authenticated()
+                .and()
+                .formLogin().loginPage("/login").failureUrl("/login?error")
+                .usernameParameter("username").passwordParameter("password")
                 .and().httpBasic()
                 .and().csrf().disable();
     }

@@ -19,7 +19,6 @@ public class Recommendation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
     private int id;
 
     @ManyToOne
