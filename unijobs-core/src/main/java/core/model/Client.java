@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -30,6 +31,10 @@ public class Client extends UniUser {
 
     @OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
     private List<Job> myJobs = new ArrayList<>();
+
+    public Client(String username, String password, String email, String firstname, String lastname, Date dob){
+        super(username, password, email, firstname, lastname, dob);
+    }
 
     public void addRequest(Request request){
         this.requests.add(request);

@@ -39,4 +39,8 @@ public class Skill {
         inverseJoinColumns = {@JoinColumn(name = "provider_id")})
     private List<Provider> providers = new ArrayList<>();
 
+    public Skill(String description){
+        this.description = description;
+    }
+
 }

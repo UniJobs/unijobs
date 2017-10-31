@@ -62,6 +62,15 @@ public class UniUser {
                     name = "role_id", referencedColumnName = "id"))
     private Collection<Role> roles;
 
+    public UniUser(String username, String password, String email, String firstname, String lastname, Date dob){
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.dob = dob;
+    }
+
     //TODO: picture representation ???
     //@Column
     //private String picture;
