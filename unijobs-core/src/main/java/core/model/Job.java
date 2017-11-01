@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -35,6 +36,12 @@ public class Job {
     @Column
     private int cost;
 
+    @Column
+    private Date startDate;
+
+    @Column
+    private Date endDate;
+
     @ManyToOne
     @JoinColumn(name = "client_id", nullable = false)
     private Client client;
@@ -46,10 +53,12 @@ public class Job {
         this.skills.add(skill);
     }
 
-    public Job(String description ,String location, int hoursPerWeek, int cost){
+    public Job(String description ,String location, int hoursPerWeek, int cost, Date startDate, Date endDate){
         this.description = description;
         this.location = location;
         this.hoursPerWeek = hoursPerWeek;
         this.cost = cost;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 }

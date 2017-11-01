@@ -22,6 +22,7 @@ import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -62,7 +63,7 @@ public class PreloadController {
     @Autowired
     AuthorityService authorityService;
 
-    private BCryptPasswordEncoder encoder =  new BCryptPasswordEncoder();
+    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     /*
         !!! README !!!
@@ -73,18 +74,17 @@ public class PreloadController {
      */
     @RequestMapping(value = "/initAdmin", method = RequestMethod.GET)
     @Transactional
-    public String addAdmin(){
+    public String addAdmin() {
         UniUser admin = UniUser.builder().username("admin").password(encoder.encode("admin")).enabled(true).build();
         manageService.addUser(admin);
-        Authority authority = new Authority("admin","ADMIN");
+        Authority authority = new Authority("admin", "ADMIN");
         authorityService.addAuthority(authority);
         return "Done";
     }
 
     @RequestMapping(value = "/preload/doPreload", method = RequestMethod.POST)
     @Transactional
-    public String preload()
-    {
+    public String preload() {
         addSkills();
         addClients();
         addProviders();
@@ -92,9 +92,9 @@ public class PreloadController {
         return "Preload complete!";
     }
 
-    @RequestMapping(value ="/preload/clearDB",method = RequestMethod.POST)
+    @RequestMapping(value = "/preload/clearDB", method = RequestMethod.POST)
     @Transactional
-    public String clearDB(){
+    public String clearDB() {
         authorityService.clear();
         manageService.clearJobs();
         skillService.clear();
@@ -104,19 +104,19 @@ public class PreloadController {
     }
 
     @Transactional
-    void addAuthorities(){
+    void addAuthorities() {
         //Get all users expect the admin
         List<UniUser> allUsers = fetchService.getAllUsers().stream()
                 .filter(u -> !u.getUsername().equals("admin")).collect(Collectors.toList());
         Authority authority;
-        for (UniUser u: allUsers){
+        for (UniUser u : allUsers) {
             authority = new Authority(u.getUsername(), "user");
             authorityService.addAuthority(authority);
         }
     }
 
     @Transactional
-    void addSkills(){
+    void addSkills() {
         List<Skill> skills = new ArrayList<>();
         skills.add(new Skill("Energy"));
         skills.add(new Skill("Attention"));
@@ -128,20 +128,20 @@ public class PreloadController {
     }
 
     @Transactional
-    void addProviders(){
+    void addProviders() {
         System.out.println(System.getProperty("user.dir"));
         String path = "../../preload_data/Providers.csv";
         String testDate = "01-Ian-1910,13:00:14 PM";
         DateFormat formatter = new SimpleDateFormat("d-MMM-yyyy,HH:mm:ss aaa");
         Date date = new Date();
-        try{
+        try {
             List<String> lines = Files.lines(Paths.get(path)).collect(Collectors.toList());
-            for (String l: lines){
+            for (String l : lines) {
                 String[] parts = l.split(",");
                 Provider p = new Provider(parts[0], encoder.encode(parts[1]), parts[2], parts[3], parts[4], date);
                 providerService.insert(p);
             }
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -162,7 +162,7 @@ public class PreloadController {
                     Integer nrJobs = Integer.parseInt(parts[6]);
                     int count = 1;
                     for (int i = 0; i < nrJobs; i++) {
-                        Job j = new Job(parts[count + 6], parts[count + 7], Integer.parseInt(parts[count + 8]), Integer.parseInt(parts[count+9]));
+                        Job j = new Job(parts[count + 6], parts[count + 7], Integer.parseInt(parts[count + 8]), Integer.parseInt(parts[count + 9]), Date.from(Instant.parse(parts[count + 10])), Date.from(Instant.parse(parts[count + 11])));
                         j.setClient(c);
                         manageService.addJob(j);
                         count += 4;

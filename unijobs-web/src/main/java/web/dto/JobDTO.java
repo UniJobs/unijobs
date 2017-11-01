@@ -5,6 +5,7 @@ import core.model.Job;
 import core.model.Skill;
 import lombok.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,6 +33,10 @@ public class JobDTO {
 
     public String location;
 
+    public Date startDate;
+
+    public Date endDate;
+
     public List<Integer> skillIds;
 
     public JobDTO(Job job){
@@ -42,5 +47,7 @@ public class JobDTO {
         cost = job.getCost();
         hpw = job.getHoursPerWeek();
         location = job.getLocation();
+        startDate = job.getStartDate();
+        endDate = job.getEndDate();
     }
 }

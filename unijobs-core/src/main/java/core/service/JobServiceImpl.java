@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -76,6 +77,33 @@ public class JobServiceImpl implements JobService {
     public List<Job> getByCost(int cost) {
         log.trace("job service - get all by cost {}", cost);
         List<Job> res = jobRepository.getAllByCost(cost);
+        log.trace("job service - got them all");
+        return res;
+    }
+
+    @Override
+    @Transactional
+    public List<Job> getAllByStartDate(Date startDate) {
+        log.trace("job service - get all by start date {}", startDate);
+        List<Job> res = jobRepository.getAllByStartDate(startDate);
+        log.trace("job service - got them all");
+        return res;
+    }
+
+    @Override
+    @Transactional
+    public List<Job> getAllByEndDate(Date endDate) {
+        log.trace("job service - get all by end date {}", endDate);
+        List<Job> res = jobRepository.getAllByEndDate(endDate);
+        log.trace("job service - got them all");
+        return res;
+    }
+
+    @Override
+    @Transactional
+    public List<Job> getAllWhereStartDateGreaterOrEqualThanAndEndDateLessOrEqualThan(Date startDate, Date endDate) {
+        log.trace("job service - get all where start date greater or equal than and end date less or equal than {}", startDate, endDate);
+        List<Job> res = jobRepository.getAllWhereStartDateGreaterOrEqualThanAndEndDateLessOrEqualThan(startDate, endDate);
         log.trace("job service - got them all");
         return res;
     }

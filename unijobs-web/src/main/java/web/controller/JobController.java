@@ -14,6 +14,7 @@ import web.dto.JobDTO;
 import web.dtos.JobsDTO;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,5 +58,23 @@ public class JobController {
     @Transactional
     public JobsDTO getJobsByCost(@PathVariable Integer cost){
         return new JobsDTO(jobService.getByCost(cost).stream().map(j -> new JobDTO(j)).collect(Collectors.toList()));
+    }
+
+    @RequestMapping(value = "byStartDate/{startDate}", method = RequestMethod.POST)
+    @Transactional
+    public JobsDTO getJobsByStartDate(@PathVariable Date startDate){
+        return new JobsDTO(jobService.getAllByStartDate(startDate).stream().map(j -> new JobDTO(j)).collect(Collectors.toList()));
+    }
+
+    @RequestMapping(value = "byEndDate/{endDate}", method = RequestMethod.POST)
+    @Transactional
+    public JobsDTO getJobsByEndDate(@PathVariable Date endDate){
+        return new JobsDTO(jobService.getAllByEndDate(endDate).stream().map(j -> new JobDTO(j)).collect(Collectors.toList()));
+    }
+
+    @RequestMapping(value = "betweenDates/{startDate, endDate}", method = RequestMethod.POST)
+    @Transactional
+    public JobsDTO getJobsBetweenDates(@PathVariable Date startDate, @PathVariable Date endDate){
+        return new JobsDTO(jobService.getAllWhereStartDateGreaterOrEqualThanAndEndDateLessOrEqualThan(startDate, endDate).stream().map(j -> new JobDTO(j)).collect(Collectors.toList()));
     }
 }

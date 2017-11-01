@@ -4,6 +4,7 @@ import core.model.Job;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,5 +23,14 @@ public interface UniJobRepository extends BaseRepository<Job,Integer>{
 
     @Query("SELECT j FROM Job j WHERE j.cost = :cost")
     List<Job> getAllByCost(@Param("cost") Integer cost);
+
+    @Query("SELECT j FROM Job j WHERE j.startDate = :startDate")
+    List<Job> getAllByStartDate(@Param("startDate") Date startDate);
+
+    @Query("SELECT j FROM Job j WHERE j.endDate = :endDate")
+    List<Job> getAllByEndDate(@Param("endDate") Date endDate);
+
+    @Query("SELECT j FROM Job j WHERE j.startDate >= :startDate AND j.endDate <= :endDate")
+    List<Job> getAllWhereStartDateGreaterOrEqualThanAndEndDateLessOrEqualThan(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
 }
