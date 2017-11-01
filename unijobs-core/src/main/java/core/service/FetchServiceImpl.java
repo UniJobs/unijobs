@@ -69,6 +69,22 @@ public class FetchServiceImpl implements FetchService {
         return job;
     }
 
+    @Override
+    @Transactional
+    public UniUser getOneByUsername(String username) {
+        UniUser u = uniUserRepository.getUniUserByUsername(username);
+        System.out.println("user from service" + u);
+        return u;
+    }
+
+    @Override
+    public UniUser getOneById(Integer id) {
+        log.trace("Get user by id : id={}",id);
+        UniUser uniUser = uniUserRepository.getUniUserById(id);
+        log.trace("user returned by id={} is user={}",id,uniUser);
+        return uniUser;
+    }
+
 
     @Override
     public List<UniUser> getAllUsers() {

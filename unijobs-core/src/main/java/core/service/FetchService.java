@@ -12,6 +12,9 @@ public interface FetchService {
     List<Skill> getAllSkills();
     Skill findSkill(Long id);
 
+    UniUser getOneByUsername(String username);
+    UniUser getOneById(Integer id);
+
     List<Job> getAllJobs();
     Job findJob(Long id);
 

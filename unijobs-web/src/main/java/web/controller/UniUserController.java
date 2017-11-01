@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import web.dto.UniUserDTO;
 import web.dtos.UniUsersDTO;
@@ -25,6 +26,27 @@ public class UniUserController {
     @RequestMapping(value="/users", method = RequestMethod.GET)
     public UniUsersDTO getUsers(){
         return new UniUsersDTO(fetchService.getAllUsers());
+    }
+
+    @RequestMapping(value = "/getUserById")
+    public UniUserDTO getUserById(@RequestParam("userId") Integer userId){
+        log.trace("Get user by id : id={}",userId);
+        UniUser uniUser = fetchService.getOneById(userId);
+        log.trace("user returned by id={} is user={}",userId,uniUser);
+        return new UniUserDTO(uniUser);
+
+    }
+
+    @RequestMapping(value = "/getUserByName")
+    @Transactional
+    public UniUserDTO getUniUserByUsername(@RequestParam(value = "username", required = true) String username) {
+        System.out.println("username" + username);
+
+        UniUser u = fetchService.getOneByUsername(username);
+
+        UniUserDTO result = new UniUserDTO(u.getId(),u.getUsername(),u.getPassword(),u.getEmail(),u.getFirstname(),u.getLastname(),u.getDob());
+        System.out.println(result);
+        return result;
     }
 
     @RequestMapping(value = "/newUser", method = RequestMethod.POST)

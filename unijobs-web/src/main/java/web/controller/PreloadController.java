@@ -129,6 +129,7 @@ public class PreloadController {
 
     @Transactional
     void addProviders(){
+        System.out.println(System.getProperty("user.dir"));
         String path = "../../preload_data/Providers.csv";
         String testDate = "01-Ian-1910,13:00:14 PM";
         DateFormat formatter = new SimpleDateFormat("d-MMM-yyyy,HH:mm:ss aaa");
