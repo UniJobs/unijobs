@@ -11,6 +11,10 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+//TODO
+//DANGER
+//Class not working yet
+//Work in progress
 public class MailUtils {
 
     public static void sendMail(String mailSubject, String mailMessage, String recipientMailAddress) {
@@ -19,7 +23,6 @@ public class MailUtils {
         final String password = "unicodersSUCK";
 
         Properties props = new Properties();
-        props.setProperty("mail.smtp.host", "localhost");
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", "smtp.gmail.com");

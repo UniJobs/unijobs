@@ -13,4 +13,5 @@ public interface RequestService {
     List<Request> getAllForProvider(Provider provider);
     Request getOne(int id);
     void insert(Request request);
+    void clear();
 }

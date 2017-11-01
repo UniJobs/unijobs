@@ -14,6 +14,7 @@ import web.dtos.SkillsDTO;
 import java.util.ArrayList;
 
 @RestController
+@RequestMapping("/api/skill")
 public class SkillController {
     private static final Logger log = (Logger) LoggerFactory.getLogger(SkillController.class);
 

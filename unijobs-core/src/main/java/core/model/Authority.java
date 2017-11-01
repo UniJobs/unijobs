@@ -1,5 +1,7 @@
 package core.model;
 
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,10 +10,11 @@ import java.util.List;
 
 @Entity
 @Table(name="authorities")
+@NoArgsConstructor
 public class Authority {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String username;

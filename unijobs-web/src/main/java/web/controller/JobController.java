@@ -12,12 +12,13 @@ import web.dtos.JobsDTO;
  * Created by Cris on 10/24/2017.
  */
 @RestController
+@RequestMapping("/api/job")
 public class JobController {
     @Autowired
     FetchService fetchService;
 
     @Autowired
-    ManageService manageServicea;
+    ManageService manageService;
 
     @RequestMapping(value = "jobs", method = RequestMethod.GET)
     public JobsDTO getJobs(){return new JobsDTO(fetchService.getAllJobs());}

@@ -12,4 +12,5 @@ public interface SkillService {
     Skill getOne(int id);
     void insert(Skill skill);
     void update(int id, Skill skill);
+    void clear();
 }

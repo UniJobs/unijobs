@@ -5,10 +5,13 @@ import core.service.*;
 import javafx.util.Builder;
 import jdk.nashorn.internal.runtime.ParserException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import sun.security.x509.UniqueIdentity;
 
@@ -28,6 +31,7 @@ import java.util.stream.Collectors;
  * Created by Alex on 10/31/2017.
  */
 @RestController
+@RequestMapping("/api")
 public class PreloadController {
 
     private static final String dataPath = "D:\\ubb\\An 3Semestrul 1\\UnijobsBackend\\unijobs\\";
@@ -55,8 +59,29 @@ public class PreloadController {
     @Autowired
     ReviewService reviewService;
 
+    @Autowired
+    AuthorityService authorityService;
 
-    @RequestMapping(value = "doPreload")
+    private BCryptPasswordEncoder encoder =  new BCryptPasswordEncoder();
+
+    /*
+        !!! README !!!
+        preload is secured. To access the endpoints you will have to call the initAdmin first.
+        This will create one account {username:"admin", password:"admin"},
+        then log as an administrator and access the api/preload/doPreload or api/preload/clear apis.
+        Pay attention the initAdmin url is api/initAdmin.
+     */
+    @RequestMapping(value = "/initAdmin", method = RequestMethod.GET)
+    @Transactional
+    public String addAdmin(){
+        UniUser admin = UniUser.builder().username("admin").password(encoder.encode("admin")).enabled(true).build();
+        manageService.addUser(admin);
+        Authority authority = new Authority("admin","ADMIN");
+        authorityService.addAuthority(authority);
+        return "Done";
+    }
+
+    @RequestMapping(value = "/preload/doPreload", method = RequestMethod.POST)
     @Transactional
     public String preload()
     {
@@ -67,17 +92,31 @@ public class PreloadController {
         return "Preload complete!";
     }
 
+    @RequestMapping(value ="/preload/clearDB",method = RequestMethod.POST)
     @Transactional
-    private void addAuthorities(){
-        List<UniUser> allUsers = fetchService.getAllUsers();
+    public String clearDB(){
+        authorityService.clear();
+        manageService.clearJobs();
+        skillService.clear();
+        clientService.clear();
+        providerService.clear();
+        return "DB clear";
+    }
+
+    @Transactional
+    void addAuthorities(){
+        //Get all users expect the admin
+        List<UniUser> allUsers = fetchService.getAllUsers().stream()
+                .filter(u -> !u.getUsername().equals("admin")).collect(Collectors.toList());
+        Authority authority;
         for (UniUser u: allUsers){
-            Authority a = new Authority(u.getUsername(), "user");
-            manageService.addAuthority(a);
+            authority = new Authority(u.getUsername(), "user");
+            authorityService.addAuthority(authority);
         }
     }
 
     @Transactional
-    private void addSkills(){
+    void addSkills(){
         List<Skill> skills = new ArrayList<>();
         skills.add(new Skill("Energy"));
         skills.add(new Skill("Attention"));
@@ -85,15 +124,14 @@ public class PreloadController {
         skills.add(new Skill("Stamina"));
         skills.add(new Skill("Passion"));
 
-        skills.stream().forEach(s -> skillService.insert(s));
+        skills.forEach(s -> skillService.insert(s));
     }
 
     @Transactional
-    private void addProviders(){
-        String path = "D:\\ubb\\An 3 Semestrul 1\\UnijobsBackend\\unijobs\\preload_data\\Providers.csv";
+    void addProviders(){
+        String path = "../../preload_data/Providers.csv";
         String testDate = "01-Ian-1910,13:00:14 PM";
         DateFormat formatter = new SimpleDateFormat("d-MMM-yyyy,HH:mm:ss aaa");
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         Date date = new Date();
         try{
             List<String> lines = Files.lines(Paths.get(path)).collect(Collectors.toList());
@@ -108,12 +146,11 @@ public class PreloadController {
     }
 
     @Transactional
-    private void addClients() {
-        String path = "D:\\ubb\\An 3 Semestrul 1\\UnijobsBackend\\unijobs\\preload_data\\Clients.csv";
+    void addClients() {
+        String path = "../../preload_data/Clients.csv";
         String testDate = "21-Apr-1900,13:00:14 PM";
         DateFormat formatter = new SimpleDateFormat("d-MMM-yyyy,HH:mm:ss aaa");
         Date date = new Date();
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         try {
             List<String> lines = Files.lines(Paths.get(path)).collect(Collectors.toList());
             for (String l : lines) {
@@ -137,4 +174,5 @@ public class PreloadController {
             e.printStackTrace();
         }
     }
+
 }

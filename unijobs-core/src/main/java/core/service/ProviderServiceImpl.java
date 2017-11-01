@@ -54,4 +54,11 @@ public class ProviderServiceImpl implements ProviderService{
         log.trace("provider service - added skill");
     }
 
+    @Override
+    public void clear() {
+        log.trace("clear Providers");
+        providerRepository.deleteAll();
+        log.trace("Providers cleared");
+    }
+
 }

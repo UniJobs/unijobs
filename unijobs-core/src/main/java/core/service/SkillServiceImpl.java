@@ -57,4 +57,11 @@ public class SkillServiceImpl implements SkillService {
 
         log.trace("updatedSkill: skill={}", skillUpdated);
     }
+
+    @Override
+    public void clear() {
+        log.trace("[SKILL] clear");
+        skillRepository.deleteAll();
+        log.trace("[SKILL] cleared");
+    }
 }

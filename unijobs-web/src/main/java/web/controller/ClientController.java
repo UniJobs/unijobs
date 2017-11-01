@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
  */
 
 @RestController
+@RequestMapping("/api/client")
 public class ClientController {
     private static final Logger log = LoggerFactory.getLogger(ClientController.class);
 

@@ -15,4 +15,5 @@ public interface RecommendationService {
 
     Recommendation findOne(int id);
     void insert(Recommendation recommendation);
+    void clear();
 }

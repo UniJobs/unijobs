@@ -42,4 +42,11 @@ public class ClientServiceImpl implements ClientService {
         repository.save(client);
         log.trace("inserted him");
     }
+
+    @Override
+    public void clear(){
+        log.trace("clear Clients");
+        repository.deleteAll();
+        log.trace("Clients cleared");
+    }
 }

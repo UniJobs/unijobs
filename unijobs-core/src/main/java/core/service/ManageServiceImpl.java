@@ -38,16 +38,11 @@ public class ManageServiceImpl implements ManageService{
 
     @Override
     @Transactional
-    public void updateUser(Long userId, UniUser user) {
+    public void updateUser(UniUser user) {
         log.trace("updateUser: user={}", user);
 
-        UniUser userUpdated = uniUserRepository.findOne(userId);
-        userUpdated.setDob(user.getDob());
-        userUpdated.setLastname(user.getLastname());
-        userUpdated.setFirstname(user.getFirstname());
-        userUpdated.setPassword(user.getPassword());
-
-        log.trace("updatedUser: user={}", userUpdated);
+        uniUserRepository.save(user);
+        log.trace("updatedUser: user={}", user);
     }
 
     @Override
@@ -72,6 +67,14 @@ public class ManageServiceImpl implements ManageService{
     }
 
     @Override
+    public void clearJobs() {
+        log.trace("clear Jobs");
+        uniJobRepository.deleteAll();
+        log.trace("Jobs cleared");
+    }
+
+
+    @Override
     public void addTemporaryUser(TemporaryUser temporaryUser){
         log.trace("addTemporaryUser temporaryUser= {}", temporaryUser);
 
@@ -84,10 +87,4 @@ public class ManageServiceImpl implements ManageService{
     public void removeTemporaryUser(TemporaryUser temporaryUser){
         temporaryUserRepository.delete(temporaryUser);
     }
-
-    @Override
-    public void addAuthority(Authority a){
-        authorityRepository.save(a);
-    }
-
 }

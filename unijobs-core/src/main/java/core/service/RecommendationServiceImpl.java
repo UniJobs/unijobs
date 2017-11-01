@@ -57,4 +57,11 @@ public class RecommendationServiceImpl implements RecommendationService{
         recommendationRepository.save(recommendation);
         log.trace("recommednation service - inserted one");
     }
+
+    @Override
+    public void clear() {
+        log.trace("clear Recommendations");
+        recommendationRepository.deleteAll();
+        log.trace("recommendations cleared");
+    }
 }

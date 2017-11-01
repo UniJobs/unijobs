@@ -11,10 +11,7 @@ import core.utils.MailUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
@@ -57,8 +54,8 @@ public class SecurityController {
         return new Response(authentication.getAuthorities().toString());
     }
 
-    @RequestMapping("/registerUser")
-    public String registerUser(TemporaryUser temporaryUser){
+    @RequestMapping(value = "/api/registerUser", method = RequestMethod.POST)
+    public String registerUser(@RequestBody final TemporaryUser temporaryUser){
 
         //Check for duplicates
         List<UniUser> users = fetchService.getAllUsers();
@@ -87,7 +84,7 @@ public class SecurityController {
         return "confirmMail";
     }
 
-    @RequestMapping("/validate")
+    @RequestMapping("/api/validate")
     public String validateUser(@RequestParam String token){
         try{
             TemporaryUser temporaryUser = fetchService.getTemporaryUserById((long) Integer.parseInt(decrypt(token)));

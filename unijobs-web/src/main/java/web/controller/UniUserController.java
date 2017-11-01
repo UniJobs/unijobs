@@ -12,6 +12,7 @@ import web.dto.UniUserDTO;
 import web.dtos.UniUsersDTO;
 
 @RestController
+@RequestMapping("/api/user")
 public class UniUserController {
     private static final Logger log = LoggerFactory.getLogger(UniUserController.class);
 
@@ -21,12 +22,12 @@ public class UniUserController {
     @Autowired
     ManageService manageService;
 
-    @RequestMapping(value="users", method = RequestMethod.GET)
+    @RequestMapping(value="/users", method = RequestMethod.GET)
     public UniUsersDTO getUsers(){
         return new UniUsersDTO(fetchService.getAllUsers());
     }
 
-    @RequestMapping(value = "/newuser", method = RequestMethod.POST)
+    @RequestMapping(value = "/newUser", method = RequestMethod.POST)
     public UniUserDTO addUser(
             @RequestBody final UniUserDTO userDTO){
 
@@ -49,15 +50,15 @@ public class UniUserController {
         return new UniUserDTO(user);
     }
 
-    @RequestMapping(value = "/users/{userId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/updateUser", method = RequestMethod.POST)
     public UniUserDTO updateUser(
-            @PathVariable final Long userId,
             @RequestBody final UniUserDTO userDTO){
-        log.trace("updateUser: userId={}, userDTO={}", userId, userDTO);
+        log.trace("updateUser: userId={}, userDTO={}", userDTO.getId(), userDTO);
 
         UniUser user;
         try {
             user = UniUser.builder()
+                    .id(userDTO.getId())
                     .email(userDTO.getEmail())
                     .username(userDTO.getUsername())
                     .password(userDTO.getPassword())
@@ -65,7 +66,7 @@ public class UniUserController {
                     .firstname(userDTO.getFirstname())
                     .lastname(userDTO.getLastname())
                     .build();
-            manageService.updateUser(userId, user);
+            manageService.updateUser(user);
         } catch (DataIntegrityViolationException e) {
             user = UniUser.builder().build();
             log.trace("not updated user={}", user);

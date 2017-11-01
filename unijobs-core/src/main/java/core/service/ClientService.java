@@ -13,4 +13,5 @@ public interface ClientService {
     List<Client> getAll();
     Client getOne(int id);
     void insert(Client client);
+    void clear();
 }

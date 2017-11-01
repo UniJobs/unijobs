@@ -11,4 +11,5 @@ public interface ReviewService {
     List<Review> getAll();
     Review getOne(int id);
     void insert(Review review);
+    void clear();
 }

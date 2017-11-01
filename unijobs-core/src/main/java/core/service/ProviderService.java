@@ -14,4 +14,6 @@ public interface ProviderService {
     void insert(Provider provider);
 
     void addSkill(int id, Skill skill);
+    void clear();
+
 }
