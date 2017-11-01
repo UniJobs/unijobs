@@ -1,12 +1,15 @@
 package web.controller;
 
+import core.model.Authority;
 import core.model.UniUser;
+import core.service.AuthorityService;
 import core.service.FetchService;
 import core.service.ManageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import web.dto.UniUserDTO;
@@ -23,6 +26,9 @@ public class UniUserController {
     @Autowired
     ManageService manageService;
 
+    @Autowired
+    AuthorityService authorityService;
+
     @RequestMapping(value="/users", method = RequestMethod.GET)
     public UniUsersDTO getUsers(){
         return new UniUsersDTO(fetchService.getAllUsers());
@@ -31,7 +37,7 @@ public class UniUserController {
     @RequestMapping(value = "/getUserById")
     public UniUserDTO getUserById(@RequestParam("userId") Integer userId){
         log.trace("Get user by id : id={}",userId);
-        UniUser uniUser = fetchService.getOneById(userId);
+        UniUser uniUser = fetchService.getUserById(userId);
         log.trace("user returned by id={} is user={}",userId,uniUser);
         return new UniUserDTO(uniUser);
 
@@ -42,7 +48,7 @@ public class UniUserController {
     public UniUserDTO getUniUserByUsername(@RequestParam(value = "username", required = true) String username) {
         System.out.println("username" + username);
 
-        UniUser u = fetchService.getOneByUsername(username);
+        UniUser u = fetchService.getUserByUsername(username);
 
         UniUserDTO result = new UniUserDTO(u.getId(),u.getUsername(),u.getPassword(),u.getEmail(),u.getFirstname(),u.getLastname(),u.getDob());
         System.out.println(result);
@@ -55,11 +61,13 @@ public class UniUserController {
 
         log.trace("addUser: userDto={}", userDTO);
         UniUser user;
+        user = fetchService.getUserByUsername(userDTO.getUsername());
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         try {
             user = UniUser.builder()
                     .email(userDTO.getEmail())
                     .username(userDTO.getUsername())
-                    .password(userDTO.getPassword())
+                    .password(encoder.encode(userDTO.getPassword()))
                     .dob(null)
                     .firstname(null)
                     .lastname(null)
@@ -78,17 +86,22 @@ public class UniUserController {
         log.trace("updateUser: userId={}, userDTO={}", userDTO.getId(), userDTO);
 
         UniUser user;
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
         try {
             user = UniUser.builder()
                     .id(userDTO.getId())
                     .email(userDTO.getEmail())
                     .username(userDTO.getUsername())
-                    .password(userDTO.getPassword())
+                    .password(encoder.encode(userDTO.getPassword()))
                     .dob(userDTO.getDob())
                     .firstname(userDTO.getFirstname())
                     .lastname(userDTO.getLastname())
+                    .enabled(true)
                     .build();
             manageService.updateUser(user);
+            Authority authority = new Authority(user.getUsername(),"USER");
+            authorityService.addAuthority(authority);
         } catch (DataIntegrityViolationException e) {
             user = UniUser.builder().build();
             log.trace("not updated user={}", user);
