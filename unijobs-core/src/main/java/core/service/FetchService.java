@@ -16,7 +16,7 @@ public interface FetchService {
     UniUser getOneById(Integer id);
 
     List<Job> getAllJobs();
-    Job findJob(Long id);
+    Job findJob(int id);
 
     List<UniUser> getAllUsers();
     List<TemporaryUser> getAllTemporaryUsers();

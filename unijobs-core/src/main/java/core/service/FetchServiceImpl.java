@@ -61,7 +61,7 @@ public class FetchServiceImpl implements FetchService {
     }
 
     @Override
-    public Job findJob(Long id) {
+    public Job findJob(int id) {
         log.trace("findJob()");
         Job job = uniJobRepository.findOne(id);
         log.trace("findJob: job = {}", job);

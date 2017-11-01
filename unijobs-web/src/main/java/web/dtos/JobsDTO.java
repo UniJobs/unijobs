@@ -21,8 +21,8 @@ import java.util.stream.Collectors;
 public class JobsDTO {
     List<JobDTO> jobs;
 
-    public JobsDTO(List<Job> jobs){
-        this.jobs = jobs.stream().map(JobDTO::new).collect(Collectors.toList());
+    public JobsDTO(List<JobDTO> jobDTOS){
+        this.jobs = jobDTOS;
     }
 
     public void addJob(Job job){jobs.add(new JobDTO(job));}

@@ -6,6 +6,7 @@ import core.model.Skill;
 import lombok.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Cris on 10/24/2017.
@@ -21,16 +22,25 @@ public class JobDTO {
 
     public Integer id;
 
-    public String descriiption;
+    public String description;
 
-    public Client client;
+    public Integer hpw;
 
-    public List<Skill> skills;
+    public Integer cost;
+
+    public Integer clientId;
+
+    public String location;
+
+    public List<Integer> skillIds;
 
     public JobDTO(Job job){
         id = job.getId();
-        descriiption = job.getDescription();
-        client = job.getClient();
-        skills = job.getSkills();
+        description = job.getDescription();
+        clientId = job.getClient().getId();
+        skillIds = job.getSkills().stream().map(s -> s.getId()).collect(Collectors.toList());
+        cost = job.getCost();
+        hpw = job.getHoursPerWeek();
+        location = job.getLocation();
     }
 }
