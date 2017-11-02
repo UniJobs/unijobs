@@ -33,7 +33,7 @@ public class Provider extends UniUser {
         this.requests.add(request);
     }
 
-    public Provider(String username, String password, String email, String firstname, String lastname, Date dob){
-        super(username, password, email, firstname, lastname, dob);
+    public Provider(String username, String password, String email, String firstname, String lastname, Date dob, String phone){
+        super(username, password, email, firstname, lastname, dob, phone);
     }
 }

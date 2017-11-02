@@ -15,6 +15,10 @@ import org.springframework.web.bind.annotation.*;
 import web.dto.UniUserDTO;
 import web.dtos.UniUsersDTO;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 @RestController
 @RequestMapping("/api/user")
 public class UniUserController {
@@ -30,6 +34,7 @@ public class UniUserController {
     AuthorityService authorityService;
 
     @RequestMapping(value="/users", method = RequestMethod.GET)
+    @Transactional
     public UniUsersDTO getUsers(){
         return new UniUsersDTO(fetchService.getAllUsers());
     }
@@ -50,7 +55,7 @@ public class UniUserController {
 
         UniUser u = fetchService.getUserByUsername(username);
 
-        UniUserDTO result = new UniUserDTO(u.getId(),u.getUsername(),u.getPassword(),u.getEmail(),u.getFirstname(),u.getLastname(),u.getDob());
+        UniUserDTO result = new UniUserDTO(u);
         System.out.println(result);
         return result;
     }
@@ -87,14 +92,14 @@ public class UniUserController {
 
         UniUser user;
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
+        DateFormat formatter = new SimpleDateFormat("d-MMM-yyyy");
         try {
             user = UniUser.builder()
                     .id(userDTO.getId())
                     .email(userDTO.getEmail())
                     .username(userDTO.getUsername())
                     .password(encoder.encode(userDTO.getPassword()))
-                    .dob(userDTO.getDob())
+                    .dob(formatter.parse(userDTO.getDob()))
                     .firstname(userDTO.getFirstname())
                     .lastname(userDTO.getLastname())
                     .enabled(true)
@@ -102,7 +107,7 @@ public class UniUserController {
             manageService.updateUser(user);
             Authority authority = new Authority(user.getUsername(),"USER");
             authorityService.addAuthority(authority);
-        } catch (DataIntegrityViolationException e) {
+        } catch (DataIntegrityViolationException | ParseException e) {
             user = UniUser.builder().build();
             log.trace("not updated user={}", user);
         }

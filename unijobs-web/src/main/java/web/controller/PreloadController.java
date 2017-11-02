@@ -131,17 +131,15 @@ public class PreloadController {
     void addProviders() {
         System.out.println(System.getProperty("user.dir"));
         String path = "../../preload_data/Providers.csv";
-        String testDate = "01-Ian-1910,13:00:14 PM";
-        DateFormat formatter = new SimpleDateFormat("d-MMM-yyyy,HH:mm:ss aaa");
-        Date date = new Date();
+        DateFormat formatter = new SimpleDateFormat("d-MMM-yyyy");
         try {
             List<String> lines = Files.lines(Paths.get(path)).collect(Collectors.toList());
             for (String l : lines) {
                 String[] parts = l.split(",");
-                Provider p = new Provider(parts[0], encoder.encode(parts[1]), parts[2], parts[3], parts[4], date);
+                Provider p = new Provider(parts[0], encoder.encode(parts[1]), parts[2], parts[3], parts[4], formatter.parse(parts[5]), parts[6]);
                 providerService.insert(p);
             }
-        } catch (IOException e) {
+        } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
     }
@@ -149,15 +147,13 @@ public class PreloadController {
     @Transactional
     void addClients() {
         String path = "../../preload_data/Clients.csv";
-        String testDate = "21-Apr-1900,13:00:14 PM";
-        DateFormat formatter = new SimpleDateFormat("d-MMM-yyyy,HH:mm:ss aaa");
-        Date date = new Date();
+        DateFormat formatter = new SimpleDateFormat("d-MMM-yyyy");
         try {
             List<String> lines = Files.lines(Paths.get(path)).collect(Collectors.toList());
             for (String l : lines) {
                 String[] parts = l.split(",");
                 try {
-                    Client c = new Client(parts[0], encoder.encode(parts[1]), parts[2], parts[3], parts[4], date);
+                    Client c = new Client(parts[0], encoder.encode(parts[1]), parts[2], parts[3], parts[4],formatter.parse(parts[5]), parts[6]);
                     clientService.insert(c);
                     Integer nrJobs = Integer.parseInt(parts[6]);
                     int count = 1;

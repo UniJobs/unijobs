@@ -47,19 +47,23 @@ public class UniUser {
     @Column
     private Date dob;
 
+    @Column
+    private String phone;
+
     @OneToMany(mappedBy = "reviewer", fetch = FetchType.LAZY)
     private List<Review> reviewerReviews = new ArrayList<>();
 
     @OneToMany(mappedBy = "reviewed", fetch = FetchType.LAZY)
     private List<Review> reviewedReviews = new ArrayList<>();
 
-    public UniUser(String username, String password, String email, String firstname, String lastname, Date dob){
+    public UniUser(String username, String password, String email, String firstname, String lastname, Date dob, String phone){
         this.username = username;
         this.password = password;
         this.email = email;
         this.firstname = firstname;
         this.lastname = lastname;
         this.dob = dob;
+        this.phone = phone;
     }
 
     //TODO: picture representation ???

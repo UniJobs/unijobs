@@ -32,8 +32,8 @@ public class Client extends UniUser {
     @OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
     private List<Job> myJobs = new ArrayList<>();
 
-    public Client(String username, String password, String email, String firstname, String lastname, Date dob){
-        super(username, password, email, firstname, lastname, dob);
+    public Client(String username, String password, String email, String firstname, String lastname, Date dob, String phone){
+        super(username, password, email, firstname, lastname, dob, phone);
     }
 
     public void addRequest(Request request){

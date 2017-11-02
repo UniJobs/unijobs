@@ -13,18 +13,13 @@ import java.util.Date;
 @Builder
 public class UniUserDTO {
     public Integer id;
-
     private String username;
-
     private String password;
-
     private String email;
-
     private String firstname;
-
     private String lastname;
-
-    private Date dob;
+    private String dob;
+    private String phone;
 
     //The reviews lists were not added now after a stand-up with Bogdan and SCRUM Master, Alexandra!!!
 
@@ -35,6 +30,7 @@ public class UniUserDTO {
         email = user.getEmail();
         firstname = user.getFirstname();
         lastname = user.getLastname();
-        dob = user.getDob();
+        dob = user.getDob().toString();
+        phone  = user.getPhone();
     }
 }
