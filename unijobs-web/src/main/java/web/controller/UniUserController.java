@@ -12,12 +12,14 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import sun.util.calendar.BaseCalendar;
 import web.dto.UniUserDTO;
 import web.dtos.UniUsersDTO;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @RestController
 @RequestMapping("/api/user")
@@ -92,16 +94,21 @@ public class UniUserController {
 
         UniUser user;
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        DateFormat formatter = new SimpleDateFormat("d-MMM-yyyy");
+        DateFormat recievedFormat = new SimpleDateFormat("dd/mm/yyyy");
+        DateFormat formatterDB = new SimpleDateFormat("d-MMM-yyyy");
+
         try {
+            Date date = recievedFormat.parse(userDTO.getDob());
+            String dbDate = formatterDB.format(date);
             user = UniUser.builder()
                     .id(userDTO.getId())
                     .email(userDTO.getEmail())
                     .username(userDTO.getUsername())
                     .password(encoder.encode(userDTO.getPassword()))
-                    .dob(formatter.parse(userDTO.getDob()))
+                    .dob(formatterDB.parse(dbDate))
                     .firstname(userDTO.getFirstname())
                     .lastname(userDTO.getLastname())
+                    .phone(userDTO.getPhone())
                     .enabled(true)
                     .build();
             manageService.updateUser(user);

@@ -30,7 +30,8 @@ public class UniUserDTO {
         email = user.getEmail();
         firstname = user.getFirstname();
         lastname = user.getLastname();
-        dob = user.getDob().toString();
+        if(user.getDob()!=null)
+            dob = user.getDob().toString();
         phone  = user.getPhone();
     }
 }
