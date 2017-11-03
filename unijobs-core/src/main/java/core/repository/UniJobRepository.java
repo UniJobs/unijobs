@@ -12,10 +12,10 @@ import java.util.List;
  */
 public interface UniJobRepository extends BaseRepository<Job,Integer>{
 
-    @Query("SELECT j FROM Job j WHERE j.description = :description")
+    @Query("SELECT j FROM Job j WHERE j.description  LIKE CONCAT('%',:description,'%')")
     List<Job> getAllByDescription(@Param("description") String description);
 
-    @Query("SELECT j FROM Job j WHERE j.location = :location")
+    @Query("SELECT j FROM Job j WHERE j.location LIKE CONCAT('%',:location,'%')")
     List<Job> getAllByLocation(@Param("location") String location);
 
     @Query("SELECT j FROM Job j WHERE j.hoursPerWeek = :hpw")
