@@ -4,6 +4,8 @@ import core.model.*;
 import core.service.*;
 import javafx.util.Builder;
 import jdk.nashorn.internal.runtime.ParserException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -35,7 +37,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api")
 public class PreloadController {
 
-    private static final String dataPath = "D:\\ubb\\An 3Semestrul 1\\UnijobsBackend\\unijobs\\";
+    private final static Logger log = LoggerFactory.getLogger(PreloadController.class);
     @Autowired
     SkillService skillService;
 
@@ -140,7 +142,7 @@ public class PreloadController {
                 providerService.insert(p);
             }
         } catch (IOException | ParseException e) {
-            e.printStackTrace();
+            log.trace("ERROR !!!!!!! " + e.getMessage());
         }
     }
 
@@ -155,16 +157,21 @@ public class PreloadController {
                 try {
                     Client c = new Client(parts[0], encoder.encode(parts[1]), parts[2], parts[3], parts[4],formatter.parse(parts[5]), parts[6]);
                     clientService.insert(c);
-                    Integer nrJobs = Integer.parseInt(parts[6]);
+                    Integer nrJobs = Integer.parseInt(parts[7]);
                     int count = 1;
                     for (int i = 0; i < nrJobs; i++) {
-                        Job j = new Job(parts[count + 6], parts[count + 7], Integer.parseInt(parts[count + 8]), Integer.parseInt(parts[count + 9]), Date.from(Instant.parse(parts[count + 10])), Date.from(Instant.parse(parts[count + 11])));
+                        Job j = new Job(parts[count + 7],
+                                parts[count + 8],
+                                Integer.parseInt(parts[count + 9]),
+                                Integer.parseInt(parts[count + 10]),
+                                formatter.parse(parts[count + 11]),
+                                formatter.parse(parts[count + 12]));
                         j.setClient(c);
                         manageService.addJob(j);
-                        count += 4;
+                        count += 6;
                     }
                 } catch (Exception e) {
-                    System.out.println(e.getMessage());
+                    log.trace("ERROR !!!!!!!!!!!!!" + e.getMessage());
                 }
             }
         } catch (IOException e) {
