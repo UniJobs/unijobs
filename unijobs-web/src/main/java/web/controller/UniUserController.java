@@ -73,11 +73,11 @@ public class UniUserController {
         try {
             user = UniUser.builder()
                     .email(userDTO.getEmail())
-                    .username(userDTO.getUsername())
+                    .username(userDTO.getEmail())
                     .password(encoder.encode(userDTO.getPassword()))
                     .dob(null)
-                    .firstname(null)
-                    .lastname(null)
+                    .firstname(userDTO.getFirstname())
+                    .lastname(userDTO.getLastname())
                     .build();
             manageService.addUser(user);
         } catch (DataIntegrityViolationException e) {
