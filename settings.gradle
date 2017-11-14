@@ -1,0 +1,4 @@
+rootProject.name = 'unijobs'
+include 'unijobs-core'
+include 'unijobs-web'
+
