@@ -5,8 +5,7 @@ package web.security;
  */
 import core.model.TemporaryUser;
 import core.model.UniUser;
-import core.service.FetchService;
-import core.service.ManageService;
+import core.service.UniUserService;
 import core.utils.MailUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -36,11 +35,8 @@ public class SecurityController {
         }
     }
 
-    @Autowired
-    FetchService fetchService;
-
-    @Autowired
-    ManageService manageService;
+   @Autowired
+    UniUserService uniUserService;
 
     @RequestMapping(value = "/api/username", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
@@ -58,7 +54,7 @@ public class SecurityController {
     public String registerUser(@RequestBody final TemporaryUser temporaryUser){
 
         //Check for duplicates
-        List<UniUser> users = fetchService.getAllUsers();
+        List<UniUser> users = uniUserService.getAllUsers();
         UniUser u = null;
         for (int i = 0; i < users.size(); i++) {
             u = users.get(i);
@@ -68,7 +64,7 @@ public class SecurityController {
         }
 
         //save user until validation
-        manageService.addTemporaryUser(temporaryUser);
+        uniUserService.addTemporaryUser(temporaryUser);
 
         //Send mail
         String subject = "Unijobs Acount validation !\n";
@@ -87,10 +83,10 @@ public class SecurityController {
     @RequestMapping("/api/validate")
     public String validateUser(@RequestParam String token){
         try{
-            TemporaryUser temporaryUser = fetchService.getTemporaryUserById((long) Integer.parseInt(decrypt(token)));
+            TemporaryUser temporaryUser = uniUserService.getTemporaryUserById((long) Integer.parseInt(decrypt(token)));
             UniUser user = temporaryUser.toUser();
-            manageService.addUser(user);
-            manageService.removeTemporaryUser(temporaryUser);
+            uniUserService.addUser(user);
+            uniUserService.removeTemporaryUser(temporaryUser);
             return "You have registereded";
         }catch (Exception ex){
             return "Something went wrong when validating account!";

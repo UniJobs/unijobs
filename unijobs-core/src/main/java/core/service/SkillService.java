@@ -13,4 +13,5 @@ public interface SkillService {
     void insert(Skill skill);
     void update(int id, Skill skill);
     void clear();
+    Skill getSkillByDescription(String description);
 }

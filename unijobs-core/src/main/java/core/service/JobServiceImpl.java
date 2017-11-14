@@ -46,6 +46,13 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
+    public void clear() {
+        log.trace("job service - remove all");
+        jobRepository.deleteAll();
+        log.trace("job service - done removing");
+    }
+
+    @Override
     @Transactional
     public List<Job> getByDescription(String description) {
         log.trace("job service - get all by description {}", description);
@@ -101,9 +108,9 @@ public class JobServiceImpl implements JobService {
 
     @Override
     @Transactional
-    public List<Job> getAllWhereStartDateGreaterOrEqualThanAndEndDateLessOrEqualThan(Date startDate, Date endDate) {
+    public List<Job> getAllBetweenDates(Date startDate, Date endDate) {
         log.trace("job service - get all where start date greater or equal than and end date less or equal than {}", startDate, endDate);
-        List<Job> res = jobRepository.getAllWhereStartDateGreaterOrEqualThanAndEndDateLessOrEqualThan(startDate, endDate);
+        List<Job> res = jobRepository.getAllBetweenDates(startDate, endDate);
         log.trace("job service - got them all");
         return res;
     }

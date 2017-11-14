@@ -1,12 +1,8 @@
 package core.service;
 
-import core.model.Job;
-import core.model.Skill;
 import core.model.TemporaryUser;
 import core.model.UniUser;
-import core.repository.SkillRepository;
 import core.repository.TemporaryUserRepository;
-import core.repository.UniJobRepository;
 import core.repository.UniUserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,58 +12,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Created by Alex on 11/13/2017.
+ */
 @Service
-public class FetchServiceImpl implements FetchService {
-    private static final Logger log = LoggerFactory.getLogger(FetchService.class);
+public class UniUserServiceImpl implements UniUserService{
 
-    @Autowired
-    SkillRepository skillRepository;
+    private static final Logger log = LoggerFactory.getLogger(UniUserService.class);
 
     @Autowired
     UniUserRepository uniUserRepository;
 
     @Autowired
-    UniJobRepository uniJobRepository;
-
-
-    @Autowired
     TemporaryUserRepository temporaryUserRepository;
-
-    @Override
-    public List<Skill> getAllSkills() {
-        log.trace("getAllSkills()");
-        List<Skill> skills = skillRepository.findAll();
-        log.trace("getAllSkills: skills = {}", skills);
-
-        return skills;
-    }
-
-    @Override
-    public Skill findSkill(Long id) {
-        log.trace("findSkill()");
-        Skill skill = skillRepository.findOne(id);
-        log.trace("findskill: skill = {}", skill);
-
-        return skill;
-    }
-
-    @Override
-    public List<Job> getAllJobs() {
-        log.trace("getAllJobs()");
-        List<Job> jobs = uniJobRepository.findAll();
-        log.trace("getAllJobs: jobs = {}", jobs);
-
-        return jobs;
-    }
-
-    @Override
-    public Job findJob(int id) {
-        log.trace("findJob()");
-        Job job = uniJobRepository.findOne(id);
-        log.trace("findJob: job = {}", job);
-
-        return job;
-    }
 
     @Override
     @Transactional
@@ -84,7 +41,6 @@ public class FetchServiceImpl implements FetchService {
         log.trace("user returned by id={} is user={}",id,uniUser);
         return uniUser;
     }
-
 
     @Override
     public List<UniUser> getAllUsers() {
@@ -105,5 +61,45 @@ public class FetchServiceImpl implements FetchService {
     @Override
     public TemporaryUser getTemporaryUserById(Long id){
         return temporaryUserRepository.findOne(id);
+    }
+
+    @Override
+    @Transactional
+    public void addUser(UniUser user) {
+        log.trace("createUser: user={}", user);
+
+        user = uniUserRepository.save(user);
+
+        log.trace("createUser: user={}", user);
+    }
+
+    @Override
+    @Transactional
+    public void updateUser(UniUser user) {
+        log.trace("updateUser: user={}", user);
+
+        uniUserRepository.save(user);
+        log.trace("updatedUser: user={}", user);
+    }
+
+    @Override
+    public void clear() {
+        log.trace("remove all users begin");
+        uniUserRepository.deleteAll();
+        log.trace("remove all users end");
+    }
+
+    @Override
+    public void addTemporaryUser(TemporaryUser temporaryUser){
+        log.trace("addTemporaryUser temporaryUser= {}", temporaryUser);
+
+        temporaryUserRepository.save(temporaryUser);
+
+        log.trace("addTemporaryUser: temporaryUser = {}", temporaryUser);
+    }
+
+    @Override
+    public void removeTemporaryUser(TemporaryUser temporaryUser){
+        temporaryUserRepository.delete(temporaryUser);
     }
 }

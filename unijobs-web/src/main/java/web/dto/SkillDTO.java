@@ -1,7 +1,5 @@
 package web.dto;
 
-import core.model.Job;
-import core.model.Provider;
 import core.model.Skill;
 import lombok.*;
 
@@ -23,13 +21,13 @@ public class SkillDTO {
 
     public List<Integer> jobIds;
 
-    public List<Integer> providerIds;
+    public List<Integer> uniUserIds;
 
     public SkillDTO(Skill skill){
         id = skill.getId();
         description = skill.getDescription();
         jobIds = skill.getJobs().stream().map(j -> j.getId()).collect(Collectors.toList());
-        providerIds = skill.getProviders().stream().map(p -> p.getId()).collect(Collectors.toList());
+        uniUserIds = skill.getUniUsers().stream().map(u -> u.getId()).collect(Collectors.toList());
     }
 
 }

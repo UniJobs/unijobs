@@ -53,7 +53,7 @@ public class SkillServiceImpl implements SkillService {
         Skill skillUpdated = skillRepository.findOne((long)id);
         skillUpdated.setDescription(skill.getDescription());
         skillUpdated.setJobs(skill.getJobs());
-        skillUpdated.setProviders(skill.getProviders());
+        skillUpdated.setUniUsers(skill.getUniUsers());
 
         log.trace("updatedSkill: skill={}", skillUpdated);
     }
@@ -63,5 +63,13 @@ public class SkillServiceImpl implements SkillService {
         log.trace("[SKILL] clear");
         skillRepository.deleteAll();
         log.trace("[SKILL] cleared");
+    }
+
+    @Override
+    public Skill getSkillByDescription(String description) {
+        log.trace("[SKILL] get by description {}", description);
+        Skill res =  skillRepository.getSkillByDescription(description);
+        log.trace("[SKILL] got it! {}", res.toString());
+        return res;
     }
 }

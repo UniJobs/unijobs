@@ -14,6 +14,7 @@ public interface JobService {
     List<Job> getAll();
     Job getOne(int id);
     void insert(Job job);
+    void clear();
 
     List<Job> getByDescription(String description);
     List<Job> getByLocation(String location);
@@ -21,7 +22,7 @@ public interface JobService {
     List<Job> getByCost(int cost);
     List<Job> getAllByStartDate(Date startDate);
     List<Job> getAllByEndDate(Date endDate);
-    List<Job> getAllWhereStartDateGreaterOrEqualThanAndEndDateLessOrEqualThan(Date startDate, Date endDate);
+    List<Job> getAllBetweenDates(Date startDate, Date endDate);
 
 
 }

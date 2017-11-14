@@ -31,6 +31,6 @@ public interface UniJobRepository extends BaseRepository<Job,Integer>{
     List<Job> getAllByEndDate(@Param("endDate") Date endDate);
 
     @Query("SELECT j FROM Job j WHERE j.startDate >= :startDate AND j.endDate <= :endDate")
-    List<Job> getAllWhereStartDateGreaterOrEqualThanAndEndDateLessOrEqualThan(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
+    List<Job> getAllBetweenDates(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
 }

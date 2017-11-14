@@ -23,14 +23,14 @@ public class Recommendation {
 
     @ManyToOne
     @JoinColumn(name = "from_id")
-    private Client fromClient;
+    private UniUser fromUniUser;
 
     @ManyToOne
     @JoinColumn(name = "to_id")
-    private Client toClient;
+    private UniUser toUniUser;
 
     @ManyToOne
-    @JoinColumn(name = "provider_id")
-    private Provider provider;
+    @JoinColumn(name = "for_id")
+    private UniUser forUniUser;
 
 }

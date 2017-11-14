@@ -42,16 +42,10 @@ public class PreloadController {
     SkillService skillService;
 
     @Autowired
-    ClientService clientService;
+    UniUserService uniUserService;
 
     @Autowired
-    ProviderService providerService;
-
-    @Autowired
-    ManageService manageService;
-
-    @Autowired
-    FetchService fetchService;
+    JobService jobService;
 
     @Autowired
     RecommendationService recommendationService;
@@ -78,7 +72,7 @@ public class PreloadController {
     @Transactional
     public String addAdmin() {
         UniUser admin = UniUser.builder().username("admin").password(encoder.encode("admin")).enabled(true).build();
-        manageService.addUser(admin);
+        uniUserService.addUser(admin);
         Authority authority = new Authority("admin", "ADMIN");
         authorityService.addAuthority(authority);
         return "Done";
@@ -88,8 +82,7 @@ public class PreloadController {
     @Transactional
     public String preload() {
         addSkills();
-        addClients();
-        addProviders();
+        addUsers();
         addAuthorities();
         return "Preload complete!";
     }
@@ -98,17 +91,16 @@ public class PreloadController {
     @Transactional
     public String clearDB() {
         authorityService.clear();
-        manageService.clearJobs();
+        jobService.clear();
         skillService.clear();
-        clientService.clear();
-        providerService.clear();
+        uniUserService.clear();
         return "DB clear";
     }
 
     @Transactional
     void addAuthorities() {
         //Get all users expect the admin
-        List<UniUser> allUsers = fetchService.getAllUsers().stream()
+        List<UniUser> allUsers = uniUserService.getAllUsers().stream()
                 .filter(u -> !u.getUsername().equals("admin")).collect(Collectors.toList());
         Authority authority;
         for (UniUser u : allUsers) {
@@ -120,55 +112,49 @@ public class PreloadController {
     @Transactional
     void addSkills() {
         List<Skill> skills = new ArrayList<>();
-        skills.add(new Skill("Energy"));
-        skills.add(new Skill("Attention"));
-        skills.add(new Skill("Agility"));
-        skills.add(new Skill("Stamina"));
-        skills.add(new Skill("Passion"));
-
-        skills.forEach(s -> skillService.insert(s));
-    }
-
-    @Transactional
-    void addProviders() {
-        System.out.println(System.getProperty("user.dir"));
-        String path = "../../preload_data/Providers.csv";
-        DateFormat formatter = new SimpleDateFormat("d-MMM-yyyy");
+        String path = "../../preload_data/Skills.csv";
         try {
             List<String> lines = Files.lines(Paths.get(path)).collect(Collectors.toList());
-            for (String l : lines) {
-                String[] parts = l.split(",");
-                Provider p = new Provider(parts[0], encoder.encode(parts[1]), parts[2], parts[3], parts[4], formatter.parse(parts[5]), parts[6]);
-                providerService.insert(p);
-            }
-        } catch (IOException | ParseException e) {
-            log.trace("ERROR !!!!!!! " + e.getMessage());
+            lines.stream().map(l -> new Skill(l)).forEach(s -> skillService.insert(s));
+        }catch(IOException e){
+            e.printStackTrace();
         }
     }
 
     @Transactional
-    void addClients() {
-        String path = "../../preload_data/Clients.csv";
+    void addUsers() {
+        String path = "../../preload_data/UniUsers.csv";
         DateFormat formatter = new SimpleDateFormat("d-MMM-yyyy");
         try {
             List<String> lines = Files.lines(Paths.get(path)).collect(Collectors.toList());
             for (String l : lines) {
                 String[] parts = l.split(",");
                 try {
-                    Client c = new Client(parts[0], encoder.encode(parts[1]), parts[2], parts[3], parts[4],formatter.parse(parts[5]), parts[6]);
-                    clientService.insert(c);
-                    Integer nrJobs = Integer.parseInt(parts[7]);
+                    UniUser u = new UniUser(parts[0], encoder.encode(parts[1]), parts[2], parts[3], parts[4],formatter.parse(parts[5]), parts[6]);
+                    uniUserService.addUser(u);
+                    String[] userSkills = parts[7].split(";");
+                    for(String us: userSkills){
+                        Skill s = skillService.getSkillByDescription(us);
+                        u.addSkill(s);
+                    }
+                    Integer nrJobs = Integer.parseInt(parts[8]);
                     int count = 1;
                     for (int i = 0; i < nrJobs; i++) {
-                        Job j = new Job(parts[count + 7],
-                                parts[count + 8],
-                                Integer.parseInt(parts[count + 9]),
+                        Job j = new Job(parts[count + 8],
+                                parts[count + 9],
                                 Integer.parseInt(parts[count + 10]),
-                                formatter.parse(parts[count + 11]),
-                                formatter.parse(parts[count + 12]));
-                        j.setClient(c);
-                        manageService.addJob(j);
-                        count += 6;
+                                Integer.parseInt(parts[count + 11]),
+                                formatter.parse(parts[count + 12]),
+                                formatter.parse(parts[count + 13]));
+                        j.setUniUser(u);
+                        log.trace("preload-addUsers-preparing to insert job {}" + j.toString());
+                        jobService.insert(j);
+                        String[] jobTags = parts[count + 14].split(";");
+                        for(String jt: jobTags){
+                            Skill s = skillService.getSkillByDescription(jt);
+                            j.addSkill(s);
+                        }
+                        count += 7;
                     }
                 } catch (Exception e) {
                     log.trace("ERROR !!!!!!!!!!!!!" + e.getMessage());

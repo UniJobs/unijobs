@@ -43,10 +43,13 @@ public class Job {
     private Date endDate;
 
     @ManyToOne
-    @JoinColumn(name = "client_id", nullable = false)
-    private Client client;
+    @JoinColumn(name = "user_id", nullable = false)
+    private UniUser uniUser;
 
-    @ManyToMany(mappedBy = "jobs", fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "job_skill",
+            joinColumns = {@JoinColumn(name = "job_id")},
+            inverseJoinColumns = {@JoinColumn(name = "skill_id")})
     private List<Skill> skills = new ArrayList<>();
 
     public void addSkill(Skill skill){

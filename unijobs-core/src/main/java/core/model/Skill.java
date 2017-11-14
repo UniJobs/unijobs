@@ -26,20 +26,13 @@ public class Skill {
     @Column
     private String description;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "skill_job",
-            joinColumns = {@JoinColumn(name = "skill_id")},
-            inverseJoinColumns = {@JoinColumn(name = "job_id")})
+    @ManyToMany(mappedBy = "skills", fetch = FetchType.LAZY)
     private List<Job> jobs = new ArrayList<>();
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "provider_skill",
-        joinColumns = {@JoinColumn(name = "skill_id")},
-        inverseJoinColumns = {@JoinColumn(name = "provider_id")})
-    private List<Provider> providers = new ArrayList<>();
+    @ManyToMany(mappedBy = "skills", fetch = FetchType.LAZY)
+    private List<UniUser> uniUsers = new ArrayList<>();
 
     public Skill(String description){
         this.description = description;
     }
-
 }

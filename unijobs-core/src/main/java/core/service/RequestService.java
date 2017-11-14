@@ -1,7 +1,7 @@
 package core.service;
 
-import core.model.Provider;
 import core.model.Request;
+import core.model.UniUser;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface RequestService {
     List<Request> getAll();
-    List<Request> getAllForProvider(Provider provider);
+    List<Request> getAllForUser(UniUser uniUser);
     Request getOne(int id);
     void insert(Request request);
     void clear();

@@ -29,17 +29,17 @@ public class RecommendationServiceImpl implements RecommendationService{
     }
 
     @Override
-    public List<Recommendation> getAllFromClient() {
+    public List<Recommendation> getAllFromUser() {
         return null;
     }
 
     @Override
-    public List<Recommendation> getAllForProvider() {
+    public List<Recommendation> getAllForUser() {
         return null;
     }
 
     @Override
-    public List<Recommendation> getAllToClient() {
+    public List<Recommendation> getAllToUser() {
         return null;
     }
 

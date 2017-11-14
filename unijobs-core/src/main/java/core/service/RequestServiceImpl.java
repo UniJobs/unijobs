@@ -1,7 +1,7 @@
 package core.service;
 
-import core.model.Provider;
 import core.model.Request;
+import core.model.UniUser;
 import core.repository.RequestRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +30,7 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public List<Request> getAllForProvider(Provider provider) {
+    public List<Request> getAllForUser(UniUser uniUser) {
         return null;
     }
 

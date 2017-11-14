@@ -1,24 +1,24 @@
 package core.service;
 
-import core.model.Job;
-import core.model.Skill;
 import core.model.TemporaryUser;
 import core.model.UniUser;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public interface FetchService {
-    List<Skill> getAllSkills();
-    Skill findSkill(Long id);
+/**
+ * Created by Alex on 11/13/2017.
+ */
+public interface UniUserService {
 
     UniUser getUserByUsername(String username);
     UniUser getUserById(Integer id);
-
-    List<Job> getAllJobs();
-    Job findJob(int id);
-
     List<UniUser> getAllUsers();
+    void addUser(UniUser user);
+    void updateUser(UniUser user);
+    void clear();
+
     List<TemporaryUser> getAllTemporaryUsers();
     TemporaryUser getTemporaryUserById(Long id);
+    void addTemporaryUser(TemporaryUser temporaryUser);
+    void removeTemporaryUser(TemporaryUser temporaryUser);
 }

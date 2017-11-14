@@ -1,8 +1,6 @@
 package web.dto;
 
-import core.model.Client;
 import core.model.Job;
-import core.model.Skill;
 import lombok.*;
 
 import java.util.Date;
@@ -29,7 +27,7 @@ public class JobDTO {
 
     public Integer cost;
 
-    public Integer clientId;
+    public Integer uniUserId;
 
     public String location;
 
@@ -42,7 +40,7 @@ public class JobDTO {
     public JobDTO(Job job){
         id = job.getId();
         description = job.getDescription();
-        clientId = job.getClient().getId();
+        uniUserId = job.getUniUser().getId();
         skillIds = job.getSkills().stream().map(s -> s.getId()).collect(Collectors.toList());
         cost = job.getCost();
         hpw = job.getHoursPerWeek();

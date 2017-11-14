@@ -36,7 +36,7 @@ public class SkillController {
             skill = Skill.builder()
                     .description(skillDTO.getDescription())
                     .jobs(new ArrayList<>())
-                    .providers(new ArrayList<>())
+                    .uniUsers(new ArrayList<>())
                     .build();
             skillService.insert(skill);
         } catch (DataIntegrityViolationException e) {

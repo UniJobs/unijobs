@@ -22,16 +22,16 @@ public class Request {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "client_id")
-    private Client client;
+    @JoinColumn(name = "from_user_id")
+    private UniUser fromUniUser;
 
     @ManyToOne
     @JoinColumn(name = "job_id")
     private Job job;
 
     @ManyToOne
-    @JoinColumn(name = "provider_id")
-    private Provider provider;
+    @JoinColumn(name = "to_user_id")
+    private UniUser toUniUser;
 
     @Column
     private String status;

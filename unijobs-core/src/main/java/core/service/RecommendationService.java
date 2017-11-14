@@ -9,9 +9,9 @@ import java.util.List;
  */
 public interface RecommendationService {
     List<Recommendation> getAll();
-    List<Recommendation> getAllFromClient();
-    List<Recommendation> getAllForProvider();
-    List<Recommendation> getAllToClient();
+    List<Recommendation> getAllFromUser();
+    List<Recommendation> getAllForUser();
+    List<Recommendation> getAllToUser();
 
     Recommendation findOne(int id);
     void insert(Recommendation recommendation);

@@ -1,5 +1,6 @@
 package core.model;
 
+import com.sun.org.apache.regexp.internal.RE;
 import lombok.*;
 
 import javax.persistence.*;
@@ -56,6 +57,30 @@ public class UniUser {
     @OneToMany(mappedBy = "reviewed", fetch = FetchType.LAZY)
     private List<Review> reviewedReviews = new ArrayList<>();
 
+    @OneToMany(mappedBy = "uniUser", fetch = FetchType.LAZY)
+    private List<Job> myJobs = new ArrayList<>();
+
+    @OneToMany(mappedBy = "fromUniUser", fetch = FetchType.LAZY)
+    private List<Request> fromRequests = new ArrayList<>();
+
+    @OneToMany(mappedBy = "toUniUser", fetch = FetchType.LAZY)
+    private List<Request> toRequests = new ArrayList<>();
+
+    @OneToMany(mappedBy = "fromUniUser", fetch = FetchType.LAZY)
+    private List<Recommendation> sent = new ArrayList<>();
+
+    @OneToMany(mappedBy = "toUniUser", fetch = FetchType.LAZY)
+    private List<Recommendation> received = new ArrayList<>();
+
+    @OneToMany(mappedBy = "forUniUser", fetch = FetchType.LAZY)
+    private List<Recommendation> mentioned = new ArrayList<>();
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "user_skill",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "skill_id")})
+    private List<Skill> skills = new ArrayList<>();
+
     public UniUser(String username, String password, String email, String firstname, String lastname, Date dob, String phone){
         this.username = username;
         this.password = password;
@@ -64,6 +89,10 @@ public class UniUser {
         this.lastname = lastname;
         this.dob = dob;
         this.phone = phone;
+    }
+
+    public void addSkill(Skill skill){
+        this.skills.add(skill);
     }
 
     //TODO: picture representation ???
