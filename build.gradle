@@ -14,7 +14,7 @@ allprojects {
         springVersion = '4.3.6.RELEASE'
         springDataVersion = '1.10.6.RELEASE'
         hibernateVersion = '5.2.6.Final'
-        postgreSqlVersion = '9.1-901.jdbc4'
+        postgreSqlVersion = '42.1.4'
         commonsDbcpVersion = '1.4'
         guavaVersion = '21.0'
         jacksonDatabindVersion = '2.8.6'

@@ -31,9 +31,9 @@ public class JobDTO {
 
     public String location;
 
-    public Date startDate;
+    public String startDate;
 
-    public Date endDate;
+    public String endDate;
 
     public List<Integer> skillIds;
 
@@ -45,7 +45,9 @@ public class JobDTO {
         cost = job.getCost();
         hpw = job.getHoursPerWeek();
         location = job.getLocation();
-        startDate = job.getStartDate();
-        endDate = job.getEndDate();
+        if(job.getStartDate() != null)
+            startDate = job.getStartDate().toString();
+        if(job.getEndDate() != null)
+            endDate = job.getEndDate().toString();
     }
 }
