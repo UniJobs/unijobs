@@ -4,6 +4,8 @@ import core.model.Authority;
 import core.model.UniUser;
 import core.service.AuthorityService;
 import core.service.UniUserService;
+import core.utils.MailUtils;
+import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import web.dto.UniUserDTO;
 import web.dtos.UniUsersDTO;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -63,24 +67,50 @@ public class UniUserController {
 
         log.trace("addUser: userDto={}", userDTO);
         UniUser user;
-        user = uniUserService.getUserByUsername(userDTO.getUsername());
+        //user = uniUserService.getUserByUsername(userDTO.getUsername());
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         try {
             user = UniUser.builder()
                     .email(userDTO.getEmail())
-                    .username(userDTO.getEmail())
+                    .username(userDTO.getUsername())
                     .password(encoder.encode(userDTO.getPassword()))
                     .dob(null)
                     .firstname(userDTO.getFirstname())
                     .lastname(userDTO.getLastname())
+                    .enabled(false)
                     .build();
-            uniUserService.addUser(user);
+            if(uniUserService.getUserByEmail(user.getEmail()) == null){
+                uniUserService.addUser(user);
+                String subject = "Unijobs Registration";
+                String text = generateMail(user);
+                MailUtils.sendMail(subject,text,user.getEmail());
+            }
         } catch (DataIntegrityViolationException e) {
             user = UniUser.builder().build();
             log.trace("not added user={}", user);
         }
         return new UniUserDTO(user);
     }
+
+    private String generateMail(UniUser user){
+        StringBuilder message = new StringBuilder();
+        message.append("Hello,\n").append(user.getFirstname()).append(" ").append(user.getLastname()).append("\n\n");
+        message.append("Welcome To Unijobs").append("\n").append("Please click on the link below to validate your account");
+        message.append("\n").append("http://localhost:8080/api/user/validate?token=").append(encrypt(user.getId()));
+        message.append("\n\n").append("Have a great Day!").append("\n").append("Unijobs Team.");
+        return message.toString();
+    }
+
+    @RequestMapping(value = "/validate", method = RequestMethod.POST)
+    public UniUserDTO validateUser(@RequestParam String token){
+        UniUser user = uniUserService.getUserById(Integer.parseInt(decrypt(token)));
+        Authority authority = new Authority(user.getUsername(),"USER");
+        authorityService.addAuthority(authority);
+        user.setEnabled(true);
+        uniUserService.updateUser(user);
+        return new UniUserDTO(user);
+    }
+
 
     @RequestMapping(value = "/updateUser", method = RequestMethod.POST)
     public UniUserDTO updateUser(
@@ -104,16 +134,26 @@ public class UniUserController {
                     .firstname(userDTO.getFirstname())
                     .lastname(userDTO.getLastname())
                     .phone(userDTO.getPhone())
-                    .enabled(true)
                     .build();
             uniUserService.updateUser(user);
-            Authority authority = new Authority(user.getUsername(),"USER");
-            authorityService.addAuthority(authority);
         } catch (DataIntegrityViolationException | ParseException e) {
             user = UniUser.builder().build();
             log.trace("not updated user={}", user);
         }
         return new UniUserDTO(user);
+    }
+
+    private String encrypt(Integer number) {
+        try {
+            return java.util.Base64.getUrlEncoder().encodeToString(number.toString().getBytes("utf-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return "-7";
+    }
+
+    private String decrypt(String token){
+        return new String(java.util.Base64.getUrlDecoder().decode(token), StandardCharsets.UTF_8);
     }
 
 }

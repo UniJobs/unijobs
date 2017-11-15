@@ -1,8 +1,6 @@
 package core.service;
 
-import core.model.TemporaryUser;
 import core.model.UniUser;
-import core.repository.TemporaryUserRepository;
 import core.repository.UniUserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,9 +21,6 @@ public class UniUserServiceImpl implements UniUserService{
     @Autowired
     UniUserRepository uniUserRepository;
 
-    @Autowired
-    TemporaryUserRepository temporaryUserRepository;
-
     @Override
     @Transactional
     public UniUser getUserByUsername(String username) {
@@ -43,24 +38,17 @@ public class UniUserServiceImpl implements UniUserService{
     }
 
     @Override
+    public UniUser getUserByEmail(String email) {
+        List<UniUser> users = uniUserRepository.findByEmail(email);
+        return users.isEmpty() ? null : users.get(0);
+    }
+
+    @Override
     public List<UniUser> getAllUsers() {
         log.trace("getAll");
         List<UniUser> users = uniUserRepository.findAll();
         log.trace("getAll: users = {}", users);
         return users;
-    }
-
-    public List<TemporaryUser> getAllTemporaryUsers() {
-        log.trace("getAll");
-        List<TemporaryUser> tempUsers = temporaryUserRepository.findAll();
-        log.trace("getAll: users = {}", tempUsers);
-
-        return tempUsers;
-    }
-
-    @Override
-    public TemporaryUser getTemporaryUserById(Long id){
-        return temporaryUserRepository.findOne(id);
     }
 
     @Override
@@ -87,19 +75,5 @@ public class UniUserServiceImpl implements UniUserService{
         log.trace("remove all users begin");
         uniUserRepository.deleteAll();
         log.trace("remove all users end");
-    }
-
-    @Override
-    public void addTemporaryUser(TemporaryUser temporaryUser){
-        log.trace("addTemporaryUser temporaryUser= {}", temporaryUser);
-
-        temporaryUserRepository.save(temporaryUser);
-
-        log.trace("addTemporaryUser: temporaryUser = {}", temporaryUser);
-    }
-
-    @Override
-    public void removeTemporaryUser(TemporaryUser temporaryUser){
-        temporaryUserRepository.delete(temporaryUser);
     }
 }

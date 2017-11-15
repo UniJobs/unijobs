@@ -1,6 +1,5 @@
 package core.service;
 
-import core.model.TemporaryUser;
 import core.model.UniUser;
 
 import java.util.List;
@@ -12,13 +11,10 @@ public interface UniUserService {
 
     UniUser getUserByUsername(String username);
     UniUser getUserById(Integer id);
+    UniUser getUserByEmail(String email);
+
     List<UniUser> getAllUsers();
     void addUser(UniUser user);
     void updateUser(UniUser user);
     void clear();
-
-    List<TemporaryUser> getAllTemporaryUsers();
-    TemporaryUser getTemporaryUserById(Long id);
-    void addTemporaryUser(TemporaryUser temporaryUser);
-    void removeTemporaryUser(TemporaryUser temporaryUser);
 }
