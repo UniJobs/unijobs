@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.*;
 import web.dto.UniUserDTO;
 import web.dtos.UniUsersDTO;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
@@ -35,7 +38,6 @@ public class UniUserController {
     AuthorityService authorityService;
 
     @RequestMapping(value="/users", method = RequestMethod.GET)
-    @Transactional
     public UniUsersDTO getUsers(){
         return new UniUsersDTO(uniUserService.getAllUsers());
     }
@@ -53,9 +55,7 @@ public class UniUserController {
     @Transactional
     public UniUserDTO getUniUserByUsername(@RequestParam(value = "username", required = true) String username) {
         System.out.println("username" + username);
-
         UniUser u = uniUserService.getUserByUsername(username);
-
         UniUserDTO result = new UniUserDTO(u);
         System.out.println(result);
         return result;
@@ -72,7 +72,7 @@ public class UniUserController {
         try {
             user = UniUser.builder()
                     .email(userDTO.getEmail())
-                    .username(userDTO.getUsername())
+                    .username(userDTO.getEmail())
                     .password(encoder.encode(userDTO.getPassword()))
                     .dob(null)
                     .firstname(userDTO.getFirstname())
@@ -101,14 +101,16 @@ public class UniUserController {
         return message.toString();
     }
 
-    @RequestMapping(value = "/validate", method = RequestMethod.POST)
-    public UniUserDTO validateUser(@RequestParam String token){
+    @RequestMapping(value = "/validate", method = RequestMethod.GET)
+    public void validateUser(@RequestParam String token, HttpServletRequest request,
+                                   HttpServletResponse response) throws IOException {
         UniUser user = uniUserService.getUserById(Integer.parseInt(decrypt(token)));
         Authority authority = new Authority(user.getUsername(),"USER");
         authorityService.addAuthority(authority);
         user.setEnabled(true);
         uniUserService.updateUser(user);
-        return new UniUserDTO(user);
+        request.setAttribute("user",new UniUserDTO(user));
+        response.sendRedirect("http://localhost:4200");
     }
 
 
@@ -118,22 +120,22 @@ public class UniUserController {
         log.trace("updateUser: userId={}, userDTO={}", userDTO.getId(), userDTO);
 
         UniUser user;
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        DateFormat recievedFormat = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat receivedFormat = new SimpleDateFormat("yyyy-MM-dd");
         DateFormat formatterDB = new SimpleDateFormat("d-MMM-yyyy");
 
         try {
-            Date date = recievedFormat.parse(userDTO.getDob());
+            Date date = receivedFormat.parse(userDTO.getDob());
             String dbDate = formatterDB.format(date);
             user = UniUser.builder()
                     .id(userDTO.getId())
                     .email(userDTO.getEmail())
-                    .username(userDTO.getUsername())
-                    .password(encoder.encode(userDTO.getPassword()))
+                    .username(userDTO.getEmail())
+                    .password(userDTO.getPassword())
                     .dob(formatterDB.parse(dbDate))
                     .firstname(userDTO.getFirstname())
                     .lastname(userDTO.getLastname())
                     .phone(userDTO.getPhone())
+                    .enabled(true)
                     .build();
             uniUserService.updateUser(user);
         } catch (DataIntegrityViolationException | ParseException e) {

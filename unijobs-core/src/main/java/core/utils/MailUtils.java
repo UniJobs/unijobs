@@ -49,7 +49,7 @@ public class MailUtils {
             msg.setText(mailMessage);
             msg.setSentDate(new Date());
             Transport.send(msg);
-            System.out.println("Message sent.");
+            System.out.println("Message sent to " + recipientMailAddress);
         }catch (MessagingException e){
             System.out.println("MAIL ERROR: " + e);
         }

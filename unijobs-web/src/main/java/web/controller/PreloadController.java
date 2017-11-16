@@ -148,7 +148,7 @@ public class PreloadController {
                                 formatter.parse(parts[count + 13]));
                         j.setUniUser(u);
                         log.trace("preload-addUsers-preparing to insert job {}" + j.toString());
-                        jobService.insert(j);
+                        jobService.save(j);
                         String[] jobTags = parts[count + 14].split(";");
                         for(String jt: jobTags){
                             Skill s = skillService.getSkillByDescription(jt);
