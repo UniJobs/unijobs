@@ -8,4 +8,7 @@ public interface SkillRepository extends BaseRepository<Skill, Long>{
 
     @Query("SELECT s from Skill s where s.description = :description")
     Skill getSkillByDescription(@Param("description") String description);
+
+    @Query("SELECT s FROM Skill s WHERE s.id = :id")
+    Skill getSkillById(@Param("id")Integer id);
 }
