@@ -13,7 +13,8 @@ import java.util.List;
 public interface JobService {
     List<Job> getAll();
     Job getOne(int id);
-    void insert(Job job);
+    void save(Job job);
+
     void clear();
 
     List<Job> getByDescription(String description);

@@ -1,9 +1,8 @@
 package core.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -16,9 +15,11 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Job {
+    private static final Logger log = LoggerFactory.getLogger(Job.class);
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,11 +53,9 @@ public class Job {
             inverseJoinColumns = {@JoinColumn(name = "skill_id")})
     private List<Skill> skills = new ArrayList<>();
 
-    public void addSkill(Skill skill){
-        this.skills.add(skill);
-    }
+    public void addSkill(Skill skill){ this.skills.add(skill); }
 
-    public Job(String description ,String location, int hoursPerWeek, int cost, Date startDate, Date endDate){
+    public Job(String description ,String location, int hoursPerWeek, int cost, Date startDate, Date endDate) {
         this.description = description;
         this.location = location;
         this.hoursPerWeek = hoursPerWeek;

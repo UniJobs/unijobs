@@ -89,7 +89,7 @@ public class UniUserController {
 
         UniUser user;
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        DateFormat recievedFormat = new SimpleDateFormat("yyyy-mm-dd");
+        DateFormat recievedFormat = new SimpleDateFormat("yyyy-MM-dd");
         DateFormat formatterDB = new SimpleDateFormat("d-MMM-yyyy");
 
         try {

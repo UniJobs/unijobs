@@ -39,7 +39,7 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public void insert(Job job) {
+    public void save(Job job) {
         log.trace("job service - inserting {}", job);
         jobRepository.save(job);
         log.trace("job service - done inserting");

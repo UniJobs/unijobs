@@ -39,6 +39,15 @@ public class SkillServiceImpl implements SkillService {
     }
 
     @Override
+    @Transactional
+    public Skill getSkillById(Integer id) {
+        log.trace("Get skill by id : id={}",id);
+        Skill skill = skillRepository.getSkillById(id);
+        log.trace("skill returned by id={} is user={}",id,skill);
+        return skill;
+    }
+
+    @Override
     public void insert(Skill skill) {
         log.trace("[SKILL] Inserting skill {}", skill);
         skillRepository.save(skill);

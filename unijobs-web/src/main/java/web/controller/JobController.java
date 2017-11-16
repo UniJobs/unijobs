@@ -4,20 +4,21 @@ import core.model.Job;
 import core.model.Skill;
 import core.model.UniUser;
 import core.service.JobService;
+import core.service.SkillService;
 import core.service.UniUserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import web.dto.JobDTO;
 import web.dtos.JobsDTO;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -26,6 +27,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/job")
 public class JobController {
+    private static final Logger log = LoggerFactory.getLogger(JobController.class);
 
     @Autowired
     JobService jobService;
@@ -33,10 +35,53 @@ public class JobController {
     @Autowired
     UniUserService uniUserService;
 
+    @Autowired
+    SkillService skillService;
+
     @RequestMapping(value = "jobs", method = RequestMethod.GET)
     @Transactional
     public JobsDTO getJobs(){
         return new JobsDTO(jobService.getAll().stream().map(j -> new JobDTO(j)).collect(Collectors.toList()));
+    }
+
+    @RequestMapping(value = "/newJob", method = RequestMethod.POST)
+    public JobDTO addJob(
+            @RequestBody final JobDTO jobDTO){
+
+        log.trace("addJob: jobDto={}y", jobDTO);
+        Job job;
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat formatterDB = new SimpleDateFormat("d-MMM-yyyy");
+        String date = jobDTO.getStartDate();
+        try {
+            Date startDate = formatter.parse(jobDTO.getStartDate());
+            String dbDate = formatterDB.format(startDate);
+            Date endDate = formatter.parse(jobDTO.getEndDate());
+            String dbEndDate = formatterDB.format(endDate);
+            UniUser user = uniUserService.getUserById(jobDTO.getUniUserId());
+            job = Job.builder()
+                    .description(jobDTO.getDescription())
+                    .location(jobDTO.getLocation())
+                    .hoursPerWeek(jobDTO.getHpw())
+                    .cost(jobDTO.getCost())
+                    .startDate(formatterDB.parse(dbDate))
+                    .endDate(formatterDB.parse(dbEndDate))
+                    .uniUser(user)
+                    .skills(new ArrayList<>())
+                    .build();
+            jobService.save(job);
+
+            List<Skill> skillz = jobDTO.getSkillIds().stream().map(i -> skillService.getSkillById(i)).collect(Collectors.toList());
+            for (Skill s : skillz) {
+                log.trace("skill={}", s);
+                job.addSkill(s);
+            }
+            jobService.save(job);
+        } catch (DataIntegrityViolationException | ParseException e) {
+            job = Job.builder().build();
+            log.trace("not added job e={}", e.getMessage(), e.getClass());
+        }
+        return new JobDTO(job);
     }
 
     @RequestMapping(value = "byDescription/{description}", method = RequestMethod.POST)

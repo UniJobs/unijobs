@@ -10,6 +10,7 @@ import java.util.List;
 public interface SkillService {
     List<Skill> getAll();
     Skill getOne(int id);
+    Skill getSkillById(Integer id);
     void insert(Skill skill);
     void update(int id, Skill skill);
     void clear();
