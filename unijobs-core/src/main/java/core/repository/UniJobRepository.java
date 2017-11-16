@@ -10,6 +10,7 @@ import java.util.List;
 /**
  * Created by Cris on 10/24/2017.
  */
+/*Acest comentariu trebuie sters.*/
 public interface UniJobRepository extends BaseRepository<Job,Integer>{
 
     @Query("SELECT j FROM Job j WHERE j.description  LIKE CONCAT('%',:description,'%')")
@@ -32,5 +33,8 @@ public interface UniJobRepository extends BaseRepository<Job,Integer>{
 
     @Query("SELECT j FROM Job j WHERE j.startDate >= :startDate AND j.endDate <= :endDate")
     List<Job> getAllBetweenDates(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
+
+    @Query("SELECT j FROM Job j INNER JOIN UniUser u ON j.uniUser = u.id  WHERE j.uniUser = :user_id")
+    List<Job> getAllJobsByUser(@Param("user_id") Integer user_id);
 
 }

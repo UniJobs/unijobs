@@ -128,6 +128,12 @@ public class JobController {
         return new JobsDTO(jobService.getAllBetweenDates(startDate, endDate).stream().map(j -> new JobDTO(j)).collect(Collectors.toList()));
     }
 
+    @RequestMapping(value = "byUser/{user_id}", method = RequestMethod.POST)
+    @Transactional
+    public JobsDTO getAllJobsByUser(@PathVariable int user_id){
+        return new JobsDTO(jobService.getAllJobsByUser(user_id).stream().map(j -> new JobDTO(j)).collect(Collectors.toList()));
+    }
+
     @RequestMapping(value = "getAllJobsForUser/{userId}", method = RequestMethod.GET)
     @Transactional
     public JobsDTO getJobsForUser(@PathVariable Integer userId){

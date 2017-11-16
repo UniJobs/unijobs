@@ -115,5 +115,14 @@ public class JobServiceImpl implements JobService {
         return res;
     }
 
+    @Override
+    @Transactional
+    public List<Job> getAllJobsByUser(int user_id) {
+        log.trace("job service - get all jobs published by a user {}", user_id);
+        List<Job> res = jobRepository.getAllJobsByUser(user_id);
+        log.trace("job service - got them all");
+        return res;
+    }
+
 
 }

@@ -24,6 +24,7 @@ public interface JobService {
     List<Job> getAllByStartDate(Date startDate);
     List<Job> getAllByEndDate(Date endDate);
     List<Job> getAllBetweenDates(Date startDate, Date endDate);
+    List<Job> getAllJobsByUser(int user_id);
 
 
 }
