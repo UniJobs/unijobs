@@ -4,6 +4,8 @@ import core.model.Recommendation;
 import core.model.UniUser;
 import lombok.*;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -42,8 +44,10 @@ public class UniUserDTO {
         email = user.getEmail();
         firstname = user.getFirstname();
         lastname = user.getLastname();
-        if(user.getDob()!=null)
-            dob = user.getDob().toString();
+        if(user.getDob()!=null) {
+            DateFormat formatterDB = new SimpleDateFormat("yyyy-MM-d");
+            dob = formatterDB.format(user.getDob());
+        }
         phone  = user.getPhone();
     }
 }
