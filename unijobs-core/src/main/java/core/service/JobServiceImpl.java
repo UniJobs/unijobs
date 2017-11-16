@@ -1,6 +1,7 @@
 package core.service;
 
 import core.model.Job;
+import core.model.UniUser;
 import core.repository.UniJobRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -117,9 +118,9 @@ public class JobServiceImpl implements JobService {
 
     @Override
     @Transactional
-    public List<Job> getAllJobsByUser(int user_id) {
-        log.trace("job service - get all jobs published by a user {}", user_id);
-        List<Job> res = jobRepository.getAllJobsByUser(user_id);
+    public List<Job> getAllJobsByUser(UniUser uniUser) {
+        log.trace("job service - get all jobs published by a user {}", uniUser);
+        List<Job> res = jobRepository.getAllByUniUser(uniUser);
         log.trace("job service - got them all");
         return res;
     }

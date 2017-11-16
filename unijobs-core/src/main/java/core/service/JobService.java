@@ -1,6 +1,7 @@
 package core.service;
 
 import core.model.Job;
+import core.model.UniUser;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -24,7 +25,7 @@ public interface JobService {
     List<Job> getAllByStartDate(Date startDate);
     List<Job> getAllByEndDate(Date endDate);
     List<Job> getAllBetweenDates(Date startDate, Date endDate);
-    List<Job> getAllJobsByUser(int user_id);
+    List<Job> getAllJobsByUser(UniUser uniUser);
 
 
 }

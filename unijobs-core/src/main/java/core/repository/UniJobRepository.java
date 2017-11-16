@@ -1,6 +1,7 @@
 package core.repository;
 
 import core.model.Job;
+import core.model.UniUser;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -34,7 +35,9 @@ public interface UniJobRepository extends BaseRepository<Job,Integer>{
     @Query("SELECT j FROM Job j WHERE j.startDate >= :startDate AND j.endDate <= :endDate")
     List<Job> getAllBetweenDates(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
-    @Query("SELECT j FROM Job j INNER JOIN UniUser u ON j.uniUser = u.id  WHERE j.uniUser = :user_id")
-    List<Job> getAllJobsByUser(@Param("user_id") Integer user_id);
+    //@Query("SELECT j FROM Job j INNER JOIN UniUser u ON j.uniUser = u.id  WHERE u.id = :user_id")
+    //List<Job> getAllJobsByUser(@Param("user_id") Integer user_id);
+
+    List<Job> getAllByUniUser(UniUser uniUser);
 
 }

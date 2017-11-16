@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
  * Created by Cris on 10/24/2017.
  */
 @RestController
-@RequestMapping("/api/job")
+@RequestMapping("/api/job/")
 public class JobController {
     private static final Logger log = LoggerFactory.getLogger(JobController.class);
 
@@ -41,7 +41,7 @@ public class JobController {
     @RequestMapping(value = "jobs", method = RequestMethod.GET)
     @Transactional
     public JobsDTO getJobs(){
-        return new JobsDTO(jobService.getAll().stream().map(j -> new JobDTO(j)).collect(Collectors.toList()));
+        return new JobsDTO(jobService.getAll().stream().map(JobDTO::new).collect(Collectors.toList()));
     }
 
     @RequestMapping(value = "/newJob", method = RequestMethod.POST)
@@ -52,7 +52,6 @@ public class JobController {
         Job job;
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         DateFormat formatterDB = new SimpleDateFormat("d-MMM-yyyy");
-        String date = jobDTO.getStartDate();
         try {
             Date startDate = formatter.parse(jobDTO.getStartDate());
             String dbDate = formatterDB.format(startDate);
@@ -87,58 +86,59 @@ public class JobController {
     @RequestMapping(value = "byDescription/{description}", method = RequestMethod.POST)
     @Transactional
     public JobsDTO getJobsByDescription(@PathVariable String description){
-        return new JobsDTO(jobService.getByDescription(description).stream().map(j -> new JobDTO(j)).collect(Collectors.toList()));
+        return new JobsDTO(jobService.getByDescription(description).stream().map(JobDTO::new).collect(Collectors.toList()));
     }
 
     @RequestMapping(value = "byLocation/{location}", method = RequestMethod.POST)
     @Transactional
     public JobsDTO getJobsByLocation(@PathVariable String location){
         List<Job> jobs = jobService.getByLocation(location);
-        List<JobDTO> dtos = jobs.stream().map(j -> new JobDTO(j)).collect(Collectors.toList());
+        List<JobDTO> dtos = jobs.stream().map(JobDTO::new).collect(Collectors.toList());
         return new JobsDTO(dtos);
     }
 
     @RequestMapping(value = "byHPW/{hpw}", method = RequestMethod.POST)
     @Transactional
     public JobsDTO getJobsByHoursPerWeek(@PathVariable Integer hpw){
-        return new JobsDTO(jobService.getByWorkingHours(hpw).stream().map(j -> new JobDTO(j)).collect(Collectors.toList()));
+        return new JobsDTO(jobService.getByWorkingHours(hpw).stream().map(JobDTO::new).collect(Collectors.toList()));
     }
 
     @RequestMapping(value = "byCost/{cost}", method = RequestMethod.POST)
     @Transactional
     public JobsDTO getJobsByCost(@PathVariable Integer cost){
-        return new JobsDTO(jobService.getByCost(cost).stream().map(j -> new JobDTO(j)).collect(Collectors.toList()));
+        return new JobsDTO(jobService.getByCost(cost).stream().map(JobDTO::new).collect(Collectors.toList()));
     }
 
     @RequestMapping(value = "byStartDate/{startDate}", method = RequestMethod.POST)
     @Transactional
     public JobsDTO getJobsByStartDate(@PathVariable Date startDate){
-        return new JobsDTO(jobService.getAllByStartDate(startDate).stream().map(j -> new JobDTO(j)).collect(Collectors.toList()));
+        return new JobsDTO(jobService.getAllByStartDate(startDate).stream().map(JobDTO::new).collect(Collectors.toList()));
     }
 
     @RequestMapping(value = "byEndDate/{endDate}", method = RequestMethod.POST)
     @Transactional
     public JobsDTO getJobsByEndDate(@PathVariable Date endDate){
-        return new JobsDTO(jobService.getAllByEndDate(endDate).stream().map(j -> new JobDTO(j)).collect(Collectors.toList()));
+        return new JobsDTO(jobService.getAllByEndDate(endDate).stream().map(JobDTO::new).collect(Collectors.toList()));
     }
 
     @RequestMapping(value = "betweenDates/{startDate, endDate}", method = RequestMethod.POST)
     @Transactional
     public JobsDTO getJobsBetweenDates(@PathVariable Date startDate, @PathVariable Date endDate){
-        return new JobsDTO(jobService.getAllBetweenDates(startDate, endDate).stream().map(j -> new JobDTO(j)).collect(Collectors.toList()));
+        return new JobsDTO(jobService.getAllBetweenDates(startDate, endDate).stream().map(JobDTO::new).collect(Collectors.toList()));
     }
 
     @RequestMapping(value = "byUser/{user_id}", method = RequestMethod.POST)
     @Transactional
     public JobsDTO getAllJobsByUser(@PathVariable int user_id){
-        return new JobsDTO(jobService.getAllJobsByUser(user_id).stream().map(j -> new JobDTO(j)).collect(Collectors.toList()));
+        UniUser uniUser = uniUserService.getUserById(user_id);
+        return new JobsDTO(jobService.getAllJobsByUser(uniUser).stream().map(JobDTO::new).collect(Collectors.toList()));
     }
 
     @RequestMapping(value = "getAllJobsForUser/{userId}", method = RequestMethod.GET)
     @Transactional
     public JobsDTO getJobsForUser(@PathVariable Integer userId){
         UniUser u = uniUserService.getUserById(userId);
-        Set<Skill> userSkills = u.getSkills().stream().collect(Collectors.toSet());
+        Set<Skill> userSkills = new HashSet<>(u.getSkills());
         List<Job> allJobs = jobService.getAll();
         List<JobDTO> result = new ArrayList<>();
         for (Job j: allJobs){
