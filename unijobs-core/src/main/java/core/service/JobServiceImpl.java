@@ -1,6 +1,7 @@
 package core.service;
 
 import core.model.Job;
+import core.model.UniUser;
 import core.repository.UniJobRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -111,6 +112,15 @@ public class JobServiceImpl implements JobService {
     public List<Job> getAllBetweenDates(Date startDate, Date endDate) {
         log.trace("job service - get all where start date greater or equal than and end date less or equal than {}", startDate, endDate);
         List<Job> res = jobRepository.getAllBetweenDates(startDate, endDate);
+        log.trace("job service - got them all");
+        return res;
+    }
+
+    @Override
+    @Transactional
+    public List<Job> getAllJobsByUser(UniUser uniUser) {
+        log.trace("job service - get all jobs published by a user {}", uniUser);
+        List<Job> res = jobRepository.getAllByUniUser(uniUser);
         log.trace("job service - got them all");
         return res;
     }
