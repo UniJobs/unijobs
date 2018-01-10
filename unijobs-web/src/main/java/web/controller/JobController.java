@@ -65,6 +65,7 @@ public class JobController {
             String dbEndDate = formatterDB.format(endDate);
             UniUser user = uniUserService.getUserById(jobDTO.getUniUserId());
             job = Job.builder()
+                    .title(jobDTO.getTitle())
                     .description(jobDTO.getDescription())
                     .location(jobDTO.getLocation())
                     .hoursPerWeek(jobDTO.getHpw())
@@ -87,6 +88,12 @@ public class JobController {
             log.trace("not added job e={}", e.getMessage(), e.getClass());
         }
         return new JobDTO(job);
+    }
+
+    @RequestMapping(value = "byTitle/{title}", method = RequestMethod.POST)
+    @Transactional
+    public JobsDTO getJobsByTitle(@PathVariable String title){
+        return new JobsDTO(jobService.getByTitle(title).stream().map(JobDTO::new).collect(Collectors.toList()));
     }
 
     @RequestMapping(value = "byDescription/{description}/{pageNo}", method = RequestMethod.POST)

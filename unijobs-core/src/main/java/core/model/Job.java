@@ -26,6 +26,9 @@ public class Job {
     private int id;
 
     @Column
+    private String title;
+
+    @Column
     private String description;
 
     @Column
@@ -55,7 +58,8 @@ public class Job {
 
     public void addSkill(Skill skill){ this.skills.add(skill); }
 
-    public Job(String description ,String location, int hoursPerWeek, int cost, Date startDate, Date endDate) {
+    public Job(String title, String description ,String location, int hoursPerWeek, int cost, Date startDate, Date endDate) {
+        this.title = title;
         this.description = description;
         this.location = location;
         this.hoursPerWeek = hoursPerWeek;
