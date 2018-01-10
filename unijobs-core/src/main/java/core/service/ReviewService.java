@@ -12,4 +12,5 @@ public interface ReviewService {
     Review getOne(int id);
     void insert(Review review);
     void clear();
+    void addReviewForUser(Review review);
 }

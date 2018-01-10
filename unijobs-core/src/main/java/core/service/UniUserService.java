@@ -1,5 +1,6 @@
 package core.service;
 
+import core.model.Review;
 import core.model.TemporaryUser;
 import core.model.UniUser;
 
@@ -21,4 +22,5 @@ public interface UniUserService {
     TemporaryUser getTemporaryUserById(Long id);
     void addTemporaryUser(TemporaryUser temporaryUser);
     void removeTemporaryUser(TemporaryUser temporaryUser);
+    List<Review> getReviewsForUserId(Integer userId);
 }
