@@ -1,9 +1,11 @@
 package web.controller;
 
 import core.model.Job;
+import core.model.Request;
 import core.model.Skill;
 import core.model.UniUser;
 import core.service.JobService;
+import core.service.RequestService;
 import core.service.SkillService;
 import core.service.UniUserService;
 import org.slf4j.Logger;
@@ -37,6 +39,9 @@ public class JobController {
 
     @Autowired
     SkillService skillService;
+
+    @Autowired
+    RequestService requestService;
 
     @RequestMapping(value = "jobs", method = RequestMethod.GET)
     @Transactional
@@ -121,6 +126,7 @@ public class JobController {
         return new JobsDTO(jobService.getAllByEndDate(endDate).stream().map(JobDTO::new).collect(Collectors.toList()));
     }
 
+    //Is this working ? solution betweenDates/{startDate}/{endDate}
     @RequestMapping(value = "betweenDates/{startDate, endDate}", method = RequestMethod.POST)
     @Transactional
     public JobsDTO getJobsBetweenDates(@PathVariable Date startDate, @PathVariable Date endDate){

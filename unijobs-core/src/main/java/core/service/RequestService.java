@@ -12,6 +12,8 @@ public interface RequestService {
     List<Request> getAll();
     List<Request> getAllForUser(UniUser uniUser);
     Request getOne(int id);
+    Request acceptRequest(Integer id);
+    Request rejectRequest(Integer id);
     void insert(Request request);
     void clear();
 }
