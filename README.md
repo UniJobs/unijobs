@@ -1,6 +1,12 @@
 # UniJobs
 Welcome to UniJobs
 
+
+ChangeLog 10-Jan-2018
+    * Added pagination - each request now takes a page number; the page size is set to 10 by default (it can be changed)
+    * Improved query for getting al jobs for a user (based on the skills) - since it is a native query, it does not support
+        pagination so a workaround had to be made
+
 ChangeLog 14-Nov-2017 - PAY ATTENTION!
 * Users representation has changed; clients and providers do not exist anymore; they are both UniUsers
 * The PRELOAD files have changed; there is a "Skills.csv" file now which contains all the skills that a User might have
@@ -18,3 +24,6 @@ Preload:
 * Responds to request "doPreload"
 * MAKE SURE THAT YOUR DATABASE IS EMPTY !!!
 * Add Users, Skills and Jobs (necessary entities for the majority of the filters)
+
+
+

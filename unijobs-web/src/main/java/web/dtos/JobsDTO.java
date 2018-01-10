@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 import web.dto.JobDTO;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @ToString
 public class JobsDTO {
-    List<JobDTO> jobs;
+    List<JobDTO> jobs = new ArrayList<>();
 
     public JobsDTO(List<JobDTO> jobDTOS){
         this.jobs = jobDTOS;
