@@ -1,7 +1,6 @@
 package web.controller;
 
 import core.model.Job;
-import core.model.Request;
 import core.model.Skill;
 import core.model.UniUser;
 import core.service.JobService;
@@ -45,8 +44,11 @@ public class JobController {
 
     @RequestMapping(value = "jobs", method = RequestMethod.GET)
     @Transactional
-    public JobsDTO getJobs(){
-        return new JobsDTO(jobService.getAll().stream().map(JobDTO::new).collect(Collectors.toList()));
+    public JobsDTO getJobs(@RequestParam("id") Integer userId){
+        List<Job> jobs = jobService.getAll();
+        UniUser user = uniUserService.getUserById(userId);
+        List<Job> jobList = jobs.stream().filter(job -> job.isAvailable() && job.getUniUser() != user && !job.getEndDate().after(new Date())).collect(Collectors.toList());
+        return new JobsDTO(jobList.stream().map(JobDTO::new).collect(Collectors.toList()));
     }
 
     @RequestMapping(value = "/newJob", method = RequestMethod.POST)
