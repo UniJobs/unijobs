@@ -1,5 +1,6 @@
 package core.service;
 
+import core.model.Job;
 import core.model.Request;
 import core.model.UniUser;
 import core.repository.RequestRepository;
@@ -37,6 +38,11 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
+    public List<Request> getAllForJob(Job job) {
+        return requestRepository.findAllByJob(job);
+    }
+
+    @Override
     public Request getOne(int id) {
         log.trace("Get request by id : id={}", id);
         Request res = requestRepository.findOne(id);
@@ -44,9 +50,22 @@ public class RequestServiceImpl implements RequestService {
         return res;
     }
 
+    //Just accepts the requests
     @Override
-    public Request acceptRequest(Integer id) {
-        Request request = getOne(id);
+    public Request acceptRequest(Integer requestId) {
+        Request request = getOne(requestId);
+        request.setStatus("ACCEPTED");
+        requestRepository.save(request);
+        return request;
+    }
+
+    //Also Rejects all other requests for the given job
+    @Override
+    public Request acceptRequest(Integer requestId,Job job) {
+        List<Request> requests = getAllForJob(job);
+        requests.forEach(r -> r.setStatus("REJECTED"));
+        requestRepository.save(requests);
+        Request request = getOne(requestId);
         request.setStatus("ACCEPTED");
         requestRepository.save(request);
         return request;

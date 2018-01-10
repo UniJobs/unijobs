@@ -58,8 +58,8 @@ public class RequestController {
     @RequestMapping(value = "/accept/{requestId}",method = RequestMethod.POST)
     public RequestDTO acceptRequest(@PathVariable Integer requestId){
         log.trace("Accepting request : {}",requestId);
-        Request request = requestService.acceptRequest(requestId);
-        Job job = request.getJob();
+        Job job = requestService.getOne(requestId).getJob();
+        Request request = requestService.acceptRequest(requestId,job);
         job.setEmployed(uniUserService.getUserById(request.getFromUniUser().getId()));
         jobService.save(job);
         log.trace("Accepted request : {}",requestId);
