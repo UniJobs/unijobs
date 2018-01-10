@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -48,5 +49,12 @@ public class ReviewServiceImpl implements  ReviewService {
         log.trace("clear Reviews");
         reviewRepository.deleteAll();
         log.trace("Reviews cleared");
+    }
+
+    @Override
+    public void addReviewForUser(Review review){
+        log.trace("add review for a user", review);
+        reviewRepository.save(review);
+        log.trace("add review for a user");
     }
 }
