@@ -27,11 +27,11 @@ public class JobServiceImpl implements JobService {
     private UniJobRepository jobRepository;
 
     @Override
-    public Page<Job> getAll(Pageable pageable) {
+    public List<Job> getAll(Pageable pageable) {
         log.trace("job service - get all");
         Page<Job> res = jobRepository.findAll(pageable);
         log.trace("job service - got them all");
-        return filterAvailableJobs(res);
+        return filterAvailableJobs(res.getContent());
     }
 
     @Override
@@ -58,74 +58,74 @@ public class JobServiceImpl implements JobService {
 
     @Override
     @Transactional
-    public Page<Job> getByDescription(String description, Pageable pageable) {
+    public List<Job> getByDescription(String description, Pageable pageable) {
         log.trace("job service - get all by description {}", description);
         Page<Job> res = jobRepository.getAllByDescription(description, pageable);
         log.trace("job service - got them all");
-        return filterAvailableJobs(res);
+        return filterAvailableJobs(res.getContent());
     }
 
     @Override
     @Transactional
-    public Page<Job> getByLocation(String location, Pageable pageable) {
+    public List<Job> getByLocation(String location, Pageable pageable) {
         log.trace("job service - get all by location {}", location);
         Page<Job> res = jobRepository.getAllByLocation(location, pageable);
         log.trace("job service - got them all");
-        return filterAvailableJobs(res);
+        return filterAvailableJobs(res.getContent());
     }
 
     @Override
     @Transactional
-    public Page<Job> getByWorkingHours(int hpw, Pageable pageable) {
+    public List<Job> getByWorkingHours(int hpw, Pageable pageable) {
         log.trace("job service - get all by hours per week {}", hpw);
         Page<Job> res = jobRepository.getAllByHoursPerWeek(hpw, pageable);
         log.trace("job service - got them all");
-        return filterAvailableJobs(res);
+        return filterAvailableJobs(res.getContent());
     }
 
     @Override
     @Transactional
-    public Page<Job> getByCost(int cost, Pageable pageable) {
+    public List<Job> getByCost(int cost, Pageable pageable) {
         log.trace("job service - get all by cost {}", cost);
         Page<Job> res = jobRepository.getAllByCost(cost, pageable);
         log.trace("job service - got them all");
-        return filterAvailableJobs(res);
+        return filterAvailableJobs(res.getContent());
     }
 
     @Override
     @Transactional
-    public Page<Job> getAllByStartDate(Date startDate, Pageable pageable) {
+    public List<Job> getAllByStartDate(Date startDate, Pageable pageable) {
         log.trace("job service - get all by start date {}", startDate);
         Page<Job> res = jobRepository.getAllByStartDate(startDate, pageable);
         log.trace("job service - got them all");
-        return filterAvailableJobs(res);
+        return filterAvailableJobs(res.getContent());
     }
 
     @Override
     @Transactional
-    public Page<Job> getAllByEndDate(Date endDate, Pageable pageable) {
+    public List<Job> getAllByEndDate(Date endDate, Pageable pageable) {
         log.trace("job service - get all by end date {}", endDate);
         Page<Job> res = jobRepository.getAllByEndDate(endDate, pageable);
         log.trace("job service - got them all");
-        return filterAvailableJobs(res);
+        return filterAvailableJobs(res.getContent());
     }
 
     @Override
     @Transactional
-    public Page<Job> getAllBetweenDates(Date startDate, Date endDate, Pageable pageable) {
+    public List<Job> getAllBetweenDates(Date startDate, Date endDate, Pageable pageable) {
         log.trace("job service - get all where start date greater or equal than and end date less or equal than {}", startDate, endDate);
         Page<Job> res = jobRepository.getAllBetweenDates(startDate, endDate, pageable);
         log.trace("job service - got them all");
-        return filterAvailableJobs(res);
+        return filterAvailableJobs(res.getContent());
     }
 
     @Override
     @Transactional
-    public Page<Job> getAllJobsByUser(UniUser uniUser, Pageable pageable) {
+    public List<Job> getAllJobsByUser(UniUser uniUser, Pageable pageable) {
         log.trace("job service - get all jobs published by a user {}", uniUser);
         Page<Job> res = jobRepository.getAllByUniUser(uniUser, pageable);
         log.trace("job service - got them all");
-        return filterAvailableJobs(res);
+        return filterAvailableJobs(res.getContent());
     }
 
     public List<Job> filterAvailableJobs(List<Job> jobs){
@@ -134,14 +134,12 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public List<Job> getAllBySkillDescriptions(List<String> skillDescriptions) {
-        List<Job> res = jobRepository.getAllBySkillDescription(skillDescriptions);
-        return res;
+        return jobRepository.getAllBySkillDescription(skillDescriptions);
     }
 
     @Override
     public List<Job> getAllByUserId(Integer userId) {
-        List<Job> res = jobRepository.getAllByUserId(userId);
-        return res;
+        return jobRepository.getAllByUserId(userId);
     }
 
 

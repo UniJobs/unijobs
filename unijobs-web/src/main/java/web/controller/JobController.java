@@ -51,7 +51,7 @@ public class JobController {
     public JobsDTO getJobs(@PathVariable Integer userId,@PathVariable Integer pageNo){
         Pageable pageable = new PageRequest(pageNo, PAGE_SIZE);
         //return new JobsDTO(jobService.getAll(pageable).getContent().stream().map(JobDTO::new).collect(Collectors.toList()));
-        List<Job> jobs = jobService.getAll(pageable).getContent();
+        List<Job> jobs = jobService.getAll(pageable);
         UniUser user = uniUserService.getUserById(userId);
         List<Job> jobList = jobs.stream().filter(job -> job.getUniUser() != user).collect(Collectors.toList());
         return new JobsDTO(jobList.stream().map(JobDTO::new).collect(Collectors.toList()));
@@ -62,7 +62,7 @@ public class JobController {
     @Transactional
     public JobsDTO getJobsUnfiltered(@PathVariable Integer pageNo){
         Pageable pageable = new PageRequest(pageNo, PAGE_SIZE);
-        List<Job> jobs = jobService.getAll(pageable).getContent();
+        List<Job> jobs = jobService.getAll(pageable);
         return new JobsDTO(jobs.stream().map(JobDTO::new).collect(Collectors.toList()));
     }
 
@@ -110,15 +110,15 @@ public class JobController {
     public JobsDTO getJobsByDescription(@PathVariable String description, @PathVariable Integer pageNo){
         Pageable pageable = new PageRequest(pageNo, PAGE_SIZE);
         return new JobsDTO(jobService.getByDescription(description, pageable)
-                .getContent().stream().map(JobDTO::new).collect(Collectors.toList()));
+                .stream().map(JobDTO::new).collect(Collectors.toList()));
     }
 
     @RequestMapping(value = "byLocation/{location}/{pageNo}", method = RequestMethod.POST)
     @Transactional
     public JobsDTO getJobsByLocation(@PathVariable String location, @PathVariable Integer pageNo){
         Pageable pageable = new PageRequest(pageNo, 5);
-        Page<Job> jobs = jobService.getByLocation(location, pageable);
-        List<JobDTO> dtos = jobs.getContent().stream().map(JobDTO::new).collect(Collectors.toList());
+        List<Job> jobs = jobService.getByLocation(location, pageable);
+        List<JobDTO> dtos = jobs.stream().map(JobDTO::new).collect(Collectors.toList());
         return new JobsDTO(dtos);
     }
 
@@ -127,7 +127,7 @@ public class JobController {
     public JobsDTO getJobsByHoursPerWeek(@PathVariable Integer hpw, @PathVariable Integer pageNo){
         Pageable pageable = new PageRequest(pageNo, PAGE_SIZE);
         return new JobsDTO(jobService.getByWorkingHours(hpw,pageable)
-                .getContent().stream().map(JobDTO::new).collect(Collectors.toList()));
+                .stream().map(JobDTO::new).collect(Collectors.toList()));
     }
 
     @RequestMapping(value = "byCost/{cost}/{pageNo}", method = RequestMethod.POST)
@@ -135,7 +135,7 @@ public class JobController {
     public JobsDTO getJobsByCost(@PathVariable Integer cost, @PathVariable Integer pageNo){
         Pageable pageable = new PageRequest(pageNo, PAGE_SIZE);
         return new JobsDTO(jobService.getByCost(cost, pageable)
-                .getContent().stream().map(JobDTO::new).collect(Collectors.toList()));
+                .stream().map(JobDTO::new).collect(Collectors.toList()));
     }
 
     @RequestMapping(value = "byStartDate/{startDate}/{pageNo}", method = RequestMethod.POST)
@@ -143,7 +143,7 @@ public class JobController {
     public JobsDTO getJobsByStartDate(@PathVariable Date startDate, @PathVariable Integer pageNo){
         Pageable pageable = new PageRequest(pageNo, PAGE_SIZE);
         return new JobsDTO(jobService.getAllByStartDate(startDate, pageable)
-                .getContent().stream().map(JobDTO::new).collect(Collectors.toList()));
+                .stream().map(JobDTO::new).collect(Collectors.toList()));
     }
 
     @RequestMapping(value = "byEndDate/{endDate}/{pageNo}", method = RequestMethod.POST)
@@ -151,7 +151,7 @@ public class JobController {
     public JobsDTO getJobsByEndDate(@PathVariable Date endDate, @PathVariable Integer pageNo){
         Pageable pageable = new PageRequest(pageNo, PAGE_SIZE);
         return new JobsDTO(jobService.getAllByEndDate(endDate, pageable)
-                .getContent().stream().map(JobDTO::new).collect(Collectors.toList()));
+                .stream().map(JobDTO::new).collect(Collectors.toList()));
     }
 
     //Is this working ? solution betweenDates/{startDate}/{endDate}
@@ -160,7 +160,7 @@ public class JobController {
     public JobsDTO getJobsBetweenDates(@PathVariable Date startDate, @PathVariable Date endDate, @PathVariable Integer pageNo){
         Pageable pageable = new PageRequest(pageNo, PAGE_SIZE);
         return new JobsDTO(jobService.getAllBetweenDates(startDate, endDate, pageable)
-                .getContent().stream().map(JobDTO::new).collect(Collectors.toList()));
+                .stream().map(JobDTO::new).collect(Collectors.toList()));
     }
 
     @RequestMapping(value = "byUser/{user_id}/{pageNo}", method = RequestMethod.POST)
@@ -169,7 +169,7 @@ public class JobController {
         Pageable pageable = new PageRequest(pageNo, PAGE_SIZE);
         UniUser uniUser = uniUserService.getUserById(user_id);
         return new JobsDTO(jobService.getAllJobsByUser(uniUser, pageable)
-                .getContent().stream().map(JobDTO::new).collect(Collectors.toList()));
+                .stream().map(JobDTO::new).collect(Collectors.toList()));
     }
 
 //    @RequestMapping(value = "getAllJobsForUser/{userId}/{pageNo}", method = RequestMethod.GET)
@@ -206,6 +206,6 @@ public class JobController {
         if (upperSize > allJobs.size())
             upperSize = allJobs.size();
         List<Job> pageWorkaround = allJobs.subList((pageNo-1) * PAGE_SIZE, upperSize);
-        return new JobsDTO(pageWorkaround.stream().map(j -> new JobDTO(j)).collect(Collectors.toList()));
+        return new JobsDTO(pageWorkaround.stream().map(JobDTO::new).collect(Collectors.toList()));
     }
 }
