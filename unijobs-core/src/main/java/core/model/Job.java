@@ -47,6 +47,10 @@ public class Job {
     @JoinColumn(name = "user_id", nullable = false)
     private UniUser uniUser;
 
+    @OneToOne
+    @JoinColumn(name = "employed_id")
+    private UniUser employed;
+
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "job_skill",
             joinColumns = {@JoinColumn(name = "job_id")},
@@ -62,5 +66,9 @@ public class Job {
         this.cost = cost;
         this.startDate = startDate;
         this.endDate = endDate;
+    }
+
+    public Boolean isAvailable(){
+        return employed == null;
     }
 }

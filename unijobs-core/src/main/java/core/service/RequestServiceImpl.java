@@ -1,5 +1,6 @@
 package core.service;
 
+import core.model.Job;
 import core.model.Request;
 import core.model.UniUser;
 import core.repository.RequestRepository;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Alex on 10/31/2017.
@@ -31,7 +33,13 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     public List<Request> getAllForUser(UniUser uniUser) {
-        return null;
+        return requestRepository.findAllByToUniUser(uniUser).stream()
+                .filter(r -> r.getStatus().equals("PENDING")).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Request> getAllForJob(Job job) {
+        return requestRepository.findAllByJob(job);
     }
 
     @Override
@@ -40,6 +48,35 @@ public class RequestServiceImpl implements RequestService {
         Request res = requestRepository.findOne(id);
         log.trace("Request = {}", res);
         return res;
+    }
+
+    //Just accepts the requests
+    @Override
+    public Request acceptRequest(Integer requestId) {
+        Request request = getOne(requestId);
+        request.setStatus("ACCEPTED");
+        requestRepository.save(request);
+        return request;
+    }
+
+    //Also Rejects all other requests for the given job
+    @Override
+    public Request acceptRequest(Integer requestId,Job job) {
+        List<Request> requests = getAllForJob(job);
+        requests.forEach(r -> r.setStatus("REJECTED"));
+        requestRepository.save(requests);
+        Request request = getOne(requestId);
+        request.setStatus("ACCEPTED");
+        requestRepository.save(request);
+        return request;
+    }
+
+    @Override
+    public Request rejectRequest(Integer id) {
+        Request request = getOne(id);
+        request.setStatus("REJECTED");
+        requestRepository.save(request);
+        return request;
     }
 
     @Override

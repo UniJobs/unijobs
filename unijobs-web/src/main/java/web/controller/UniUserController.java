@@ -3,6 +3,7 @@ package web.controller;
 import core.model.Authority;
 import core.model.UniUser;
 import core.service.AuthorityService;
+import core.service.RequestService;
 import core.service.UniUserService;
 import core.utils.MailUtils;
 import org.apache.commons.codec.binary.Base64;
@@ -37,6 +38,8 @@ public class UniUserController {
     @Autowired
     AuthorityService authorityService;
 
+
+
     @RequestMapping(value="/users", method = RequestMethod.GET)
     public UniUsersDTO getUsers(){
         return new UniUsersDTO(uniUserService.getAllUsers());
@@ -48,7 +51,6 @@ public class UniUserController {
         UniUser uniUser = uniUserService.getUserById(userId);
         log.trace("user returned by id={} is user={}",userId,uniUser);
         return new UniUserDTO(uniUser);
-
     }
 
     @RequestMapping(value = "/getUserByName")

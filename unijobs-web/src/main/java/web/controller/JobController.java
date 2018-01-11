@@ -4,6 +4,7 @@ import core.model.Job;
 import core.model.Skill;
 import core.model.UniUser;
 import core.service.JobService;
+import core.service.RequestService;
 import core.service.SkillService;
 import core.service.UniUserService;
 import org.slf4j.Logger;
@@ -13,7 +14,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.method.P;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import web.dto.JobDTO;
@@ -43,11 +43,27 @@ public class JobController {
     @Autowired
     SkillService skillService;
 
-    @RequestMapping(value = "jobs/{pageNo}", method = RequestMethod.GET)
+    @Autowired
+    RequestService requestService;
+
+    @RequestMapping(value = "jobs/{userId}/{pageNo}", method = RequestMethod.GET)
     @Transactional
-    public JobsDTO getJobs(@PathVariable Integer pageNo){
+    public JobsDTO getJobs(@PathVariable Integer userId,@PathVariable Integer pageNo){
         Pageable pageable = new PageRequest(pageNo, PAGE_SIZE);
-        return new JobsDTO(jobService.getAll(pageable).getContent().stream().map(JobDTO::new).collect(Collectors.toList()));
+        //return new JobsDTO(jobService.getAll(pageable).getContent().stream().map(JobDTO::new).collect(Collectors.toList()));
+        List<Job> jobs = jobService.getAll(pageable).getContent();
+        UniUser user = uniUserService.getUserById(userId);
+        List<Job> jobList = jobs.stream().filter(job -> job.getUniUser() != user).collect(Collectors.toList());
+        return new JobsDTO(jobList.stream().map(JobDTO::new).collect(Collectors.toList()));
+    }
+
+    //All jobs unfiltered
+    @RequestMapping(value = "allJobs/{pageNo}", method = RequestMethod.GET)
+    @Transactional
+    public JobsDTO getJobsUnfiltered(@PathVariable Integer pageNo){
+        Pageable pageable = new PageRequest(pageNo, PAGE_SIZE);
+        List<Job> jobs = jobService.getAll(pageable).getContent();
+        return new JobsDTO(jobs.stream().map(JobDTO::new).collect(Collectors.toList()));
     }
 
     @RequestMapping(value = "/newJob", method = RequestMethod.POST)
@@ -138,6 +154,7 @@ public class JobController {
                 .getContent().stream().map(JobDTO::new).collect(Collectors.toList()));
     }
 
+    //Is this working ? solution betweenDates/{startDate}/{endDate}
     @RequestMapping(value = "betweenDates/{startDate, endDate}/{pageNo}", method = RequestMethod.POST)
     @Transactional
     public JobsDTO getJobsBetweenDates(@PathVariable Date startDate, @PathVariable Date endDate, @PathVariable Integer pageNo){

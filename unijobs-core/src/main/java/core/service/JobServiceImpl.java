@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Alex on 11/1/2017.
@@ -30,7 +31,7 @@ public class JobServiceImpl implements JobService {
         log.trace("job service - get all");
         Page<Job> res = jobRepository.findAll(pageable);
         log.trace("job service - got them all");
-        return res;
+        return filterAvailableJobs(res);
     }
 
     @Override
@@ -61,7 +62,7 @@ public class JobServiceImpl implements JobService {
         log.trace("job service - get all by description {}", description);
         Page<Job> res = jobRepository.getAllByDescription(description, pageable);
         log.trace("job service - got them all");
-        return res;
+        return filterAvailableJobs(res);
     }
 
     @Override
@@ -70,7 +71,7 @@ public class JobServiceImpl implements JobService {
         log.trace("job service - get all by location {}", location);
         Page<Job> res = jobRepository.getAllByLocation(location, pageable);
         log.trace("job service - got them all");
-        return res;
+        return filterAvailableJobs(res);
     }
 
     @Override
@@ -79,7 +80,7 @@ public class JobServiceImpl implements JobService {
         log.trace("job service - get all by hours per week {}", hpw);
         Page<Job> res = jobRepository.getAllByHoursPerWeek(hpw, pageable);
         log.trace("job service - got them all");
-        return res;
+        return filterAvailableJobs(res);
     }
 
     @Override
@@ -88,7 +89,7 @@ public class JobServiceImpl implements JobService {
         log.trace("job service - get all by cost {}", cost);
         Page<Job> res = jobRepository.getAllByCost(cost, pageable);
         log.trace("job service - got them all");
-        return res;
+        return filterAvailableJobs(res);
     }
 
     @Override
@@ -97,7 +98,7 @@ public class JobServiceImpl implements JobService {
         log.trace("job service - get all by start date {}", startDate);
         Page<Job> res = jobRepository.getAllByStartDate(startDate, pageable);
         log.trace("job service - got them all");
-        return res;
+        return filterAvailableJobs(res);
     }
 
     @Override
@@ -106,7 +107,7 @@ public class JobServiceImpl implements JobService {
         log.trace("job service - get all by end date {}", endDate);
         Page<Job> res = jobRepository.getAllByEndDate(endDate, pageable);
         log.trace("job service - got them all");
-        return res;
+        return filterAvailableJobs(res);
     }
 
     @Override
@@ -115,7 +116,7 @@ public class JobServiceImpl implements JobService {
         log.trace("job service - get all where start date greater or equal than and end date less or equal than {}", startDate, endDate);
         Page<Job> res = jobRepository.getAllBetweenDates(startDate, endDate, pageable);
         log.trace("job service - got them all");
-        return res;
+        return filterAvailableJobs(res);
     }
 
     @Override
@@ -124,7 +125,11 @@ public class JobServiceImpl implements JobService {
         log.trace("job service - get all jobs published by a user {}", uniUser);
         Page<Job> res = jobRepository.getAllByUniUser(uniUser, pageable);
         log.trace("job service - got them all");
-        return res;
+        return filterAvailableJobs(res);
+    }
+
+    public List<Job> filterAvailableJobs(List<Job> jobs){
+        return jobs.stream().filter(job -> job.isAvailable() && !job.getEndDate().after(new Date())).collect(Collectors.toList());
     }
 
     @Override
