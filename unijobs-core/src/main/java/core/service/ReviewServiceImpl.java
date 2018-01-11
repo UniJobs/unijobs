@@ -57,4 +57,12 @@ public class ReviewServiceImpl implements  ReviewService {
         reviewRepository.save(review);
         log.trace("add review for a user");
     }
+
+    @Override
+    public List<Review> getReviewsForUserId(Integer userId){
+        log.trace("Get reviews by user id : id={}",userId);
+        List<Review> reviews = reviewRepository.getReviewsForUserId(userId);
+        log.trace("Reviews returned for userId={} are reviews={}", userId, reviews);
+        return reviews;
+    }
 }

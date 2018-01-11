@@ -1,10 +1,8 @@
 package core.service;
 
 import core.model.Review;
-import core.model.TemporaryUser;
 import core.model.UniUser;
 import core.repository.ReviewRepository;
-import core.repository.TemporaryUserRepository;
 import core.repository.UniUserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 
 /**
@@ -25,12 +22,6 @@ public class UniUserServiceImpl implements UniUserService{
 
     @Autowired
     UniUserRepository uniUserRepository;
-
-    @Autowired
-    ReviewRepository reviewRepository;
-
-    @Autowired
-    ReviewRepository reviewRepository;
 
     @Override
     @Transactional
@@ -86,21 +77,5 @@ public class UniUserServiceImpl implements UniUserService{
         log.trace("remove all users begin");
         uniUserRepository.deleteAll();
         log.trace("remove all users end");
-    }
-
-    @Override
-    public List<Review> getReviewsForUserId(Integer userId){
-        log.trace("Get reviews by user id : id={}",userId);
-        List<Review> reviews = reviewRepository.getReviewsForUserId(userId);
-        log.trace("Reviews returned for userId={} are reviews={}", userId, reviews);
-        return reviews;
-    }
-
-    @Override
-    public List<Review> getReviewsForUserId(Integer userId){
-        log.trace("Get reviews by user id : id={}",userId);
-        List<Review> reviews = reviewRepository.getReviewsForUserId(userId);
-        log.trace("Reviews returned for userId={} are reviews={}", userId, reviews);
-        return reviews;
     }
 }

@@ -1,5 +1,6 @@
 package core.service;
 
+import core.model.Review;
 import core.model.UniUser;
 
 import java.util.List;
@@ -17,6 +18,4 @@ public interface UniUserService {
     void addUser(UniUser user);
     void updateUser(UniUser user);
     void clear();
-
-    List<Review> getReviewsForUserId(Integer userId);
 }

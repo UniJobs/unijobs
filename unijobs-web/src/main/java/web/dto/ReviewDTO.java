@@ -15,15 +15,15 @@ import lombok.*;
 @Builder
 public class ReviewDTO {
     private int id;
-    private UniUser reviewer;
-    private UniUser reviewed;
+    private Integer reviewerId;
+    private Integer reviewedId;
     private int stars;
     private String comment;
 
     public ReviewDTO(Review review){
         this.id = review.getId();
-        this.reviewer = review.getReviewer();
-        this.reviewed = review.getReviewed();
+        this.reviewerId = review.getReviewer().getId();
+        this.reviewedId = review.getReviewed().getId();
         this.stars = review.getStars();
         this.comment = review.getComment();
     }

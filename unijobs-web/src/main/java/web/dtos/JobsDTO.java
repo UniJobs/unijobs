@@ -15,6 +15,11 @@ import java.util.stream.Collectors;
  * Created by Cris on 10/24/2017.
  */
 
+//TODO: Get rid of duplicate code
+//TODO: Instead of Having .stream().filter()..etc repeated in the Controllers
+//TODO: This Constructor could receive a List<Job> and do the conversion internally
+//TODO: PS: writing this probably took longer than doing it myself
+
 @Setter
 @Getter
 @NoArgsConstructor

@@ -13,4 +13,5 @@ public interface ReviewService {
     void insert(Review review);
     void clear();
     void addReviewForUser(Review review);
+    List<Review> getReviewsForUserId(Integer userId);
 }
