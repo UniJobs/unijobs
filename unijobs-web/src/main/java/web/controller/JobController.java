@@ -51,6 +51,14 @@ public class JobController {
         return new JobsDTO(jobList.stream().map(JobDTO::new).collect(Collectors.toList()));
     }
 
+    //All jobs unfiltered
+    @RequestMapping(value = "allJobs", method = RequestMethod.GET)
+    @Transactional
+    public JobsDTO getJobsUnfiltered(){
+        List<Job> jobs = jobService.getAll();
+        return new JobsDTO(jobs.stream().map(JobDTO::new).collect(Collectors.toList()));
+    }
+
     @RequestMapping(value = "/newJob", method = RequestMethod.POST)
     public JobDTO addJob(
             @RequestBody final JobDTO jobDTO){
