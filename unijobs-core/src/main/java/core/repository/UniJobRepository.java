@@ -16,6 +16,9 @@ import java.util.List;
  */
 public interface UniJobRepository extends BaseRepository<Job,Integer>{
 
+    @Query("SELECT j FROM Job j WHERE j.title  LIKE CONCAT('%',:title,'%')")
+    Page<Job> getAllByTitle(@Param("title") String title, Pageable pageable);
+
     @Query("SELECT j FROM Job j WHERE j.description  LIKE CONCAT('%',:description,'%')")
     Page<Job> getAllByDescription(@Param("description") String description, Pageable pageable);
 

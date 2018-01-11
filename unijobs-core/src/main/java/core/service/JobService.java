@@ -20,6 +20,7 @@ public interface JobService {
 
     void clear();
 
+    Page<Job> getByTitle(String title, Pageable pageable);
     Page<Job> getByDescription(String description, Pageable pageable);
     Page<Job> getByLocation(String location, Pageable pageable);
     Page<Job> getByWorkingHours(int hpw, Pageable pageable);

@@ -21,6 +21,8 @@ public class JobDTO {
 
     public Integer id;
 
+    public String title;
+
     public String description;
 
     public Integer hpw;
@@ -39,6 +41,7 @@ public class JobDTO {
 
     public JobDTO(Job job){
         id = job.getId();
+        title = job.getTitle();
         description = job.getDescription();
         uniUserId = job.getUniUser().getId();
         skillIds = job.getSkills().stream().map(s -> s.getId()).collect(Collectors.toList());

@@ -141,6 +141,7 @@ public class PreloadController {
                     int count = 1;
                     for (int i = 0; i < nrJobs; i++) {
                         Job j = new Job(parts[count + 8],
+                                parts[count + 8],
                                 parts[count + 9],
                                 Integer.parseInt(parts[count + 10]),
                                 Integer.parseInt(parts[count + 11]),

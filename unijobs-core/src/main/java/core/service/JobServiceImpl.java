@@ -56,6 +56,14 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
+    public Page<Job> getByTitle(String title,Pageable pageable) {
+        log.trace("job service - gat all by title {}", title);
+        Page<Job> res = jobRepository.getAllByTitle(title, pageable);
+        log.trace("job service - got them all");
+        return res;
+    }
+
+    @Override
     @Transactional
     public Page<Job> getByDescription(String description, Pageable pageable) {
         log.trace("job service - get all by description {}", description);
