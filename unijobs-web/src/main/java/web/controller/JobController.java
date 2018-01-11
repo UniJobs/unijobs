@@ -47,7 +47,7 @@ public class JobController {
     public JobsDTO getJobs(@RequestParam("id") Integer userId){
         List<Job> jobs = jobService.getAll();
         UniUser user = uniUserService.getUserById(userId);
-        List<Job> jobList = jobs.stream().filter(job -> job.isAvailable() && job.getUniUser() != user && !job.getEndDate().after(new Date())).collect(Collectors.toList());
+        List<Job> jobList = jobs.stream().filter(job -> job.getUniUser() != user).collect(Collectors.toList());
         return new JobsDTO(jobList.stream().map(JobDTO::new).collect(Collectors.toList()));
     }
 

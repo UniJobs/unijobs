@@ -29,7 +29,7 @@ public class JobServiceImpl implements JobService {
         log.trace("job service - get all");
         List<Job> res = jobRepository.findAll();
         log.trace("job service - got them all");
-        return res;
+        return filterAvailableJobs(res);
     }
 
     @Override
