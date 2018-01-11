@@ -90,10 +90,12 @@ public class JobController {
         return new JobDTO(job);
     }
 
-    @RequestMapping(value = "byTitle/{title}", method = RequestMethod.POST)
+    @RequestMapping(value = "byTitle/{title}/{pageNo}", method = RequestMethod.POST)
     @Transactional
-    public JobsDTO getJobsByTitle(@PathVariable String title){
-        return new JobsDTO(jobService.getByTitle(title).stream().map(JobDTO::new).collect(Collectors.toList()));
+    public JobsDTO getJobsByTitle(@PathVariable String title, @PathVariable Integer pageNo){
+        Pageable pageable = new PageRequest(pageNo, PAGE_SIZE);
+        return new JobsDTO(jobService.getByTitle(title, pageable)
+                .getContent().stream().map(JobDTO::new).collect(Collectors.toList()));
     }
 
     @RequestMapping(value = "byDescription/{description}/{pageNo}", method = RequestMethod.POST)
