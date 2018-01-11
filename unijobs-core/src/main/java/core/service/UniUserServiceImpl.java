@@ -29,6 +29,9 @@ public class UniUserServiceImpl implements UniUserService{
     @Autowired
     ReviewRepository reviewRepository;
 
+    @Autowired
+    ReviewRepository reviewRepository;
+
     @Override
     @Transactional
     public UniUser getUserByUsername(String username) {
@@ -83,6 +86,14 @@ public class UniUserServiceImpl implements UniUserService{
         log.trace("remove all users begin");
         uniUserRepository.deleteAll();
         log.trace("remove all users end");
+    }
+
+    @Override
+    public List<Review> getReviewsForUserId(Integer userId){
+        log.trace("Get reviews by user id : id={}",userId);
+        List<Review> reviews = reviewRepository.getReviewsForUserId(userId);
+        log.trace("Reviews returned for userId={} are reviews={}", userId, reviews);
+        return reviews;
     }
 
     @Override
