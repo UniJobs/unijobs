@@ -12,5 +12,6 @@ import java.util.List;
 public interface RequestRepository extends BaseRepository<Request, Integer> {
 
     List<Request> findAllByToUniUser(UniUser uniUser);
+    List<Request> findAllByFromUniUser(UniUser uniUser);
     List<Request> findAllByJob(Job job);
 }

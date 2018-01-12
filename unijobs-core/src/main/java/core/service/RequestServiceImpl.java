@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /**
@@ -35,6 +36,12 @@ public class RequestServiceImpl implements RequestService {
     public List<Request> getAllForUser(UniUser uniUser) {
         return requestRepository.findAllByToUniUser(uniUser).stream()
                 .filter(r -> r.getStatus().equals("PENDING")).collect(Collectors.toList());
+    }
+
+
+    @Override
+    public List<Request> getAllForFromUser(UniUser uniUser){
+        return requestRepository.findAllByFromUniUser(uniUser);
     }
 
     @Override

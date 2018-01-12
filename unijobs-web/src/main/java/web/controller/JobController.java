@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/job/")
 public class JobController {
     private static final Logger log = LoggerFactory.getLogger(JobController.class);
-    private static final Integer PAGE_SIZE = 10;
+    private static final Integer PAGE_SIZE = 9;
 
     @Autowired
     JobService jobService;
@@ -91,13 +91,16 @@ public class JobController {
                     .skills(new ArrayList<>())
                     .build();
             jobService.save(job);
+            if(jobDTO.getSkillIds()!= null) {
 
-            List<Skill> skillz = jobDTO.getSkillIds().stream().map(i -> skillService.getSkillById(i)).collect(Collectors.toList());
-            for (Skill s : skillz) {
-                log.trace("skill={}", s);
-                job.addSkill(s);
+                List<Skill> skillz = jobDTO.getSkillIds().stream().map(i -> skillService.getSkillById(i)).collect(Collectors.toList());
+                for (Skill s : skillz) {
+                    log.trace("skill={}", s);
+                    job.addSkill(s);
+                }
+                    jobService.save(job);
             }
-            jobService.save(job);
+
         } catch (DataIntegrityViolationException | ParseException e) {
             job = Job.builder().build();
             log.trace("not added job e={}", e.getMessage(), e.getClass());

@@ -45,7 +45,7 @@ public class OAuth2SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .antMatchers("/api/preload/**").hasAnyAuthority("ADMIN")
-                .antMatchers("/api/initAdmin","/api/user/**","/api/job/allJobs").permitAll()
+                .antMatchers("/api/initAdmin","/api/user/**","/api/job/allJobs/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/login").failureUrl("/login?error")

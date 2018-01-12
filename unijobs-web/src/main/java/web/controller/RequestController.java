@@ -35,13 +35,23 @@ public class RequestController {
     // !!!
     // Request STATUS : PENDING | ACCEPTED | REJECTED
 
-    @RequestMapping(value = "/requests/{userId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/requests/{userId}", method = RequestMethod.GET)
     public RequestsDTO getRequests(@PathVariable Integer userId){
         log.trace("Finding all request for user : {}",userId);
         List<Request> requests = requestService.getAllForUser(uniUserService.getUserById(userId));
         log.trace("Request for user {} are : {}",userId,requests);
         return new RequestsDTO(requests);
     }
+
+    @RequestMapping(value = "/requestsFrom/{userId}", method = RequestMethod.GET)
+    public RequestsDTO getRequestsFrom(@PathVariable Integer userId){
+        log.trace("Finding all request for user : {}",userId);
+        List<Request> requests = requestService.getAllForFromUser(uniUserService.getUserById(userId));
+        log.trace("Request for user {} are : {}",userId,requests);
+        return new RequestsDTO(requests);
+    }
+
+
 
     @RequestMapping(value = "/requestJob/{userId}/{jobId}",method = RequestMethod.POST)
     public RequestDTO sendRequest(@PathVariable Integer userId, @PathVariable Integer jobId){

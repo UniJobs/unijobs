@@ -1,5 +1,6 @@
 package core.service;
 
+import com.sun.org.apache.regexp.internal.RE;
 import core.model.Job;
 import core.model.Request;
 import core.model.UniUser;
@@ -13,6 +14,7 @@ public interface RequestService {
     List<Request> getAll();
     List<Request> getAllForUser(UniUser uniUser);
     List<Request> getAllForJob(Job job);
+    List<Request> getAllForFromUser(UniUser uniUser);
     Request getOne(int id);
     Request acceptRequest(Integer requestId);
     Request acceptRequest(Integer id,Job job);
