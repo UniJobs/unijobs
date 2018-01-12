@@ -66,6 +66,12 @@ public class JobController {
         return new JobsDTO(jobs.stream().map(JobDTO::new).collect(Collectors.toList()));
     }
 
+    @RequestMapping(value = "all", method = RequestMethod.GET)
+    @Transactional
+    public JobsDTO getAll(){
+        return new JobsDTO(jobService.getAllNonPage().stream().map(JobDTO::new).collect(Collectors.toList()));
+    }
+
     @RequestMapping(value = "getJob/{jobId}", method = RequestMethod.GET)
     @Transactional
     public JobDTO getJob(@PathVariable Integer jobId){

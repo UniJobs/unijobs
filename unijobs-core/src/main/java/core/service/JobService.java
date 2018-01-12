@@ -14,6 +14,7 @@ import java.util.List;
  * Created by Alex on 11/1/2017.
  */
 public interface JobService {
+    List<Job> getAllNonPage();
     List<Job> getAll(Pageable pageable);
     Job getOne(int id);
     void save(Job job);
