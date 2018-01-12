@@ -66,6 +66,12 @@ public class JobController {
         return new JobsDTO(jobs.stream().map(JobDTO::new).collect(Collectors.toList()));
     }
 
+    @RequestMapping(value = "getJob/{jobId}", method = RequestMethod.GET)
+    @Transactional
+    public JobDTO getJob(@PathVariable Integer jobId){
+        return new JobDTO(jobService.getOne(jobId));
+    }
+
     @RequestMapping(value = "/newJob", method = RequestMethod.POST)
     public JobDTO addJob(
             @RequestBody final JobDTO jobDTO){
