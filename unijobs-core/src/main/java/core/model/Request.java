@@ -31,6 +31,7 @@ public class Request {
     @JoinColumn(name = "to_user_id")
     private UniUser toUniUser;
 
+    // Request STATUS : PENDING | ACCEPTED | REJECTED
     @Column
     private String status;
 }

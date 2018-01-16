@@ -32,9 +32,6 @@ public class RequestController {
     @Autowired
     RequestService requestService;
 
-    // !!!
-    // Request STATUS : PENDING | ACCEPTED | REJECTED
-
     @RequestMapping(value = "/requests/{userId}", method = RequestMethod.GET)
     public RequestsDTO getRequests(@PathVariable Integer userId){
         log.trace("Finding all request for user : {}",userId);
@@ -50,8 +47,6 @@ public class RequestController {
         log.trace("Request for user {} are : {}",userId,requests);
         return new RequestsDTO(requests);
     }
-
-
 
     @RequestMapping(value = "/requestJob/{userId}/{jobId}",method = RequestMethod.POST)
     public RequestDTO sendRequest(@PathVariable Integer userId, @PathVariable Integer jobId){
@@ -84,5 +79,12 @@ public class RequestController {
         return new RequestDTO(request);
     }
 
+    @RequestMapping(value = "/finish/{requestId}",method = RequestMethod.POST)
+    public RequestDTO finishRequest(@PathVariable Integer requestId){
+        log.trace("Rejecting request : {}",requestId);
+        Request request = requestService.finishRequest(requestId);
+        log.trace("Rejecting request : {}",requestId);
+        return new RequestDTO(request);
+    }
 
 }

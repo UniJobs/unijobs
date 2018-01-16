@@ -19,6 +19,7 @@ public interface RequestService {
     Request acceptRequest(Integer requestId);
     Request acceptRequest(Integer id,Job job);
     Request rejectRequest(Integer id);
+    Request finishRequest(Integer id);
     void insert(Request request);
     void clear();
 }
