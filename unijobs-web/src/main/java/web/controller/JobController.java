@@ -78,7 +78,7 @@ public class JobController {
         return new JobDTO(jobService.getOne(jobId));
     }
 
-    @RequestMapping(value = "/newJob", method = RequestMethod.POST)
+    @RequestMapping(value = "newJob", method = RequestMethod.POST)
     public JobDTO addJob(
             @RequestBody final JobDTO jobDTO){
 

@@ -34,8 +34,13 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     public List<Request> getAllForUser(UniUser uniUser) {
+        return requestRepository.findAllByToUniUser(uniUser);
+    }
+
+    @Override
+    public List<Request> getAllForUserByStatus(UniUser uniUser, String status) {
         return requestRepository.findAllByToUniUser(uniUser).stream()
-                .filter(r -> r.getStatus().equals("PENDING") || r.getStatus().equals("ACCEPTED"))
+                .filter(r -> r.getStatus().equals(status))
                 .collect(Collectors.toList());
     }
 
@@ -43,6 +48,14 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public List<Request> getAllForFromUser(UniUser uniUser){
         return requestRepository.findAllByFromUniUser(uniUser);
+    }
+
+
+    @Override
+    public  List<Request> getAllForFromUserByStatus(UniUser uniUser, String status){
+        return requestRepository.findAllByFromUniUser(uniUser).stream()
+                .filter(r-> r.getStatus().equals(status))
+                .collect(Collectors.toList());
     }
 
     @Override

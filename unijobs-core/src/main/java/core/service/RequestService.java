@@ -13,6 +13,10 @@ import java.util.List;
 public interface RequestService {
     List<Request> getAll();
     List<Request> getAllForUser(UniUser uniUser);
+    List<Request> getAllForUserByStatus(UniUser uniUser,String status);
+
+    List<Request> getAllForFromUserByStatus(UniUser uniUser, String status);
+
     List<Request> getAllForJob(Job job);
     List<Request> getAllForFromUser(UniUser uniUser);
     Request getOne(int id);

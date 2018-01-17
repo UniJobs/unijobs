@@ -1,6 +1,8 @@
 package web.dto;
 
+import core.model.Job;
 import core.model.Request;
+import core.model.UniUser;
 import lombok.*;
 
 @Setter
@@ -11,16 +13,16 @@ import lombok.*;
 @Builder
 public class RequestDTO {
     private int id;
-    private Integer fromUniUser;
+    private UniUserDTO fromUniUser;
     private Integer job;
-    private Integer toUniUser;
+    private UniUserDTO toUniUser;
     private String status;
 
     public RequestDTO(Request request){
         id = request.getId();
-        fromUniUser = request.getFromUniUser().getId();
+        fromUniUser = new UniUserDTO(request.getFromUniUser());
         job = request.getJob().getId();
-        toUniUser = request.getToUniUser().getId();
+        toUniUser = new UniUserDTO(request.getToUniUser());
         status = request.getStatus();
     }
 }

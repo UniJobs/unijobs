@@ -40,6 +40,19 @@ public class RequestController {
         return new RequestsDTO(requests);
     }
 
+
+
+
+
+    @RequestMapping(value = "/requestsByStatus/{userId}/{status}",method = RequestMethod.GET)
+    public RequestsDTO getRequestsByStatus(@PathVariable Integer userId, @PathVariable String status){
+        log.trace("Finding all request for user {} with status: {}",userId,status);
+        List<Request>requests = requestService.getAllForUserByStatus(uniUserService.getUserById(userId),status);
+        log.trace("Finding all request for user {} with status {} are ",userId,status,requests);
+        return new RequestsDTO(requests);
+
+    }
+
     @RequestMapping(value = "/requestsFrom/{userId}", method = RequestMethod.GET)
     public RequestsDTO getRequestsFrom(@PathVariable Integer userId){
         log.trace("Finding all request for user : {}",userId);
@@ -47,6 +60,19 @@ public class RequestController {
         log.trace("Request for user {} are : {}",userId,requests);
         return new RequestsDTO(requests);
     }
+
+
+    @RequestMapping(value = "/requestsFromByStatus/{userId}/{status}",method = RequestMethod.GET)
+    public RequestsDTO getRequestsFromByStatus(@PathVariable Integer userId, @PathVariable String status){
+        log.trace("Finding all request for user {} with status: {}",userId,status);
+        List<Request>requests = requestService.getAllForFromUserByStatus(uniUserService.getUserById(userId),status);
+        log.trace("Finding all request for user {} with status {} are ",userId,status,requests);
+        return new RequestsDTO(requests);
+
+    }
+
+
+
 
     @RequestMapping(value = "/requestJob/{userId}/{jobId}",method = RequestMethod.POST)
     public RequestDTO sendRequest(@PathVariable Integer userId, @PathVariable Integer jobId){
@@ -69,6 +95,16 @@ public class RequestController {
         jobService.save(job);
         log.trace("Accepted request : {}",requestId);
         return new RequestDTO(request);
+    }
+
+
+    @RequestMapping(value = "/byId/{requestId}", method = RequestMethod.GET)
+    public RequestDTO getRequestById(@PathVariable Integer requestId){
+        log.trace("Id request : {}",requestId);
+        Request req = requestService.getOne(requestId);
+        log.trace("Request : {}",req);
+        return new RequestDTO(req);
+
     }
 
     @RequestMapping(value = "/reject/{requestId}",method = RequestMethod.POST)
