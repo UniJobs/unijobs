@@ -18,6 +18,14 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(indexes = {
+        @Index(name = "IDX_Description", columnList = "description"),
+        @Index(name = "IDX_Location", columnList = "location"),
+        @Index(name = "IDX_HoursPerWeek", columnList = "hoursPerWeek"),
+        @Index(name = "IDX_Cost", columnList = "cost"),
+        @Index(name = "IDX_StartDate", columnList = "startDate"),
+        @Index(name = "IDX_EndDate", columnList = "endDate")
+})
 public class Job {
     private static final Logger log = LoggerFactory.getLogger(Job.class);
 

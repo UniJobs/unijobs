@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/unijobs.iml" filepath="$PROJECT_DIR$/.idea/modules/unijobs.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/unijobs-core/unijobs-core.iml" filepath="$PROJECT_DIR$/.idea/modules/unijobs-core/unijobs-core.iml" group="unijobs-core" />
+      <module fileurl="file://F:\Colectiv_UniJobs\.idea\modules\unijobs-core\unijobs-core.iml" filepath="F:\Colectiv_UniJobs\.idea\modules\unijobs-core\unijobs-core.iml" group="unijobs-core" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/unijobs-core/unijobs-core_main.iml" filepath="$PROJECT_DIR$/.idea/modules/unijobs-core/unijobs-core_main.iml" group="unijobs-core" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/unijobs-core/unijobs-core_test.iml" filepath="$PROJECT_DIR$/.idea/modules/unijobs-core/unijobs-core_test.iml" group="unijobs-core" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/unijobs-web/unijobs-web.iml" filepath="$PROJECT_DIR$/.idea/modules/unijobs-web/unijobs-web.iml" group="unijobs-web" />

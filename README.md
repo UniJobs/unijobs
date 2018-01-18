@@ -2,6 +2,14 @@
 Welcome to UniJobs
 
 
+
+ChangeLog 18-Jan-2018
+   * Added indexes on Job columns
+   * Changed dates in the input .csv files (as preparation for further modifications)
+   * [TODO] Add date checking for each job query
+#__________________________________
+
+
 ChangeLog 10-Jan-2018
     * Added pagination - each request now takes a page number; the page size is set to 10 by default (it can be changed)
     * Improved query for getting al jobs for a user (based on the skills) - since it is a native query, it does not support
