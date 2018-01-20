@@ -1,6 +1,7 @@
 package web.dto;
 
 import core.model.Recommendation;
+import core.model.Skill;
 import core.model.UniUser;
 import lombok.*;
 
@@ -9,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Setter
 @Getter
@@ -49,5 +51,6 @@ public class UniUserDTO {
             dob = formatterDB.format(user.getDob());
         }
         phone  = user.getPhone();
+        skills = user.getSkills().stream().map(Skill::getId).collect(Collectors.toList());
     }
 }

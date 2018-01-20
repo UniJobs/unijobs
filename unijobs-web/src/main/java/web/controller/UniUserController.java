@@ -1,9 +1,11 @@
 package web.controller;
 
 import core.model.Authority;
+import core.model.Skill;
 import core.model.UniUser;
 import core.service.AuthorityService;
 import core.service.RequestService;
+import core.service.SkillService;
 import core.service.UniUserService;
 import core.utils.MailUtils;
 import org.apache.commons.codec.binary.Base64;
@@ -25,7 +27,9 @@ import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/user")
@@ -37,6 +41,9 @@ public class UniUserController {
 
     @Autowired
     AuthorityService authorityService;
+
+    @Autowired
+    SkillService skillService;
 
 
 
@@ -79,6 +86,7 @@ public class UniUserController {
                     .dob(null)
                     .firstname(userDTO.getFirstname())
                     .lastname(userDTO.getLastname())
+                    .skills(new ArrayList<>())
                     .enabled(false)
                     .build();
             if(uniUserService.getUserByEmail(user.getEmail()) == null){
@@ -137,6 +145,7 @@ public class UniUserController {
                     .firstname(userDTO.getFirstname())
                     .lastname(userDTO.getLastname())
                     .phone(userDTO.getPhone())
+                    .skills(userDTO.getSkills().stream().map(i -> skillService.getSkillById(i)).collect(Collectors.toList()))
                     .enabled(true)
                     .build();
             uniUserService.updateUser(user);
