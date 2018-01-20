@@ -30,6 +30,6 @@ public interface JobService {
     List<Job> getAllBetweenDates(Date startDate, Date endDate, Pageable pageable);
     List<Job> getAllJobsByUser(UniUser uniUser, Pageable pageable);
     List<Job> getAllBySkillDescriptions(List<String> skillDescriptions);
-    List<Job> getAllByUserId(Integer userId);
+    List<Job> getAllByUserId(Integer userId, Integer pageSize, Integer pageOffset);
 
 }

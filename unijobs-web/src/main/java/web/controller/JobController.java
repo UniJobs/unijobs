@@ -187,40 +187,11 @@ public class JobController {
                 .stream().map(JobDTO::new).collect(Collectors.toList()));
     }
 
-//    @RequestMapping(value = "getAllJobsForUser/{userId}/{pageNo}", method = RequestMethod.GET)
-//    @Transactional
-//    public JobsDTO getJobsForUser(@PathVariable Integer userId){
-//        UniUser u = uniUserService.getUserById(userId);
-//        Set<Skill> userSkills = new HashSet<>(u.getSkills());
-//        List<Job> allJobs = jobService.getAll();
-//        List<JobDTO> result = new ArrayList<>();
-//        for (Job j: allJobs){
-//            for (Skill s: j.getSkills())
-//                if (userSkills.contains(s)) {
-//                    result.add(new JobDTO(j));
-//                    break;
-//                }
-//
-//        }
-//        return new JobsDTO(result);
-//    }
 
-    /*
-        This is made with native queries so it is better performance-wise
-        Unfortunately it does not support pagination
-
-        We can make a workaround which would be better than the query above tho
-     */
     @RequestMapping(value = "getAllJobsForUser/{userId}/{pageNo}", method = RequestMethod.GET)
     @Transactional
     public JobsDTO testGetJobsForUser(@PathVariable Integer userId, @PathVariable Integer pageNo){
-        List<Job> allJobs = jobService.getAllByUserId(userId);
-        if ((pageNo - 1) * PAGE_SIZE > allJobs.size())
-            return new JobsDTO();
-        int upperSize = pageNo * PAGE_SIZE;
-        if (upperSize > allJobs.size())
-            upperSize = allJobs.size();
-        List<Job> pageWorkaround = allJobs.subList((pageNo-1) * PAGE_SIZE, upperSize);
-        return new JobsDTO(pageWorkaround.stream().map(JobDTO::new).collect(Collectors.toList()));
+        List<Job> allJobs = jobService.getAllByUserId(userId, PAGE_SIZE, pageNo * PAGE_SIZE);
+        return new JobsDTO(allJobs.stream().map(JobDTO::new).collect(Collectors.toList()));
     }
 }

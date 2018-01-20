@@ -37,13 +37,17 @@ public interface UniJobRepository extends BaseRepository<Job,Integer>{
     @Query("SELECT j FROM Job j WHERE j.startDate >= :startDate AND j.endDate <= :endDate and j.employed is null")
     Page<Job> getAllBetweenDates(@Param("startDate") Date startDate, @Param("endDate") Date endDate, Pageable pageable);
 
-    @Query(value = "select distinct * from job join job_skill on job.id = job_skill.job_id join skill on job_skill.skill_id = skill.id where skill.description in ?1 and job.employed is null",
-    nativeQuery = true)
+    @Query(value = "select distinct j.* from job j join job_skill on j.id = job_skill.job_id " +
+            "join skill on job_skill.skill_id = skill.id where skill.description in ?1 and j.employed is null",
+            nativeQuery = true)
     List<Job> getAllBySkillDescription(List<String> skillDescriptions);
 
-    @Query(value = "select distinct * from job inner join job_skill on job.id = job_skill.job_id where job_skill.skill_id in (select user_skill.skill_id from user_skill where user_skill.user_id = :uid) and job.employed_id is null",
-    nativeQuery = true)
-            List<Job> getAllByUserId(@Param("uid") Integer integer);
+    @Query(value = "select distinct j.* from job j inner join job_skill on j.id = job_skill.job_id where" +
+            " job_skill.skill_id in (select user_skill.skill_id from user_skill where user_skill.user_id = :uid) and" +
+            " j.employed_id is null and j.user_id != :uid limit :page_size offset :page_offset",
+            nativeQuery = true)
+    List<Job> getAllByUserId(@Param("uid") Integer integer, @Param("page_size") Integer page_size,
+                             @Param("page_offset") Integer page_offset);
 
     //@Query("SELECT j FROM Job j INNER JOIN UniUser u ON j.uniUser = u.id  WHERE u.id = :user_id")
     //List<Job> getAllJobsByUser(@Param("user_id") Integer user_id);

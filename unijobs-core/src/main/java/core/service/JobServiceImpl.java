@@ -139,8 +139,8 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public List<Job> getAllByUserId(Integer userId) {
-        return jobRepository.getAllByUserId(userId);
+    public List<Job> getAllByUserId(Integer userId, Integer pageSize, Integer pageOffset) {
+        return jobRepository.getAllByUserId(userId, pageSize, pageOffset);
     }
 
 
