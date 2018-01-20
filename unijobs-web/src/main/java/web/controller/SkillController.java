@@ -22,7 +22,7 @@ public class SkillController {
     SkillService skillService;
 
     @Transactional
-    @RequestMapping(value="skills", method = RequestMethod.GET)
+    @RequestMapping(value="/skills", method = RequestMethod.GET)
     public SkillsDTO getSkills(){
         return new SkillsDTO(skillService.getAll());
     }

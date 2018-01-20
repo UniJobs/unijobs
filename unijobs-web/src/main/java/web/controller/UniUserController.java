@@ -112,7 +112,7 @@ public class UniUserController {
         user.setEnabled(true);
         uniUserService.updateUser(user);
         request.setAttribute("user",new UniUserDTO(user));
-        response.sendRedirect("http://localhost:4200");
+        response.sendRedirect("http://localhost:4200/header/profile");
     }
 
 
