@@ -75,7 +75,7 @@ public class UniUser {
     @OneToMany(mappedBy = "forUniUser", fetch = FetchType.LAZY)
     private List<Recommendation> mentioned = new ArrayList<>();
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_skill",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "skill_id")})
@@ -89,6 +89,7 @@ public class UniUser {
         this.lastname = lastname;
         this.dob = dob;
         this.phone = phone;
+        this.skills = new ArrayList<>();
     }
 
     public void addSkill(Skill skill){

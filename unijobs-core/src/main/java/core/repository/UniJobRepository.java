@@ -41,7 +41,7 @@ public interface UniJobRepository extends BaseRepository<Job,Integer>{
     nativeQuery = true)
     List<Job> getAllBySkillDescription(List<String> skillDescriptions);
 
-    @Query(value = "select distinct * from job inner join job_skill on job.id = job_skill.job_id where job_skill.skill_id in (select user_skill.skill_id from user_skill where user_skill.user_id = :uid) and job.employed is null",
+    @Query(value = "select distinct * from job inner join job_skill on job.id = job_skill.job_id where job_skill.skill_id in (select user_skill.skill_id from user_skill where user_skill.user_id = :uid) and job.employed_id is null",
     nativeQuery = true)
             List<Job> getAllByUserId(@Param("uid") Integer integer);
 
