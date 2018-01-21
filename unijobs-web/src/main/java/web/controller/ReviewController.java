@@ -31,7 +31,7 @@ public class ReviewController {
     @Autowired
     UniUserService uniUserService;
 
-    @RequestMapping(value = "/reviews/{userId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/reviews/{userId}", method = RequestMethod.GET)
     public ReviewsDTO getReviewsForUserId(@PathVariable Integer userId){
         List<Review> reviews = reviewService.getReviewsForUserId(userId);
         return new ReviewsDTO(reviews);

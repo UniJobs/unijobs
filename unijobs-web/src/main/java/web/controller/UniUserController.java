@@ -135,20 +135,36 @@ public class UniUserController {
         DateFormat formatterDB = new SimpleDateFormat("d-MMM-yyyy");
 
         try {
-            Date date = receivedFormat.parse(userDTO.getDob());
-            String dbDate = formatterDB.format(date);
-            user = UniUser.builder()
-                    .id(userDTO.getId())
-                    .email(userDTO.getEmail())
-                    .username(userDTO.getEmail())
-                    .password(userDTO.getPassword())
-                    .dob(formatterDB.parse(dbDate))
-                    .firstname(userDTO.getFirstname())
-                    .lastname(userDTO.getLastname())
-                    .phone(userDTO.getPhone())
-                    .skills(userDTO.getSkills().stream().map(i -> skillService.getSkillById(i)).collect(Collectors.toList()))
-                    .enabled(true)
-                    .build();
+            if (!userDTO.getDob().equals("null")) {
+                System.out.println(userDTO.getDob());
+                Date date = receivedFormat.parse(userDTO.getDob());
+                String dbDate = formatterDB.format(date);
+                user = UniUser.builder()
+                        .id(userDTO.getId())
+                        .email(userDTO.getEmail())
+                        .username(userDTO.getEmail())
+                        .password(userDTO.getPassword())
+                        .dob(formatterDB.parse(dbDate))
+                        .firstname(userDTO.getFirstname())
+                        .lastname(userDTO.getLastname())
+                        .phone(userDTO.getPhone())
+                        .skills(userDTO.getSkills().stream().map(i -> skillService.getSkillById(i)).collect(Collectors.toList()))
+                        .enabled(true)
+                        .build();
+            }
+            else{
+                user = UniUser.builder()
+                        .id(userDTO.getId())
+                        .email(userDTO.getEmail())
+                        .username(userDTO.getEmail())
+                        .password(userDTO.getPassword())
+                        .firstname(userDTO.getFirstname())
+                        .lastname(userDTO.getLastname())
+                        .phone(userDTO.getPhone())
+                        .skills(userDTO.getSkills().stream().map(i -> skillService.getSkillById(i)).collect(Collectors.toList()))
+                        .enabled(true)
+                        .build();
+            }
             uniUserService.updateUser(user);
         } catch (DataIntegrityViolationException | ParseException e) {
             user = UniUser.builder().build();
