@@ -16,11 +16,24 @@ import java.util.List;
  */
 public interface UniJobRepository extends BaseRepository<Job,Integer>{
 
-    @Query("SELECT j FROM Job j WHERE j.description  LIKE CONCAT('%',:description,'%') and j.employed is null")
-    Page<Job> getAllByDescription(@Param("description") String description, Pageable pageable);
+    String standardQuery =
+            "select distinct j.* from job j inner join job_skill on j.id = job_skill.job_id where" +
+            " job_skill.skill_id in (select user_skill.skill_id from user_skill where user_skill.user_id = :uid) and" +
+            " j.employed_id is null and j.user_id != :uid";
+    String paginatedQuery = " limit :page_size offset :page_offset";
 
-    @Query("SELECT j FROM Job j WHERE j.location LIKE CONCAT('%',:location,'%') and j.employed is null")
-    Page<Job> getAllByLocation(@Param("location") String location, Pageable pageable);
+
+    @Query(value = standardQuery + " and j.description  LIKE CONCAT('%',:description,'%')" + paginatedQuery,
+            nativeQuery = true)
+    List<Job> getAllByDescription(@Param("uid") Integer uid,
+                                  @Param("page_size") Integer page_size, @Param("page_offset") Integer page_offset,
+                                  @Param("description") String description);
+
+    @Query(value = standardQuery + " and j.location LIKE CONCAT('%',:location,'%')" + paginatedQuery,
+            nativeQuery = true)
+    List<Job> getAllByLocation(@Param("uid") Integer uid,
+                               @Param("page_size") Integer page_size, @Param("page_offset") Integer page_offset,
+                               @Param("location") String location);
 
     @Query("SELECT j FROM Job j WHERE j.hoursPerWeek = :hpw and j.employed is null")
     Page<Job> getAllByHoursPerWeek(@Param("hpw") Integer hpw, Pageable pageable);
@@ -42,9 +55,7 @@ public interface UniJobRepository extends BaseRepository<Job,Integer>{
             nativeQuery = true)
     List<Job> getAllBySkillDescription(List<String> skillDescriptions);
 
-    @Query(value = "select distinct j.* from job j inner join job_skill on j.id = job_skill.job_id where" +
-            " job_skill.skill_id in (select user_skill.skill_id from user_skill where user_skill.user_id = :uid) and" +
-            " j.employed_id is null and j.user_id != :uid limit :page_size offset :page_offset",
+    @Query(value = standardQuery + paginatedQuery,
             nativeQuery = true)
     List<Job> getAllByUserId(@Param("uid") Integer integer, @Param("page_size") Integer page_size,
                              @Param("page_offset") Integer page_offset);

@@ -121,19 +121,19 @@ public class JobController {
         return new JobDTO(job);
     }
 
-    @RequestMapping(value = "byDescription/{description}/{pageNo}", method = RequestMethod.POST)
+    @RequestMapping(value = "byDescription/{description}/{pageNo}/{userId}", method = RequestMethod.POST)
     @Transactional
-    public JobsDTO getJobsByDescription(@PathVariable String description, @PathVariable Integer pageNo){
-        Pageable pageable = new PageRequest(pageNo, PAGE_SIZE);
-        return new JobsDTO(jobService.getByDescription(description, pageable)
+    public JobsDTO getJobsByDescription(@PathVariable String description, @PathVariable Integer pageNo,
+                                        @PathVariable Integer userId){
+        return new JobsDTO(jobService.getByDescription(description, userId, PAGE_SIZE, pageNo * PAGE_SIZE)
                 .stream().map(JobDTO::new).collect(Collectors.toList()));
     }
 
-    @RequestMapping(value = "byLocation/{location}/{pageNo}", method = RequestMethod.POST)
+    @RequestMapping(value = "byLocation/{location}/{pageNo}/{userId}", method = RequestMethod.POST)
     @Transactional
-    public JobsDTO getJobsByLocation(@PathVariable String location, @PathVariable Integer pageNo){
-        Pageable pageable = new PageRequest(pageNo, 5);
-        List<Job> jobs = jobService.getByLocation(location, pageable);
+    public JobsDTO getJobsByLocation(@PathVariable String location, @PathVariable Integer pageNo,
+                                     @PathVariable Integer userId){
+        List<Job> jobs = jobService.getByLocation(location, userId, PAGE_SIZE, pageNo * PAGE_SIZE);
         List<JobDTO> dtos = jobs.stream().map(JobDTO::new).collect(Collectors.toList());
         return new JobsDTO(dtos);
     }

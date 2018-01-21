@@ -63,21 +63,22 @@ public class JobServiceImpl implements JobService {
 
     @Override
     @Transactional
-    public List<Job> getByDescription(String description, Pageable pageable) {
-        log.trace("job service - get all by description {}", description);
-        Page<Job> res = jobRepository.getAllByDescription(description, pageable);
-        log.trace("job service - got them all");
-        return res.getContent();
+    public List<Job> getByDescription(String description, Integer userId, Integer pageSize, Integer pageOffset) {
+        log.trace("job service - get all by description for user {}", userId);
+        List<Job> res = jobRepository.getAllByDescription(userId, pageSize, pageOffset, description);
+        log.trace("job service - done getting all");
+        return res;
     }
 
     @Override
     @Transactional
-    public List<Job> getByLocation(String location, Pageable pageable) {
-        log.trace("job service - get all by location {}", location);
-        Page<Job> res = jobRepository.getAllByLocation(location, pageable);
-        log.trace("job service - got them all");
-        return res.getContent();
+    public List<Job> getByLocation(String location, Integer userId, Integer pageSize, Integer pageOffset) {
+        log.trace("job service - get all by location for user {}", userId);
+        List<Job> res = jobRepository.getAllByLocation(userId, pageSize, pageOffset, location);
+        log.trace("job service - done getting all");
+        return res;
     }
+
 
     @Override
     @Transactional
