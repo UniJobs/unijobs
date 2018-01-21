@@ -47,7 +47,7 @@ public class UniUserDTO {
         firstname = user.getFirstname();
         lastname = user.getLastname();
         if(user.getDob()!=null) {
-            DateFormat formatterDB = new SimpleDateFormat("yyyy-MM-d");
+            DateFormat formatterDB = new SimpleDateFormat("yyyy-MM-dd");
             dob = formatterDB.format(user.getDob());
         }
         phone  = user.getPhone();

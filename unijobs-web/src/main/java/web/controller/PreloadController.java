@@ -124,7 +124,7 @@ public class PreloadController {
     @Transactional
     void addUsers() {
         String path = "../../preload_data/UniUsers.csv";
-        DateFormat formatter = new SimpleDateFormat("d-MMM-yyyy");
+        DateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
         try {
             List<String> lines = Files.lines(Paths.get(path)).collect(Collectors.toList());
             for (String l : lines) {
