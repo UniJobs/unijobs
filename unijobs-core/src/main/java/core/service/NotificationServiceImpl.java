@@ -6,6 +6,7 @@ import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.listener.ConnectListener;
 import com.corundumstudio.socketio.listener.DataListener;
+import com.corundumstudio.socketio.listener.DisconnectListener;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PreDestroy;
@@ -24,14 +25,25 @@ public class NotificationServiceImpl implements NotificationService {
         clients = new ArrayList<>();
         ids = new ArrayList<>();
         Configuration config = new Configuration();
-        config.setHostname("192.168.0.24");
+        config.setHostname("localhost");
         config.setPort(8081);
         server = new SocketIOServer(config);
         server.addConnectListener(new ConnectListener() {
             @Override
             public void onConnect(SocketIOClient socketIOClient) {
                 System.out.println("some1 connected");
-                clients.add(socketIOClient);
+                boolean toAdd = true;
+                for(int i = 0; i<clients.size(); i++) {
+                    if(clients.get(i).getRemoteAddress() == socketIOClient.getRemoteAddress()) {
+                        clients.remove(i);
+                        ids.remove(i);
+                        toAdd = false;
+                        break;
+                    }
+                }
+                if (toAdd) {
+                   clients.add(socketIOClient);
+                }
             }
         });
         server.addEventListener("userId", String.class, new DataListener<String>() {
@@ -41,19 +53,30 @@ public class NotificationServiceImpl implements NotificationService {
                 ids.add(Integer.parseInt(data));
             }
         });
+        server.addDisconnectListener(new DisconnectListener() {
+            @Override
+            public void onDisconnect(SocketIOClient client) {
+                for(int i = 0; i<clients.size(); i++) {
+                    if(clients.get(i) == client) {
+                        clients.remove(client);
+                        ids.remove(i);
+                    }
+                }
+            }
+        });
         server.start();
     }
 
     public void notificationJobAdded(Integer excluded){
         System.out.println("some1 notified");
         for(int i=0;i<clients.size();i++)
-            clients.forEach(socket -> socket.sendEvent("message", "A job that might be of interest for you has been added"));
+            clients.get(i).sendEvent("message", "A job that might be of interest for you has been added");
     }
 
     public void notificationStatus(List<Integer> ids){
         for(int i=0;i<clients.size();i++)
             if(ids.contains(this.ids.get(i)))
-                clients.forEach(socket -> socket.sendEvent("message", "One of your Request had its STATUS updated !"));
+                clients.get(i).sendEvent("message", "One of your Request had its STATUS updated !");
     }
 
     public void notificationRequested(Integer id){
