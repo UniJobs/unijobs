@@ -4,6 +4,7 @@ import core.model.Job;
 import core.model.Request;
 import core.model.UniUser;
 import core.service.JobService;
+import core.service.NotificationService;
 import core.service.RequestService;
 import core.service.UniUserService;
 import org.slf4j.Logger;
@@ -31,6 +32,9 @@ public class RequestController {
 
     @Autowired
     RequestService requestService;
+
+    @Autowired
+    NotificationService notificationService;
 
     @RequestMapping(value = "/requests/{userId}", method = RequestMethod.GET)
     public RequestsDTO getRequests(@PathVariable Integer userId){
@@ -83,6 +87,7 @@ public class RequestController {
         Request request = Request.builder().fromUniUser(fromUser).job(job).toUniUser(toUser).status("PENDING").build();
         requestService.insert(request);
         log.trace("Request sent from {} to {}",userId, jobId);
+        notificationService.notificationRequested(userId);
         return new RequestDTO(request);
     }
 
@@ -94,6 +99,7 @@ public class RequestController {
         job.setEmployed(uniUserService.getUserById(request.getFromUniUser().getId()));
         jobService.save(job);
         log.trace("Accepted request : {}",requestId);
+        //notificationService.notificationStatus();
         return new RequestDTO(request);
     }
 

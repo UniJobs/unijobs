@@ -3,10 +3,7 @@ package web.controller;
 import core.model.Job;
 import core.model.Skill;
 import core.model.UniUser;
-import core.service.JobService;
-import core.service.RequestService;
-import core.service.SkillService;
-import core.service.UniUserService;
+import core.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +42,10 @@ public class JobController {
 
     @Autowired
     RequestService requestService;
+
+    @Autowired
+    NotificationService notificationService;
+
 
     @RequestMapping(value = "jobs/{userId}/{pageNo}", method = RequestMethod.GET)
     @Transactional
@@ -111,8 +112,8 @@ public class JobController {
                     job.addSkill(s);
                 }
                     jobService.save(job);
+                    notificationService.notificationJobAdded(job.getUniUser().getId());
             }
-
         } catch (DataIntegrityViolationException | ParseException e) {
             job = Job.builder().build();
             log.trace("not added job e={}", e.getMessage(), e.getClass());
