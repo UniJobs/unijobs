@@ -1,5 +1,6 @@
 package core.repository;
 
+import core.model.Request;
 import core.model.UniUser;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,4 +16,5 @@ public interface UniUserRepository extends BaseRepository<UniUser,Long> {
     UniUser getUniUserById(@Param("id")Integer id);
 
     List<UniUser> findByEmail(String email);
+    List<UniUser> findAllByToRequests(Request request);
 }

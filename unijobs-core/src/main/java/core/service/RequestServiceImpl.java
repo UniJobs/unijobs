@@ -4,6 +4,7 @@ import core.model.Job;
 import core.model.Request;
 import core.model.UniUser;
 import core.repository.RequestRepository;
+import core.repository.UniUserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,12 @@ public class RequestServiceImpl implements RequestService {
 
     @Autowired
     private RequestRepository requestRepository;
+
+    @Autowired
+    private UniUserRepository uniUserRepository;
+
+    @Autowired
+    private NotificationService notificationService;
 
     @Override
     public List<Request> getAll() {
@@ -77,6 +84,8 @@ public class RequestServiceImpl implements RequestService {
         Request request = getOne(requestId);
         request.setStatus("ACCEPTED");
         requestRepository.save(request);
+        List<Integer> users = uniUserRepository.findAllByToRequests(request).stream().map(UniUser::getId).collect(Collectors.toList());
+        notificationService.notificationStatus(users);
         return request;
     }
 
@@ -89,6 +98,8 @@ public class RequestServiceImpl implements RequestService {
         Request request = getOne(requestId);
         request.setStatus("ACCEPTED");
         requestRepository.save(request);
+        List<Integer> users = uniUserRepository.findAllByToRequests(request).stream().map(UniUser::getId).collect(Collectors.toList());
+        notificationService.notificationStatus(users);
         return request;
     }
 
@@ -97,6 +108,8 @@ public class RequestServiceImpl implements RequestService {
         Request request = getOne(id);
         request.setStatus("REJECTED");
         requestRepository.save(request);
+        List<Integer> users = uniUserRepository.findAllByToRequests(request).stream().map(UniUser::getId).collect(Collectors.toList());
+        notificationService.notificationStatus(users);
         return request;
     }
 
@@ -105,6 +118,8 @@ public class RequestServiceImpl implements RequestService {
         Request request = getOne(id);
         request.setStatus("FINISHED");
         requestRepository.save(request);
+        List<Integer> users = uniUserRepository.findAllByToRequests(request).stream().map(UniUser::getId).collect(Collectors.toList());
+        notificationService.notificationStatus(users);
         return request;
     }
 
@@ -113,6 +128,7 @@ public class RequestServiceImpl implements RequestService {
         log.trace("Inserting request : request = {}",request);
         requestRepository.save(request);
         log.trace("Request inserted");
+        notificationService.notificationRequested(request.getToUniUser().getId());
     }
 
     @Override

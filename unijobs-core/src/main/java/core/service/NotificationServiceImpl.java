@@ -68,9 +68,9 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     public void notificationJobAdded(Integer excluded){
-        System.out.println("some1 notified");
         for(int i=0;i<clients.size();i++)
-            clients.get(i).sendEvent("message", "A job that might be of interest for you has been added");
+            if(!ids.get(i).equals(excluded))
+                clients.get(i).sendEvent("message", "A job that might be of interest for you has been added");
     }
 
     public void notificationStatus(List<Integer> ids){
