@@ -17,4 +17,5 @@ public interface UniUserRepository extends BaseRepository<UniUser,Long> {
 
     List<UniUser> findByEmail(String email);
     List<UniUser> findAllByToRequests(Request request);
+    List<UniUser> findAllByFromRequests(Request request);
 }

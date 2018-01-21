@@ -84,7 +84,7 @@ public class RequestServiceImpl implements RequestService {
         Request request = getOne(requestId);
         request.setStatus("ACCEPTED");
         requestRepository.save(request);
-        List<Integer> users = uniUserRepository.findAllByToRequests(request).stream().map(UniUser::getId).collect(Collectors.toList());
+        List<Integer> users = uniUserRepository.findAllByFromRequests(request).stream().map(UniUser::getId).collect(Collectors.toList());
         notificationService.notificationStatus(users);
         return request;
     }
@@ -98,7 +98,7 @@ public class RequestServiceImpl implements RequestService {
         Request request = getOne(requestId);
         request.setStatus("ACCEPTED");
         requestRepository.save(request);
-        List<Integer> users = uniUserRepository.findAllByToRequests(request).stream().map(UniUser::getId).collect(Collectors.toList());
+        List<Integer> users = uniUserRepository.findAllByFromRequests(request).stream().map(UniUser::getId).collect(Collectors.toList());
         notificationService.notificationStatus(users);
         return request;
     }
@@ -108,7 +108,7 @@ public class RequestServiceImpl implements RequestService {
         Request request = getOne(id);
         request.setStatus("REJECTED");
         requestRepository.save(request);
-        List<Integer> users = uniUserRepository.findAllByToRequests(request).stream().map(UniUser::getId).collect(Collectors.toList());
+        List<Integer> users = uniUserRepository.findAllByFromRequests(request).stream().map(UniUser::getId).collect(Collectors.toList());
         notificationService.notificationStatus(users);
         return request;
     }
@@ -118,7 +118,7 @@ public class RequestServiceImpl implements RequestService {
         Request request = getOne(id);
         request.setStatus("FINISHED");
         requestRepository.save(request);
-        List<Integer> users = uniUserRepository.findAllByToRequests(request).stream().map(UniUser::getId).collect(Collectors.toList());
+        List<Integer> users = uniUserRepository.findAllByFromRequests(request).stream().map(UniUser::getId).collect(Collectors.toList());
         notificationService.notificationStatus(users);
         return request;
     }

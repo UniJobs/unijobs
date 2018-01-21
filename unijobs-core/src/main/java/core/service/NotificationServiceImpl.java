@@ -76,12 +76,15 @@ public class NotificationServiceImpl implements NotificationService {
     public void notificationStatus(List<Integer> ids){
         for(int i=0;i<clients.size();i++)
             if(ids.contains(this.ids.get(i)))
-                clients.get(i).sendEvent("message", "One of your Request had its STATUS updated !");
+                clients.get(i).sendEvent("message", "One of your requests just updated its status");
     }
 
     public void notificationRequested(Integer id){
-        if(ids.contains(id))
-            clients.get(getClientPosition(id)).sendEvent("message", "You have a new Request for one of your jobs !");
+        for(int i=0;i<ids.size();i++)
+            if(ids.get(i).equals(id)) {
+                clients.get(i).sendEvent("message", "You have a pending request for one of your jobs");
+                i=ids.size()+1;
+            }
     }
 
     public Integer getClientPosition(Integer id){
