@@ -14,7 +14,7 @@ import org.springframework.web.context.WebApplicationContext;
 import web.config.WebConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {WebConfig.class, SkillController.class, UniUserController.class})
+@ContextConfiguration(classes = {WebConfig.class, SkillController.class, UniUserController.class, JobController.class})
 @WebAppConfiguration
 public class TestBase {
     @Autowired
