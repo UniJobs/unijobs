@@ -1,41 +1,27 @@
 package web.controller;
 
-import core.model.Job;
 import core.model.Skill;
-import core.model.UniUser;
-import core.service.SkillService;
-import core.service.SkillServiceImpl;
+import core.repository.SkillRepository;
 import org.hamcrest.Matchers;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockServletContext;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import web.config.WebConfig;
+import web.dto.SkillDTO;
 
-import javax.servlet.Filter;
-import javax.servlet.ServletContext;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.hamcrest.Matchers.*;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -49,12 +35,12 @@ public class SkillControllerTest {
 
 
     @Autowired
-    private SkillService skillService;
+    private SkillRepository skillRepository;
 
     private MockMvc mockMvc;
 
     @Before
-    public void setup() throws Exception {
+    public void setup() {
         MockitoAnnotations.initMocks(this);
 
         this.mockMvc = MockMvcBuilders
@@ -62,12 +48,20 @@ public class SkillControllerTest {
                 .dispatchOptions(true)
                 .build();
 
-        skillService.clear();
+        skillRepository.deleteAll();
     }
 
     @Test
-    public void getAll() throws Exception {
-        skillService.insert(new Skill("salut"));
+    public void getAllReturns0SkillsWhenThereAre0SkillsInDb() throws Exception {
+        mockMvc.perform(get("/api/skill/skills")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$skills", Matchers.hasSize(0)));
+    }
+
+    @Test
+    public void getAllReturns1SkillWhenThereIs1SkillInDb() throws Exception {
+        skillRepository.save(new Skill("salut"));
 
         mockMvc.perform(get("/api/skill/skills")
                 .contentType(MediaType.APPLICATION_JSON))
