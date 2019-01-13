@@ -45,8 +45,6 @@ public class UniUserController {
     @Autowired
     SkillService skillService;
 
-
-
     @RequestMapping(value="/users", method = RequestMethod.GET)
     public UniUsersDTO getUsers(){
         return new UniUsersDTO(uniUserService.getAllUsers());
