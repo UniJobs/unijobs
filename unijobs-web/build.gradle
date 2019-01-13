@@ -2,9 +2,16 @@ apply plugin: 'war'
 
 dependencies {
     compile project(':unijobs-core')
-    compile group: 'org.springframework', name: 'spring-webmvc', version: "$springVersion"
+    compile group: 'org.springframework', name: 'spring-webmvc', version: "$springVersion" 
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: "$jacksonDatabindVersion"
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: "$jacksonDatabindVersion"
     compile group: 'javax.servlet', name: 'javax.servlet-api', version: "$javaxServeletApiVersion"
     compile group: 'org.springframework.security.oauth', name: 'spring-security-oauth2', version: '2.1.0.RELEASE'
+
+    testCompile group: 'org.springframework', name: 'spring-test', version: '3.2.3.RELEASE'
+//    testCompile group: 'org.hamcrest', name: 'hamcrest-all', version: '1.3'
+    testCompile group: 'org.mockito', name: 'mockito-core', version: '1.9.5'
+    testCompile group: 'com.jayway.jsonpath', name: 'json-path', version: '0.8.1'
+    testCompile group: 'com.jayway.jsonpath', name: 'json-path-assert', version: '0.8.1'
+
 }
