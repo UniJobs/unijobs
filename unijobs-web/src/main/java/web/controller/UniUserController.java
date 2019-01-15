@@ -45,6 +45,11 @@ public class UniUserController {
     @Autowired
     SkillService skillService;
 
+    @Autowired
+    MailUtils mailUtils;
+
+
+
     @RequestMapping(value="/users", method = RequestMethod.GET)
     public UniUsersDTO getUsers(){
         return new UniUsersDTO(uniUserService.getAllUsers());
@@ -91,7 +96,7 @@ public class UniUserController {
                 uniUserService.addUser(user);
                 String subject = "Unijobs Registration";
                 String text = generateMail(user);
-                MailUtils.sendMail(subject,text,user.getEmail());
+                mailUtils.sendMail(subject,text,user.getEmail());
             }
         } catch (DataIntegrityViolationException e) {
             user = UniUser.builder().build();

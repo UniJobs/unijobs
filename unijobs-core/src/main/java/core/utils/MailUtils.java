@@ -1,5 +1,7 @@
 package core.utils;
 
+import org.springframework.stereotype.Service;
+
 import java.util.Date;
 import java.util.Properties;
 import java.util.Random;
@@ -8,13 +10,10 @@ import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-//TODO
-//DANGER
-//Class not working yet
-//Work in progress
+@Service
 public class MailUtils {
 
-    public static void sendMail(String mailSubject, String mailMessage, String recipientMailAddress) {
+    public void sendMail(String mailSubject, String mailMessage, String recipientMailAddress) {
         final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
         final String username = "unijobs17@gmail.com";
         final String password = "unicodersSUCK";
