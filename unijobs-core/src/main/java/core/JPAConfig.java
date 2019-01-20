@@ -23,7 +23,7 @@ import javax.sql.DataSource;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by Alex on 10/22/2017.
+ * Created by Ionut on 10/22/2018.
  */
 @Configuration
 @EnableJpaRepositories({"core.repository"})

@@ -1,11 +1,11 @@
 package core.repository;
 
-import core.model.Request;
-import core.model.UniUser;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+        import core.model.Request;
+        import core.model.UniUser;
+        import org.springframework.data.jpa.repository.Query;
+        import org.springframework.data.repository.query.Param;
 
-import java.util.List;
+        import java.util.List;
 
 public interface UniUserRepository extends BaseRepository<UniUser,Long> {
 

@@ -5,7 +5,7 @@ import core.model.Skill;
 import java.util.List;
 
 /**
- * Created by Alex on 10/30/2017.
+ * Created by Ionut on 10/30/2018.
  */
 public interface SkillService {
     List<Skill> getAll();

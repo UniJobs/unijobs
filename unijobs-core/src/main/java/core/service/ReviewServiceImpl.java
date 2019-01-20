@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * Created by Alex on 10/31/2017.
+ * Created by Ionut on 10/31/2018.
  */
 @Service
 public class ReviewServiceImpl implements  ReviewService {

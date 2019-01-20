@@ -6,7 +6,7 @@ import core.model.UniUser;
 import java.util.List;
 
 /**
- * Created by Alex on 11/13/2017.
+ * Created by Ionut on 11/13/2018.
  */
 public interface UniUserService {
 

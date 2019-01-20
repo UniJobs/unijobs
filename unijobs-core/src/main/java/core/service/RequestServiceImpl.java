@@ -15,7 +15,7 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /**
- * Created by Alex on 10/31/2017.
+ * Created by Ionut on 10/31/2018.
  */
 @Service
 public class RequestServiceImpl implements RequestService {

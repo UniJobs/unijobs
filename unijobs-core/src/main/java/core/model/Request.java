@@ -5,7 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 
 /**
- * Created by Alex on 10/22/2017.
+ * Created by Ionut on 10/22/2018.
  */
 @Entity
 @Getter

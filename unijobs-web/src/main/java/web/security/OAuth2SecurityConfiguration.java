@@ -36,7 +36,7 @@ public class OAuth2SecurityConfiguration extends WebSecurityConfigurerAdapter {
         BCryptPasswordEncoder encoder = passwordEncoder();
         auth.jdbcAuthentication().dataSource(dataSource).passwordEncoder(encoder)
                 .usersByUsernameQuery(
-                        "select username,password, enabled from users where username=?");
+                        "select username, password, enabled from login where username=?");
     }
 
     @Override
@@ -45,7 +45,7 @@ public class OAuth2SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .antMatchers("/api/preload/**").hasAnyAuthority("ADMIN")
-                .antMatchers("/api/initAdmin","/api/user/**","/api/job/allJobs/**","/api/job/byDescription/**").permitAll()
+                .antMatchers("/api/initAdmin","/api/user/**","/api/job/allJobs/**","/api/job/byDescription/**","/api/voter/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/login").failureUrl("/login?error")

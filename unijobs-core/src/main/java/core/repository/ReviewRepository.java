@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 /**
- * Created by Alex on 10/31/2017.
+ * Created by Ionut on 10/31/2018.
  */
 public interface ReviewRepository extends BaseRepository<Review, Integer> {
     @Query("SELECT r FROM Review r WHERE r.id = :id")

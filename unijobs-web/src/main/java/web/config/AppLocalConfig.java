@@ -5,7 +5,7 @@ import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 /**
- * Created by Maniga on 4/7/2017.
+ * Created by Andreea on 4/7/2018.
  */
 @Configuration
 @ComponentScan({"core"})

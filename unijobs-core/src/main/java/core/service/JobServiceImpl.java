@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Created by Alex on 11/1/2017.
+ * Created by Ionut on 11/1/2018.
  */
 @Service
 public class JobServiceImpl implements JobService {

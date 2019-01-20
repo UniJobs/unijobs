@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * Created by Alex on 10/30/2017.
+ * Created by Ionut on 10/30/2018.
  */
 @Service
 public class SkillServiceImpl implements SkillService {

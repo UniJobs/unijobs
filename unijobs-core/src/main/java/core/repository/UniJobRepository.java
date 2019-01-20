@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by Cris on 10/24/2017.
+ * Created by Madalina on 10/24/2018.
  */
 public interface UniJobRepository extends BaseRepository<Job,Integer>{
 

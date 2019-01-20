@@ -11,7 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 
 /**
- * Created by Maniga on 4/7/2017.
+ * Created by Andreea on 4/7/2018.
  */
 public class Initializer extends AbstractAnnotationConfigDispatcherServletInitializer implements WebApplicationInitializer {
     @Override

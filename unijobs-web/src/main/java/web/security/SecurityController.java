@@ -1,7 +1,7 @@
 package web.security;
 
 /**
- * Created by Ionut on 22/5/2017.
+ * Created by Eric on 22/5/2018.
  */
 import core.model.UniUser;
 import core.service.UniUserService;

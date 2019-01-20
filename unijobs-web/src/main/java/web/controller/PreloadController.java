@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Created by Alex on 10/31/2017.
+ * Created by Ionut on 10/31/2018.
  */
 @RestController
 @RequestMapping("/api")
@@ -112,7 +112,7 @@ public class PreloadController {
     @Transactional
     void addSkills() {
         List<Skill> skills = new ArrayList<>();
-        String path = "../../preload_data/Skills.csv";
+        String path = "..//..//preload_data//Skills.csv";
         try {
             List<String> lines = Files.lines(Paths.get(path)).collect(Collectors.toList());
             lines.stream().map(l -> new Skill(l)).forEach(s -> skillService.insert(s));
@@ -123,7 +123,7 @@ public class PreloadController {
 
     @Transactional
     void addUsers() {
-        String path = "../../preload_data/UniUsers.csv";
+        String path = "..//..//preload_data//UniUsers.csv";
         DateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
         try {
             List<String> lines = Files.lines(Paths.get(path)).collect(Collectors.toList());

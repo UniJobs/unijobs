@@ -5,7 +5,7 @@ import core.model.Review;
 import java.util.List;
 
 /**
- * Created by Alex on 10/31/2017.
+ * Created by Ionut on 10/31/2018.
  */
 public interface ReviewService {
     List<Review> getAll();

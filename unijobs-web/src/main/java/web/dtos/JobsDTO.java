@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Created by Cris on 10/24/2017.
+ * Created by Madalina on 10/24/2018.
  */
 
 //TODO: Get rid of duplicate code

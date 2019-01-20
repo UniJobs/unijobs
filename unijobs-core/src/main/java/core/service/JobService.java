@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by Alex on 11/1/2017.
+ * Created by Ionut on 11/1/2018.
  */
 public interface JobService {
     List<Job> getAllNonPage();

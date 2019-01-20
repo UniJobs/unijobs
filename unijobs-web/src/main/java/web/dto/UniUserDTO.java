@@ -37,7 +37,7 @@ public class UniUserDTO {
     private List<Integer> mentionedRecommendations = new ArrayList<>();
     private List<Integer> skills = new ArrayList<>();
 
-    //The reviews lists were not added now after a stand-up with Bogdan and SCRUM Master, Alexandra!!!
+    //The reviews lists were not added now after a stand-up with Bogdan and SCRUM Master, Ionutandra!!!
 
     public UniUserDTO(UniUser user){
         id = user.getId();
