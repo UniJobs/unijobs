@@ -102,6 +102,25 @@ public class UniUserController {
         return new UniUserDTO(user);
     }
 
+    @RequestMapping(value = "/preloadVoters", method = RequestMethod.GET)
+    public String preloadVoters(){
+
+        UniUser voter1;
+        UniUser voter2;
+        UniUser voter3;
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        try {
+            voter1 = new UniUser("1234567891012", encoder.encode("parola"), "mama@yahoo.com", "ala", "bala", new Date(), "suna-ma");
+
+            uniUserService.addUser(voter1);
+        } catch (DataIntegrityViolationException e) {
+            log.trace("voter exception",e);
+        }
+
+        return "Succes";
+    }
+
     private String generateMail(UniUser user){
         StringBuilder message = new StringBuilder();
         message.append("Hello,\n").append(user.getFirstname()).append(" ").append(user.getLastname()).append("\n\n");
